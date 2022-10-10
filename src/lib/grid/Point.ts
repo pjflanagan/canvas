@@ -1,7 +1,8 @@
 
-import { Position, PointType, PointProps } from './types';
-import { IShape } from './shape';
-import { arePositionsEqual, serializePosition } from './position';
+import type { Position, PointProps } from './types';
+import { PointType } from './types';
+import type { IShape } from './shape';
+import { arePositionsEqual } from './position';
 
 export class Point<T> {
   protected props: PointProps;

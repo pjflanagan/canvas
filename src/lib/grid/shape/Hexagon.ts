@@ -1,7 +1,9 @@
 
-import { ShapeType, Coordinates } from '../types';
-import { Grid } from '../Grid';
-import { IShape, Shape } from './Shape';
+import { ShapeType } from '../types';
+import type { Coordinates } from '../types';
+import type { Grid } from '../Grid';
+import { Shape } from './Shape';
+import type { IShape } from './Shape';
 
 // https://www.redblobgames.com/grids/hexagons/
 
@@ -15,7 +17,7 @@ export class PointyHexagon<T> extends Shape<T> implements IShape<T> {
   }
 
   initPoints() {
-
+    throw new Error('Method not implemented.');
   }
 
   // On a hexagon, edge and point neighbors are the same
@@ -47,7 +49,7 @@ export class FlatHexagon<T> extends Shape<T> implements IShape<T> {
   }
 
   initPoints() {
-
+    throw new Error('Method not implemented.');
   }
 
   // On a hexagon, edge and point neighbors are the same
@@ -62,9 +64,6 @@ export class FlatHexagon<T> extends Shape<T> implements IShape<T> {
 
   getNeighbors(): IShape<T>[] {
     // TODO:, do I want these to be in order (?)
-    return [
-      ...this.getEdgeNeighbors(),
-      ...this.getPointNeighbors(),
-    ];
+    throw new Error('Method not implemented.');
   }
 }

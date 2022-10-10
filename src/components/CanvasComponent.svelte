@@ -1,0 +1,24 @@
+<script lang="ts">
+	import type { Visual } from "$lib/visual";
+	import { onMount } from "svelte";
+
+  export let visual: typeof Visual;
+
+  let canvasElement: HTMLCanvasElement;
+
+  onMount(() => {
+    const context = canvasElement.getContext('2d');
+    canvasElement.width = window.innerWidth;
+    canvasElement.height = window.innerHeight;
+
+    if (!context) {
+      throw 'Unable to get canvas context';
+    }
+
+    new visual(context);
+  });
+  
+</script>
+
+<!-- <svelte:window bind:scrollY={y}/> -->
+<canvas bind:this={canvasElement}></canvas>

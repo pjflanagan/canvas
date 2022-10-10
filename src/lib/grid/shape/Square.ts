@@ -1,8 +1,10 @@
 
-import { ShapeType, Coordinates } from '../types';
-import { Grid } from '../Grid';
+import type { Coordinates } from '../types';
+import { ShapeType } from '../types';
+import type { Grid } from '../Grid';
 import { CenterPoint } from '../Point';
-import { Shape, IShape } from './Shape';
+import { Shape } from './Shape';
+import type { IShape } from './Shape';
 import { addToPosition } from '../position';
 
 export class Square<T> extends Shape<T> implements IShape<T> {

@@ -1,7 +1,6 @@
+import type { VertexPoint } from "./Point";
 
 // Grid
-
-import { VertexPoint } from "./Point";
 
 export type GridProps = ShapeProps & {
   width: number;

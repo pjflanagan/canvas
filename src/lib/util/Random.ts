@@ -1,7 +1,15 @@
+import { ColorMixer, type Color } from "./Color";
 
 export class Random {
   static number(min: number, max: number): number {
     return Math.floor(Math.random() * (max - min)) + min;
+  }
+
+  static prop(
+    { min, max }: { min: number, max: number },
+    comp = 1
+  ): number {
+    return Random.number(min, max) * comp;
   }
   
   static float(min: number, max: number): number  {
@@ -12,19 +20,19 @@ export class Random {
     return Random.odds(0.5);
   }
   
-  static odds(likelihood): boolean {
+  static odds(likelihood: number): boolean {
     return Math.random() < likelihood;
   }
   
-  static color(a = 1): string {
-    var r = Math.round(Math.random() * 255);
-    var g = Math.round(Math.random() * 255);
-    var b = Math.round(Math.random() * 255);
-    return `rgba(${r}, ${g}, ${b}, ${a})`
+  static color(a = 1): Color {
+    return ColorMixer.getRandomColor(a);
   }
 
   static subset<T>(arr: T[], size: number): T[] {
-    var shuffled = arr.slice(0), i = arr.length, temp, index;
+    const shuffled = arr.slice(0);
+    let i = arr.length;
+    let temp: T;
+    let index: number;
     while (i--) {
         index = Math.floor((i + 1) * Math.random());
         temp = shuffled[index];
@@ -32,5 +40,20 @@ export class Random {
         shuffled[i] = temp;
     }
     return shuffled.slice(0, size);
+  }
+
+  static shuffle<T>(array: T[]) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        const temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+    return array;
+  }
+
+  static insert<T>(array: T[], value: T): T[] {
+    array.splice(Random.number(0,array.length), 0, value);
+    return array;
   }
 }

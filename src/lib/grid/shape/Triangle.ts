@@ -1,7 +1,9 @@
 
-import { ShapeType, Coordinates } from '../types';
-import { Grid } from '../Grid';
-import { IShape, Shape } from './Shape';
+import { ShapeType } from '../types';
+import type { Coordinates } from '../types';
+import type { Grid } from '../Grid';
+import { Shape } from './Shape';
+import type { IShape } from './Shape';
 
 
 export class RowTriangle<T> extends Shape<T> implements IShape<T> {
@@ -14,7 +16,7 @@ export class RowTriangle<T> extends Shape<T> implements IShape<T> {
   }
 
   initPoints() {
-
+    throw new Error('Method not implemented.');
   }
 
   getEdgeNeighbors(): IShape<T>[] {
@@ -25,7 +27,7 @@ export class RowTriangle<T> extends Shape<T> implements IShape<T> {
   }
 
   getNeighbors(): IShape<T>[] {
-    return []
+    throw new Error('Method not implemented.');
   }
 }
 
@@ -39,7 +41,7 @@ export class ColumnTriangle<T> extends Shape<T> implements IShape<T> {
   }
 
   initPoints() {
-
+    throw new Error('Method not implemented.');
   }
 
   getEdgeNeighbors(): IShape<T>[] {
@@ -50,6 +52,6 @@ export class ColumnTriangle<T> extends Shape<T> implements IShape<T> {
   }
 
   getNeighbors(): IShape<T>[] {
-    return []
+    throw new Error('Method not implemented.');
   }
 }

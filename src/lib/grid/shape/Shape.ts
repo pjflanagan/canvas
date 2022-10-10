@@ -1,7 +1,7 @@
 
-import { Position, ShapeProps, Coordinates, Edge } from '../types';
-import { Grid } from '../Grid';
-import { CenterPoint, Point, VertexPoint } from '../Point';
+import type { Position, ShapeProps, Coordinates, Edge } from '../types';
+import type { Grid } from '../Grid';
+import type { CenterPoint, VertexPoint } from '../Point';
 import { distance as pointDistance } from '../position';
 
 export interface IShape<T> {
@@ -23,13 +23,14 @@ export class Shape<T> implements IShape<T> {
   protected grid: Grid<T>;
   protected props: ShapeProps;
   protected vertices: VertexPoint<T>[];
-  protected center: CenterPoint<T>;
+  protected center!: CenterPoint<T>;
   protected coordinates: Coordinates;
 
   constructor(grid: Grid<T>, coordinates: Coordinates, props: ShapeProps) {
     this.grid = grid;
     this.coordinates = coordinates;
     this.props = props;
+    this.vertices = [];
   }
 
   protected makeVertex() {

@@ -1,7 +1,8 @@
-import { Grid } from '../Grid';
-import { Coordinates, GridProps, ShapeType } from '../types';
+import type { Grid } from '../Grid';
+import type { Coordinates, GridProps } from '../types';
+import { ShapeType } from '../types';
 import { PointyHexagon, FlatHexagon } from './Hexagon';
-import { IShape } from './Shape';
+import type { IShape } from './Shape';
 import { Diamond, Square } from './Square';
 import { ColumnTriangle, RowTriangle } from './Triangle';
 

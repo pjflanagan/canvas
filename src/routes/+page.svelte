@@ -1,2 +1,6 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<script>
+	import { Space } from '../visuals/space/index';
+  import CanvasComponent from 'src/components/CanvasComponent.svelte';
+</script>
+
+<CanvasComponent visual={Space} />

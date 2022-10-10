@@ -1,5 +1,6 @@
-import { Coordinates, Edge, GridProps, Position } from './types';
-import { IShape, shapeFactory } from './Shape';
+import type { Coordinates, Edge, GridProps, Position } from './types';
+import type { IShape } from './shape';
+import { shapeFactory } from './shape';
 import { Point, VertexPoint } from './Point';
 import { serializePosition } from './position';
 import { Registry, Random } from '../util';
@@ -18,6 +19,7 @@ export class Grid<T> {
     }
     this.vertexRegistry = new Registry<Position, VertexPoint<T>>(serializePosition);
     this.props = props;
+    this.grid = [];
     this.initShapes();
   }
 
@@ -28,9 +30,7 @@ export class Grid<T> {
   }
 
   private initShapes() {
-    this.grid = [];
-
-    let row: number = 0,
+    let row = 0,
         col = 0,
         placingShape: IShape<T> = this.makeShape({ row, col });
 

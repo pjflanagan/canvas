@@ -1,4 +1,6 @@
-import { Position } from "./types";
+// TODO: this should maybe be in util Geometry
+
+import type { Position } from "./types";
 
 export function addToPosition(a: Position, b: [number, number]) {
   return {
@@ -11,9 +13,11 @@ export function arePositionsEqual(a: Position, b: Position): boolean {
   return a.x === b.x && a.y === b.y;
 }
 
-function pad(size = 8) {
-  var s = String(this);
-  while (s.length < (size)) { s = "0" + s; }
+function pad(n: number, size = 8) {
+  let s = `${n}`;
+  while (s.length < size) {
+    s = `0${s}`;
+  }
   return s;
 }
 
