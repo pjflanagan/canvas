@@ -1,35 +1,35 @@
 {
   "description": "4 groups: 1 chain, 1 all overlapping first, 2 alone",
   "data": [
-    ["a", "b", "c"],
-    ["c", "d", "e"],
-    ["f", "g", "h"],
-    ["j", "k", "l"],
-    ["k", "m", "n"],
-    ["j", "o", "p"],
-    ["l", "q", "r"],
-    ["r", "s", "t"],
-    ["u", "v", "w"],
-    ["x", "y", "z"]
+    "abc",
+    "cde",
+    "fgb",
+    "jkl",
+    "kmn",
+    "jop",
+    "lqr",
+    "rst",
+    "uvw",
+    "xyz"
   ],
   "expected": [
     [
-      ["a", "b", "c"],
-      ["c", "d", "e"],
-      ["f", "g", "h"]
+      "abc",
+      "cde",
+      "fgb"
     ],
     [
-      ["j", "k", "l"],
-      ["k", "m", "n"],
-      ["j", "o", "p"],
-      ["l", "q", "r"],
-      ["r", "s", "t"]
+      "jkl",
+      "kmn",
+      "jop",
+      "lqr",
+      "rst"
     ],
     [
-      ["u", "v", "w"]
+      "uvw"
     ],
     [
-      ["x", "y", "z"]
+      "xyz"
     ]
   ]
 }
