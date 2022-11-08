@@ -2,7 +2,6 @@
 // this is a class that can be extended to make different visuals
 
 import { distance } from "$lib/grid";
-import type { Point } from "$lib/util";
 
 export class Visual {
   ctx: CanvasRenderingContext2D;
@@ -12,6 +11,10 @@ export class Visual {
   diagonalLength: number;
   isRunning?: boolean;
   animationReq?: number;
+
+  angle: number;
+  strength: number;
+  scrollPercent: number;
 
   constructor(context: CanvasRenderingContext2D) {
     this.ctx = context;
@@ -23,10 +26,15 @@ export class Visual {
     this.shorterSide = Math.min(this.W, this.H);
     this.diagonalLength = distance({ x: 0, y: 0 }, { x: this.W, y: this.H });
 
-    // setup and animate
-    this.setup();
-    this.animate = this.animate.bind(this);
-    this.start();
+    // user input
+    this.handleMouseMove = this.handleMouseMove.bind(this);
+    this.handleScroll = this.handleScroll.bind(this);
+
+    // user position
+    // TODO: THESE ARE FOR A SPECIFIC VISUAL AND SHOULD BE CHANGED
+    this.angle = 0;
+    this.strength = 0;
+    this.scrollPercent = 0;
   }
 
   setup() {
@@ -37,7 +45,26 @@ export class Visual {
     throw 'Method needs to be implemented by child of Canvas.';
   }
 
+  handleMouseMove(e: MouseEvent) {
+    const mouse = {
+      x: e.clientX,
+      y: e.clientY,
+    };
+    const center = {
+      x: this.W / 2,
+      y: this.H / 2,
+    };
+    this.angle = Math.atan2(mouse.y - center.y, mouse.x - center.x);
+    this.strength = distance(center, mouse) / (this.diagonalLength / 2);
+  }
+
+  handleScroll() {
+    const scroll = window.scrollY;
+    this.scrollPercent = Math.min(scroll / (this.H * 3), 1);
+  }
+
   start() {
+    this.setup();
     if (!this.isRunning) {
       this.isRunning = true;
       this.animate();
@@ -54,53 +81,5 @@ export class Visual {
       window.cancelAnimationFrame(this.animationReq);
     }
     this.isRunning = false;
-  }
-}
-
-export class InteractiveVisual extends Visual {
-  angle: number;
-  strength: number;
-  scrollPercent: number;
-
-  constructor(context: CanvasRenderingContext2D) {
-    super(context);
-
-    // user position
-    this.angle = 0;
-    this.strength = 0;
-    this.scrollPercent = 0;
-
-    // user input
-    this.onMouseMove = this.onMouseMove.bind(this);
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    document.onmousemove((e: MouseEvent) => {
-      const mouse = {
-        x: e.clientX,
-        y: e.clientY,
-      };
-      this.onMouseMove(mouse);
-    })
-    
-    this.onScroll = this.onScroll.bind(this);
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    document.onscroll(() => {
-      const scroll = window.scrollY;
-      this.onScroll(scroll);
-    });
-  }
-
-  onMouseMove(mouse: Point) {
-    const center = {
-      x: this.W / 2,
-      y: this.H / 2,
-    };
-    this.angle = Math.atan2(mouse.y - center.y, mouse.x - center.x);
-    this.strength = distance(center, mouse) / (this.diagonalLength / 2);
-  }
-
-  onScroll(scroll: number) {
-    this.scrollPercent = Math.min(scroll / (this.H * 3), 1);
   }
 }

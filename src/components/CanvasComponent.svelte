@@ -5,6 +5,7 @@
   export let visual: typeof Visual;
 
   let canvasElement: HTMLCanvasElement;
+  let handleMouseMove: (e: MouseEvent) => void;
 
   onMount(() => {
     const context = canvasElement.getContext('2d');
@@ -15,10 +16,15 @@
       throw 'Unable to get canvas context';
     }
 
-    new visual(context);
+    const v = new visual(context);
+    handleMouseMove = v.handleMouseMove;
+    
   });
   
 </script>
 
 <!-- <svelte:window bind:scrollY={y}/> -->
-<canvas bind:this={canvasElement}></canvas>
+<canvas
+  bind:this={canvasElement}
+  on:mousemove={handleMouseMove}
+/>

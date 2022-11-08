@@ -7,18 +7,17 @@ export type Comparator<T> = (a: T, b: T) => boolean | Promise<boolean>;
 
 // makes groups out of a linked overlap
 export function makeCluster<T>(items: T[], compare: Comparator<T>): T[][] {
-  const workingItems = [...items];
   // base case
-  if (workingItems.length === 0) {
+  if (items.length === 0) {
     return [];
-  } else if (workingItems.length === 1) {
-    return [workingItems];
+  } else if (items.length === 1) {
+    return [items];
   }
   // get the first item
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const item = workingItems.pop()!;
+  const item = items.pop()!;
   // get the group it belongs to and the remaining items
-  const [group, remainingItems] = getGroupForItem(item, workingItems, compare);
+  const [group, remainingItems] = getGroupForItem(item, items, compare);
   // return this new item in its group, and the groups created from the remaining items
   return [
     [item, ...group],

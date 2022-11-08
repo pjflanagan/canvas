@@ -1,6 +1,6 @@
 <script>
 	import { Space } from '../visuals/space/index';
-  import CanvasComponent from 'src/components/CanvasComponent.svelte';
+  import CanvasComponent from '../components/CanvasComponent.svelte';
 </script>
 
 <CanvasComponent visual={Space} />

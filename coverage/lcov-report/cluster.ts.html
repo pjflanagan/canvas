@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">82.6% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>46/46</span>
+                <span class='fraction'>38/46</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">57.14% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>10/10</span>
+                <span class='fraction'>4/7</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">82.6% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>46/46</span>
+                <span class='fraction'>38/46</span>
             </div>
         
             
@@ -117,44 +117,44 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">10x</span>
-<span class="cline-any cline-yes">10x</span>
-<span class="cline-any cline-yes">10x</span>
-<span class="cline-any cline-yes">10x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-yes">8x</span>
-<span class="cline-any cline-yes">8x</span>
-<span class="cline-any cline-yes">8x</span>
-<span class="cline-any cline-yes">8x</span>
-<span class="cline-any cline-yes">8x</span>
-<span class="cline-any cline-yes">8x</span>
-<span class="cline-any cline-yes">8x</span>
-<span class="cline-any cline-yes">8x</span>
-<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">23x</span>
-<span class="cline-any cline-yes">23x</span>
-<span class="cline-any cline-yes">23x</span>
-<span class="cline-any cline-yes">23x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">22x</span>
-<span class="cline-any cline-yes">22x</span>
-<span class="cline-any cline-yes">22x</span>
-<span class="cline-any cline-yes">23x</span>
-<span class="cline-any cline-yes">15x</span>
-<span class="cline-any cline-yes">15x</span>
-<span class="cline-any cline-yes">15x</span>
-<span class="cline-any cline-yes">15x</span>
-<span class="cline-any cline-yes">22x</span>
-<span class="cline-any cline-yes">22x</span>
-<span class="cline-any cline-yes">22x</span>
-<span class="cline-any cline-yes">22x</span>
-<span class="cline-any cline-yes">22x</span>
-<span class="cline-any cline-yes">22x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { partition } from 'lodash';
 &nbsp;
 // I think this runs in O(n(n-1)/2) which is still really just O(n^2)
@@ -164,11 +164,12 @@ export type Comparator&lt;T&gt; = (a: T, b: T) =&gt; boolean | Promise&lt;boolea
 &nbsp;
 // makes groups out of a linked overlap
 export function makeCluster&lt;T&gt;(items: T[], compare: Comparator&lt;T&gt;): T[][] {
-  console.log('makeCluster');
   // base case
   if (items.length === 0) {
     return [];
-  }
+  } else if (items.length === 1) <span class="branch-0 cbranch-no" title="branch not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >    return [items];</span>
+<span class="cstat-no" title="statement not covered" >  }</span>
   // get the first item
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const item = items.pop()!;
@@ -182,19 +183,18 @@ export function makeCluster&lt;T&gt;(items: T[], compare: Comparator&lt;T&gt;): 
 }
 &nbsp;
 export function getGroupForItem&lt;T&gt;(item: T, ungroupedItems: T[], compare: Comparator&lt;T&gt;): [T[], T[]] {
-  console.log('getGroupForItem', item, ungroupedItems);
   // base case
-  if (ungroupedItems.length === 0) {
-    return [[item], []]
-  }
+  if (ungroupedItems.length === 0) <span class="branch-0 cbranch-no" title="branch not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >    return [[item], []]</span>
+<span class="cstat-no" title="statement not covered" >  }</span>
   // separate items that overlap with this one from the ones that don't
   let [group, remainingItems] = partition(ungroupedItems, m =&gt; compare(item, m));
   // for each overlapped item, get any group it forms with the remaining items
-  for (let i = 0; i &lt; group.length &amp;&amp; remainingItems.length &gt; 0; ++i) {
-    let newGroupMembers: T[];
-    [newGroupMembers, remainingItems] = getGroupForItem(group[i], remainingItems, compare);
-    group = [...group, ...newGroupMembers]
-  }
+  for (let i = 0; i &lt; group.length &amp;&amp; remainingItems.length &gt; 0; ++i) <span class="branch-0 cbranch-no" title="branch not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >    let newGroupMembers: T[];</span>
+<span class="cstat-no" title="statement not covered" >    [newGroupMembers, remainingItems] = getGroupForItem(group[i], remainingItems, compare);</span>
+<span class="cstat-no" title="statement not covered" >    group = [...group, ...newGroupMembers]</span>
+<span class="cstat-no" title="statement not covered" >  }</span>
   // return the group this item belongs to, and the remaining items
   return [
     group,
@@ -208,7 +208,7 @@ export function getGroupForItem&lt;T&gt;(item: T, ungroupedItems: T[], compare: 
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2022-10-25T20:16:46.121Z
+                at 2022-10-26T14:33:46.188Z
             </div>
         <script src="prettify.js"></script>
         <script>

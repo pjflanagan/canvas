@@ -1,5 +1,4 @@
 import { distance, Random, type Point } from "$lib/util";
-import { SHIP } from "./Ship";
 import type { Space } from "./Space";
 
 const BODY = {
@@ -102,7 +101,7 @@ export class Body {
   getScrollShiftedCenter() {
     const { scrollPercent } = this.visual;
     const { layerStrength, scrollShiftRate } = this.prop;
-    const deltaPercent = scrollPercent - SHIP.BACKPEDAL;
+    const deltaPercent = scrollPercent - 0.08; // SHIP.BACKPEDAL (Move to somewhere else)
     return {
       x: (deltaPercent > 0) ? deltaPercent * layerStrength * scrollShiftRate : 0,
       y: 0

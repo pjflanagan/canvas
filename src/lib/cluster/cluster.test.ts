@@ -1,5 +1,4 @@
 import { partition } from 'lodash';
-import { sleep } from '../util';
 import { makeCluster, type Comparator } from './cluster';
 
 import test0 from './testData/test0.json';
@@ -25,12 +24,11 @@ function isOverlapping(a: TestData, b: TestData): boolean {
     .some(hasEquality => hasEquality);
 }
 
-function makeOverlappingFunctionTracker(timeout: number): [(a: TestData, b: TestData) => Promise<boolean>, () => number] {
+function makeOverlappingFunctionTracker(): [(a: TestData, b: TestData) => Promise<boolean>, () => number] {
   let calls = 0;
 
   const isOverlappingTracked = async (a: TestData, b: TestData): Promise<boolean> => {
     ++calls;
-    await sleep(timeout);
     return isOverlapping(a, b);
   }
 
@@ -112,10 +110,16 @@ const TESTS: Test[] = [
 
 describe('makeClusterUsingStore (for test comparison)', () => {
   TESTS.forEach(({ data, description, expected }) => {
+    const originalData = [...data];
+
     it(`should create ${description}`, () => {
       const result = makeClusterUsingStore(data, isOverlapping);
       expectResultToEqualExpected(result, expected);
     });
+
+    it(`should not modify the original data`, () => {
+      expect(data).toEqual(originalData);
+    })
   });
 });
 
@@ -130,23 +134,35 @@ describe('makeClusterUsingStore (for test comparison)', () => {
 
 describe('makeCluster', () => {
   TESTS.forEach(({ data, description, expected }) => {
+    console.log('data', data);
     const originalData = [...data];
-    const result = makeCluster(data, isOverlapping);
+    const [isOverlappingTracked, getCalls] = makeOverlappingFunctionTracker();
+    const result = makeCluster(data, isOverlappingTracked);
 
     it(`should create ${description}`, () => {
+      console.log('result', result);
+      console.log('expected', expected);
       expectResultToEqualExpected(result, expected);
     });
 
     it(`should not modify the original data`, () => {
       expect(data).toEqual(originalData);
     })
-  });
 
+    it(`should run faster than or equal to O(n(n-1)/2)`, () => {
+      const n = originalData.length;
+      const benchmark = (n * (n - 1)) / 2;
+      expect(getCalls()).toBeLessThanOrEqual(benchmark);
+    })
+  });
+});
+
+
+describe('comparison', () => {
   TESTS.forEach(({ data, description }) => {
-    const timeout = 10;
-    const [isOverlappingTrackedRecursive, getCallsRecursive] = makeOverlappingFunctionTracker(timeout);
+    const [isOverlappingTrackedRecursive, getCallsRecursive] = makeOverlappingFunctionTracker();
     // const [isOverlappingTrackedDoubleForLoop, getCallsDoubleForLoop] = makeOverlappingFunctionTracker(timeout);
-    const [isOverlappingTrackedClusterStore, getCallsClusterStore] = makeOverlappingFunctionTracker(timeout);
+    const [isOverlappingTrackedClusterStore, getCallsClusterStore] = makeOverlappingFunctionTracker();
   
     // const time0 = new Date().getTime();
     makeCluster(data, isOverlappingTrackedRecursive);

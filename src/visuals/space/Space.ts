@@ -1,5 +1,5 @@
 
-import { InteractiveVisual } from "$lib/visual";
+import { Visual } from "$lib/visual";
 import { Random } from "$lib/util";
 import type { Body } from "./Body";
 import { Star } from "./Star";
@@ -13,7 +13,7 @@ const CANVAS = {
   FOREGROUND_MOONS: { min: 3, max: 5 },
 };
 
-export class Space extends InteractiveVisual {
+export class Space extends Visual {
   bodies: Body[];
 
   constructor(context: CanvasRenderingContext2D) {
