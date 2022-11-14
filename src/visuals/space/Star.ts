@@ -1,4 +1,4 @@
-import { ColorMixer, Random } from "$lib/util";
+import { Color, Random } from "$lib/util";
 import { Body } from "./Body";
 // import type { SpaceVisual } from "./SpaceVisual";
 
@@ -16,10 +16,6 @@ const STAR = {
 };
 
 export class Star extends Body {
-  // constructor(space: SpaceVisual, layer: number, id: number) {
-  //   super(space, layer, id);
-  // }
-
   setup() {
     // unchanging props
     this.prop = {
@@ -28,7 +24,7 @@ export class Star extends Body {
         y: Random.prop(STAR.CENTER.y, this.visual.H),
       }, // planet is in the center
       radius: Random.prop(STAR.RADIUS, this.visual.H),
-      color: ColorMixer.getRandomColor(),
+      color: Color.getRandomColor(),
       offsetRadiusMax: STAR.OFFSET.MAX_RADIUS,
       offsetSpeed: STAR.OFFSET.SPEED,
       scrollShiftRate: STAR.SCROLL_SHIFT_RATE
@@ -49,7 +45,7 @@ export class Star extends Body {
     const { pos } = this.state;
     this.ctx.beginPath();
     this.ctx.arc(pos.x, pos.y, radius, 0, 2 * Math.PI, false);
-    this.ctx.fillStyle = color.toString();
+    this.ctx.fillStyle = Color.toString(color);
     this.ctx.fill();
   }
 }

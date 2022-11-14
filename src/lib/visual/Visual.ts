@@ -1,8 +1,7 @@
 
 // this is a class that can be extended to make different visuals
 
-import { distance } from "$lib/grid";
-import type { Point } from "$lib/util";
+import { type Point, distance } from "$lib/util";
 
 export class Visual {
   ctx: CanvasRenderingContext2D;

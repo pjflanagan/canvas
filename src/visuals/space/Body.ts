@@ -1,4 +1,4 @@
-import { distance, Random, type Point } from "$lib/util";
+import { distance, Random, type Point, ZERO_POINT, Color, Motion } from "$lib/util";
 import type { SpaceVisual } from "./SpaceVisual";
 
 const BODY = {
@@ -16,8 +16,8 @@ const BODY = {
   },
 };
 
-function toStringA({ r, g, b }: any, a: number): string {
-  return `rgba(${r},${g},${b}, ${a})`;
+export type PointTo = Point & {
+  to: Point;
 }
 
 export class Body {
@@ -26,7 +26,11 @@ export class Body {
   id: string;
   layer: number;
   prop: any;
-  state: any;
+  state: {
+    [key: string]: any;
+    pos: Point;
+    offset: PointTo; // tbh, it's kinda messy to have offset contain the to point
+  };
 
   constructor(visual: SpaceVisual, layer: number, id: number) {
     // general info
@@ -36,18 +40,16 @@ export class Body {
     this.layer = layer;
 
     // variables
+    this.state = { pos: ZERO_POINT, offset: { ...ZERO_POINT, to: ZERO_POINT } }
     this.prop = {};
-    this.state = {};
 
     // run the setup function defined in the child class
     this.setup();
-    this.prop.layerStrength =
-      Random.float(0.9, 1.1) * (18 / (0.1 * layer + 0.8) + 4); // TODO: use constant
-
-    // changing position initial state
-    this.state.pos = { x: this.prop.center.x, y: this.prop.center.y };
-    this.state.offset = { x: 0, y: 0 };
     this.setOffsetTo();
+
+    this.prop.layerStrength =
+      Random.float(0.9, 1.1) * (18 / (0.1 * layer + 0.8) + 4);
+    this.state.pos = { x: this.prop.center.x, y: this.prop.center.y };
   }
 
   setup() {
@@ -89,8 +91,7 @@ export class Body {
 
   hasReachedOffset() {
     const { offset } = this.state;
-    const dist = distance(offset, offset.to);
-    return dist < 4;
+    return Motion.hasReachedPoint(offset, offset.to, 4);
   }
 
   getMouseShiftedCenter() {
@@ -112,7 +113,6 @@ export class Body {
     };
   }
 
-
   moveBody(shift: Point) {
     // move to a point at a random and angle from center
     if (this.hasReachedOffset()) {
@@ -120,11 +120,14 @@ export class Body {
     }
 
     // calculate the delta x and y for the new
-    const { x, y, to } = this.state.offset;
-    const offsetAngle = Math.atan2(to.y - y, to.x - x);
-    this.state.offset.x = x + this.prop.offsetSpeed * Math.cos(offsetAngle);
-    this.state.offset.y = y + this.prop.offsetSpeed * Math.sin(offsetAngle);
+    const { x: newX, y: newY } = Motion.moveInDirection(
+      this.state.offset,
+      this.state.offset.to,
+      this.prop.offsetSpeed
+    );
 
+    this.state.offset.x = newX;
+    this.state.offset.y = newY;
     this.state.pos = {
       x: shift.x + this.state.offset.x,
       y: shift.y + this.state.offset.y,
@@ -180,11 +183,11 @@ export class Body {
     );
     grd.addColorStop(
       0,
-      toStringA(colorSpectrum[colorSpectrum.length - 1], BODY.COLOR.OVERLAY_OPACITY_INSIDE)
+      Color.toString(colorSpectrum[colorSpectrum.length - 1], BODY.COLOR.OVERLAY_OPACITY_INSIDE)
     );
     grd.addColorStop(
       1,
-      toStringA(colorSpectrum[colorSpectrum.length - 1], BODY.COLOR.OVERLAY_OPACITY_OUTSIDE)
+      Color.toString(colorSpectrum[colorSpectrum.length - 1], BODY.COLOR.OVERLAY_OPACITY_OUTSIDE)
     );
     this.ctx.beginPath();
     this.ctx.arc(pos.x, pos.y, radius, 0, 2 * Math.PI, false);
@@ -198,19 +201,19 @@ export class Body {
     const grd = this.ctx.createLinearGradient(x, y - radius, x, y + radius);
     grd.addColorStop(
       0,
-      toStringA(colorSpectrum[0], BODY.TRAIL.OPACITY_OUTSIDE)
+      Color.toString(colorSpectrum[0], BODY.TRAIL.OPACITY_OUTSIDE)
     );
     grd.addColorStop(
       BODY.TRAIL.COLOR_STOP,
-      toStringA(colorSpectrum[0], BODY.TRAIL.OPACITY_INSIDE)
+      Color.toString(colorSpectrum[0], BODY.TRAIL.OPACITY_INSIDE)
     );
     grd.addColorStop(
       1 - BODY.TRAIL.COLOR_STOP,
-      toStringA(colorSpectrum[0], BODY.TRAIL.OPACITY_INSIDE)
+      Color.toString(colorSpectrum[0], BODY.TRAIL.OPACITY_INSIDE)
     );
     grd.addColorStop(
       1,
-      toStringA(colorSpectrum[0], BODY.TRAIL.OPACITY_OUTSIDE)
+      Color.toString(colorSpectrum[0], BODY.TRAIL.OPACITY_OUTSIDE)
     );
     this.ctx.beginPath();
     this.ctx.rect(x, y - radius, this.visual.W * 2, 2 * radius);

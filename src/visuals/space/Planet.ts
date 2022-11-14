@@ -1,5 +1,5 @@
 import { Body } from "./Body";
-import { ColorMixer, ellipseCircleIntersection, Random, type Color } from "$lib/util";
+import { Color, ellipseCircleIntersection, Random, type IColor } from "$lib/util";
 import type { SpaceVisual } from "./SpaceVisual";
 
 const PLANET = {
@@ -19,7 +19,7 @@ const PLANET = {
 };
 
 type Ring = {
-  color: Color,
+  color: IColor,
   offsetY: number,
   lineWidth: number
 }
@@ -31,19 +31,19 @@ export class Planet extends Body {
   }
 
   setup() {
-    const color = ColorMixer.getRandomColor(0.9); // random color TODO: use a pallet
-    const toColor = ColorMixer.getRandomColor(0.9);
+    const color = Color.getRandomColor(0.9); // random color TODO: use a pallet
+    const toColor = Color.getRandomColor(0.9);
 
     // unchanging props
     this.prop = {
       center: { x: this.visual.W / 2, y: this.visual.H / 2 }, // planet is in the center
       radius: Random.prop(PLANET.RADIUS, this.visual.H),
-      colorSpectrum: ColorMixer.makeSpectrum(color, toColor, PLANET.COLORS),
+      colorSpectrum: Color.makeSpectrum(color, toColor, PLANET.COLORS),
       offsetRadiusMax: PLANET.OFFSET.MAX_RADIUS,
       offsetSpeed: PLANET.OFFSET.SPEED,
       scrollShiftRate: PLANET.SCROLL_SHIFT_RATE
     };
-    Random.insert(this.prop.colorSpectrum, ColorMixer.getRandomColor());
+    Random.insert(this.prop.colorSpectrum, Color.getRandomColor());
     this.setupColors();
     this.setupRing();
   }
@@ -52,9 +52,9 @@ export class Planet extends Body {
     this.prop.ringAngleCenter = Random.prop(PLANET.RING.START_ANGLE);
     this.prop.rings = [] as Ring[];
     const ringCount = Random.prop(PLANET.RING.COUNT);
-    const color = ColorMixer.getRandomColor();
-    const toColor = ColorMixer.getRandomColor();
-    const ringSpectrum = ColorMixer.makeSpectrum(color, toColor, ringCount);
+    const color = Color.getRandomColor();
+    const toColor = Color.getRandomColor();
+    const ringSpectrum = Color.makeSpectrum(color, toColor, ringCount);
     const ringGap = Random.number(6,12);
     for(let i = 0; i < ringSpectrum.length; ++i){
       this.prop.rings.push({
@@ -119,7 +119,7 @@ export class Planet extends Body {
       });
       this.ctx.beginPath();
       this.ctx.ellipse(x, y, offset.x, offset.y, angle, intersection[0].theta, intersection[1].theta)
-      this.ctx.strokeStyle = ColorMixer.toString(ring.color, 0.8);
+      this.ctx.strokeStyle = Color.toString(ring.color, 0.8);
       this.ctx.lineWidth = ring.lineWidth;
       this.ctx.stroke();
     });

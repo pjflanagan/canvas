@@ -1,4 +1,4 @@
-import { ColorMixer, Random } from "$lib/util";
+import { Color, Random } from "$lib/util";
 import { Body } from "./Body";
 import { SHIP } from "./Ship";
 // import type { SpaceVisual } from "./SpaceVisual";
@@ -18,14 +18,10 @@ const MOON = {
 };
 
 export class Moon extends Body {
-  // constructor(space: SpaceVisual, layer: number, id: number) {
-  //   super(space, layer, id);
-  // }
-
   setup() {
     const { shorterSide, W, H } = this.visual;
-    const color = ColorMixer.getRandomColor(0.9);
-    const toColor = ColorMixer.getRandomColor(0.9);
+    const color = Color.getRandomColor(0.9);
+    const toColor = Color.getRandomColor(0.9);
 
     // unchanging props
     const radius = Random.prop(MOON.RADIUS, shorterSide);
@@ -37,12 +33,12 @@ export class Moon extends Body {
         y: Random.number(0, H),
       },
       radius,
-      colorSpectrum: ColorMixer.makeSpectrum(color, toColor, MOON.COLORS),
+      colorSpectrum: Color.makeSpectrum(color, toColor, MOON.COLORS),
       offsetRadiusMax: MOON.OFFSET.MAX_RADIUS,
       offsetSpeed: MOON.OFFSET.SPEED,
       scrollShiftRate: MOON.SCROLL_SHIFT_RATE
     };
-    const randomStripeColor = ColorMixer.getRandomColor(0.7);
+    const randomStripeColor = Color.getRandomColor(0.7);
     Random.insert(this.prop.colorSpectrum, randomStripeColor);
     this.setupColors();
   }

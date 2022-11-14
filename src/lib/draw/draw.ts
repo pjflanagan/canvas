@@ -1,7 +1,8 @@
-import type { DrawingInstructions, DrawingModifiers, Point, LayerInstruction, ShapeModifiers, StrokeInstruction } from './types'
+import type { Point } from '$lib/util';
+import type { DrawingInstructions, DrawingModifiers, LayerInstruction, ShapeModifiers, StrokeInstruction } from './types'
 
 function drawStroke(ctx: CanvasRenderingContext2D, step: StrokeInstruction, center?: Point): void {
-  const [x, y] = center || [0, 0];
+  const {x, y} = center || {x: 0, y: 0};
   const [moveType] = step;
   switch(moveType) {
     case 'moveTo':

@@ -1,4 +1,4 @@
-import { ColorMixer, type Color } from "./Color";
+import { Color, type IColor } from "./Color";
 
 export class Random {
   static number(min: number, max: number): number {
@@ -9,7 +9,7 @@ export class Random {
     { min, max }: { min: number, max: number },
     comp = 1
   ): number {
-    return Random.number(min, max) * comp;
+    return Random.float(min, max) * comp;
   }
   
   static float(min: number, max: number): number  {
@@ -24,8 +24,8 @@ export class Random {
     return Math.random() < likelihood;
   }
   
-  static color(a = 1): Color {
-    return ColorMixer.getRandomColor(a);
+  static color(a = 1): IColor {
+    return Color.getRandomColor(a);
   }
 
   static subset<T>(arr: T[], size: number): T[] {

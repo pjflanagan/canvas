@@ -26,7 +26,3 @@ export function serializePosition(position: Position): string {
   const y = pad(Math.floor(position.y * 1000));
   return `${x}-${y}`;
 }
-
-export function distance(a: Position, b: Position): number {
-  return Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
-}

@@ -4,7 +4,7 @@ import { PointType } from './types';
 import type { IShape } from './shape';
 import { arePositionsEqual } from './position';
 
-export class Point<T> {
+export class GridPoint<T> {
   protected props: PointProps;
   protected value: any;
 
@@ -41,7 +41,7 @@ export class Point<T> {
   }
 }
 
-export class VertexPoint<T> extends Point<T> {
+export class VertexPoint<T> extends GridPoint<T> {
   private shapes: IShape<T>[];
 
   constructor(position: Position) {
@@ -58,7 +58,7 @@ export class VertexPoint<T> extends Point<T> {
 
   // Points
 
-  isSame(point: Point<T>): boolean {
+  isSame(point: GridPoint<T>): boolean {
     return arePositionsEqual(this.props.position, point.getPosition());
   }
 
@@ -87,7 +87,7 @@ export class VertexPoint<T> extends Point<T> {
   }
 }
 
-export class CenterPoint<T> extends Point<T> {
+export class CenterPoint<T> extends GridPoint<T> {
   private shape: IShape<T>
 
   constructor(shape: IShape<T>, position: Position) {

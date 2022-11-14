@@ -1,3 +1,4 @@
+import type { Point } from "$lib/util";
 import type { VertexPoint } from "./Point";
 
 // Grid
@@ -38,10 +39,7 @@ export enum PointType {
   VERTEX,
 }
 
-export type Position = {
-  x: number;
-  y: number;
-}
+export type Position = Point;
 
 export type PointProps = {
   position: Position;

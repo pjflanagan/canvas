@@ -58,21 +58,21 @@ const SHIP_INSTRUCTIONS: DrawingInstructions = {
     {
       id: 'window-1',
       strokes: [
-        ['arc', -18 + 1 * 14, 0, 4, 0, 2 * Math.PI, false],
+        ['arc', -18 + 0, 0, 4, 0, 2 * Math.PI, false],
       ],
       fillStyle: SHIP.COLORS.WINDOWS
     },
     {
       id: 'window-2',
       strokes: [
-        ['arc', -18 + 2 * 14, 0, 4, 0, 2 * Math.PI, false],
+        ['arc', -18 + 14, 0, 4, 0, 2 * Math.PI, false],
       ],
       fillStyle: SHIP.COLORS.WINDOWS
     },
     {
       id: 'window-3',
       strokes: [
-        ['arc', -18 + 3 * 14, 0, 4, 0, 2 * Math.PI, false],
+        ['arc', -18 + 28, 0, 4, 0, 2 * Math.PI, false],
       ],
       fillStyle: SHIP.COLORS.WINDOWS
     },
@@ -190,7 +190,7 @@ export class Ship extends Body {
     draw(this.ctx,
       SHIP_INSTRUCTIONS,
       {
-        center: [x, y]
+        center: {x, y}
       }
     );
   }

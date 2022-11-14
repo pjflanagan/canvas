@@ -4,6 +4,8 @@ export type Point = {
   y: number;
 }
 
+export const ZERO_POINT = { x: 0, y: 0 };
+
 export const distance = (a: Point, b: Point) => Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
 
 type CircleIntersectionParams = {

@@ -2,7 +2,7 @@
 import type { Position, ShapeProps, Coordinates, Edge } from '../types';
 import type { Grid } from '../Grid';
 import type { CenterPoint, VertexPoint } from '../Point';
-import { distance as pointDistance } from '../position';
+import { distance as getDistance } from '$lib/util';
 
 export interface IShape<T> {
   getCenter(): CenterPoint<T>;
@@ -71,9 +71,9 @@ export class Shape<T> implements IShape<T> {
   getPointsNearPosition(position: Position): VertexPoint<T>[] {
     let points: VertexPoint<T>[] = [];
   
-    let minDistance = pointDistance(position, this.vertices[0].getPosition());
+    let minDistance = getDistance(position, this.vertices[0].getPosition());
     this.vertices.forEach(v => {
-      const distance = pointDistance(position, v.getPosition())
+      const distance = getDistance(position, v.getPosition())
       if (minDistance > distance) {
         points = [];
         minDistance = distance;
@@ -89,9 +89,9 @@ export class Shape<T> implements IShape<T> {
   getPointsAwayFromPosition(position: Position): VertexPoint<T>[] {
     let points: VertexPoint<T>[] = [];
   
-    let maxDistance = pointDistance(position, this.vertices[0].getPosition());
+    let maxDistance = getDistance(position, this.vertices[0].getPosition());
     this.vertices.forEach(v => {
-      const distance = pointDistance(position, v.getPosition())
+      const distance = getDistance(position, v.getPosition())
       if (maxDistance < distance) {
         points = [];
         maxDistance = distance;

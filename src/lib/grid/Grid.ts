@@ -1,7 +1,7 @@
 import type { Coordinates, Edge, GridProps, Position } from './types';
 import type { IShape } from './shape';
 import { shapeFactory } from './shape';
-import { Point, VertexPoint } from './Point';
+import { GridPoint, VertexPoint } from './Point';
 import { serializePosition } from './position';
 import { Registry, Random } from '../util';
 
@@ -99,7 +99,7 @@ export class Grid<T> {
 
   // Helpers
 
-  isPointWithinBounds(point: Point<T>) {
+  isPointWithinBounds(point: GridPoint<T>) {
     const { x, y } = point.getPosition();
     return x >= 0 && x <= this.props.width && y >= 0 && y < this.props.height;
   }

@@ -1,5 +1,4 @@
-
-export type Point = [number, number];
+import type { Point } from "$lib/util";
 
 type MoveToStroke = ['moveTo', number, number];
 type LineToStroke = ['lineTo', number, number];
