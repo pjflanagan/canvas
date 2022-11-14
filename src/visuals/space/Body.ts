@@ -1,5 +1,5 @@
 import { distance, Random, type Point } from "$lib/util";
-import type { Space } from "./Space";
+import type { SpaceVisual } from "./SpaceVisual";
 
 const BODY = {
   COLOR: {
@@ -21,14 +21,14 @@ function toStringA({ r, g, b }: any, a: number): string {
 }
 
 export class Body {
-  visual: Space;
+  visual: SpaceVisual;
   ctx: CanvasRenderingContext2D;
   id: string;
   layer: number;
   prop: any;
   state: any;
 
-  constructor(visual: Space, layer: number, id: number) {
+  constructor(visual: SpaceVisual, layer: number, id: number) {
     // general info
     this.visual = visual;
     this.ctx = this.visual.ctx;

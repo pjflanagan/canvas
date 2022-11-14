@@ -1,6 +1,6 @@
 
 import { Visual } from "$lib/visual";
-import { Random } from "$lib/util";
+import { distance, Random } from "$lib/util";
 import type { Body } from "./Body";
 import { Star } from "./Star";
 import { Moon } from "./Moon";
@@ -14,13 +14,17 @@ const CANVAS = {
   FOREGROUND_MOONS: { min: 3, max: 5 },
 };
 
-export class Space extends Visual {
+export class SpaceVisual extends Visual {
   bodies: Body[];
+  angle: number;
+  strength: number;
 
   constructor(context: CanvasRenderingContext2D) {
     super(context);
 
     this.bodies = [];
+    this.angle = 0;
+    this.strength = 0;
   }
 
   setup() {
@@ -65,6 +69,13 @@ export class Space extends Visual {
   }
 
   drawFrame() {
+    const center = {
+      x: this.W / 2,
+      y: this.H / 2,
+    };
+    this.angle = Math.atan2(this.mousePos.y - center.y, this.mousePos.x - center.x);
+    this.strength = distance(center, this.mousePos) / (this.diagonalLength / 2);
+
     this.drawBackground();
     this.bodies.forEach((body) => {
       body.move();
@@ -73,7 +84,6 @@ export class Space extends Visual {
   }
 
   drawBackground() {
-    console.log('drawBackground');
     draw(this.ctx, {
       layers: [
         {

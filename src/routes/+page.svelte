@@ -1,6 +1,9 @@
 <script>
-	import { Space } from '../visuals/space/index';
+	import { SpaceVisual } from '../visuals/space/index';
   import CanvasComponent from '../components/CanvasComponent.svelte';
+
+  // TODO: some type of switch for which design we're doing
 </script>
 
-<CanvasComponent visual={Space} />
+<!-- Variable controlls component -->
+<CanvasComponent visual={SpaceVisual} />

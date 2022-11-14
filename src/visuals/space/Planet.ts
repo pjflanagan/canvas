@@ -1,6 +1,6 @@
 import { Body } from "./Body";
 import { ColorMixer, ellipseCircleIntersection, Random, type Color } from "$lib/util";
-import type { Space } from "./Space";
+import type { SpaceVisual } from "./SpaceVisual";
 
 const PLANET = {
   RADIUS: { min: 0.36, max: 0.42 }, // proportional to space 0.2, 0.3
@@ -25,7 +25,7 @@ type Ring = {
 }
 
 export class Planet extends Body {
-  constructor(space: Space, layer: number, id: number) {
+  constructor(space: SpaceVisual, layer: number, id: number) {
     super(space, layer, id);
     this.drawRing = this.drawRing.bind(this);
   }

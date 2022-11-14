@@ -3,7 +3,6 @@ import type { DrawingInstructions, DrawingModifiers, Point, LayerInstruction, Sh
 function drawStroke(ctx: CanvasRenderingContext2D, step: StrokeInstruction, center?: Point): void {
   const [x, y] = center || [0, 0];
   const [moveType] = step;
-  ctx.beginPath();
   switch(moveType) {
     case 'moveTo':
       ctx.moveTo(x + step[1], y + step[2]);
@@ -29,6 +28,7 @@ function drawStroke(ctx: CanvasRenderingContext2D, step: StrokeInstruction, cent
 }
 
 function drawLayer(ctx: CanvasRenderingContext2D, shape: LayerInstruction, center?: Point, modifiers?: ShapeModifiers): void {
+  ctx.beginPath();
   try {
     shape.strokes.forEach(s => drawStroke(ctx, s, center));
   } catch (e) {

@@ -2,6 +2,7 @@
 // this is a class that can be extended to make different visuals
 
 import { distance } from "$lib/grid";
+import type { Point } from "$lib/util";
 
 export class Visual {
   ctx: CanvasRenderingContext2D;
@@ -11,9 +12,8 @@ export class Visual {
   diagonalLength: number;
   isRunning?: boolean;
   animationReq?: number;
+  mousePos: Point;
 
-  angle: number;
-  strength: number;
   scrollPercent: number;
 
   constructor(context: CanvasRenderingContext2D) {
@@ -31,10 +31,11 @@ export class Visual {
     this.handleScroll = this.handleScroll.bind(this);
 
     // user position
-    // TODO: THESE ARE MOUSE FOR A SPECIFIC VISUAL AND SHOULD BE CHANGED
-    // TO JUST BE COORDINATES
-    this.angle = 0;
-    this.strength = 0;
+    this.mousePos = {
+      x: 0,
+      y: 0
+    }
+    // TODO: This should just be a number, if percent is important, calculate it in the child
     this.scrollPercent = 0;
   }
 
@@ -47,16 +48,10 @@ export class Visual {
   }
 
   handleMouseMove(e: MouseEvent) {
-    const mouse = {
+    this.mousePos = {
       x: e.clientX,
       y: e.clientY,
     };
-    const center = {
-      x: this.W / 2,
-      y: this.H / 2,
-    };
-    this.angle = Math.atan2(mouse.y - center.y, mouse.x - center.x);
-    this.strength = distance(center, mouse) / (this.diagonalLength / 2);
   }
 
   handleScroll() {
@@ -65,7 +60,6 @@ export class Visual {
   }
 
   start() {
-    this.setup();
     if (!this.isRunning) {
       this.isRunning = true;
       this.animate();

@@ -1,6 +1,6 @@
 import { ColorMixer, Random } from "$lib/util";
 import { Body } from "./Body";
-import type { Space } from "./Space";
+// import type { SpaceVisual } from "./SpaceVisual";
 
 const STAR = {
   RADIUS: { min: 0.0008, max: 0.002 },
@@ -16,9 +16,9 @@ const STAR = {
 };
 
 export class Star extends Body {
-  constructor(space: Space, layer: number, id: number) {
-    super(space, layer, id);
-  }
+  // constructor(space: SpaceVisual, layer: number, id: number) {
+  //   super(space, layer, id);
+  // }
 
   setup() {
     // unchanging props

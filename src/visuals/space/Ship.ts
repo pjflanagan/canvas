@@ -1,5 +1,6 @@
-import { Body } from "./Body";
-import type { Space } from "./Space";
+import { draw, type DrawingInstructions } from '$lib/draw';
+import { Body } from './Body';
+import type { SpaceVisual } from './SpaceVisual';
 
 export const SHIP = {
   CENTER: {
@@ -11,20 +12,98 @@ export const SHIP = {
     SPEED: 0.3,
   },
   COLORS: {
-    EXHAUST_EDGE: "#F00c",
-    EXHAUST_MIDDLE: "#F008",
-    EXHAUST_PORT: "#555",
-    FINS: "#777",
-    WINDOWS: "#222",
-    BODY: "#EEE",
-    SHADOW: "#0004",
+    EXHAUST_EDGE: '#F00c',
+    EXHAUST_MIDDLE: '#F008',
+    EXHAUST_PORT: '#555',
+    FINS: '#777',
+    WINDOWS: '#222',
+    BODY: '#EEE',
+    SHADOW: '#0004',
   },
   BACKPEDAL: 0.08, // proportion scroll percent
   EXHAUST_LENGTH: 0.2
 };
 
+const SHIP_INSTRUCTIONS: DrawingInstructions = {
+  layers: [
+    {
+      id: 'thruster',
+      strokes: [
+        ['moveTo', 35, -10],
+        ['lineTo', 45, -5],
+        ['lineTo', 45, 5],
+        ['lineTo' , 35, 10]
+      ],
+      fillStyle: SHIP.COLORS.EXHAUST_PORT
+    },
+    {
+      id: 'body',
+      strokes: [
+        ['moveTo', 35, -10],
+        ['quadraticCurveTo', 20, -30, -50, 0],
+        ['quadraticCurveTo', 20, 30, 35, 10],
+      ],
+      fillStyle: SHIP.COLORS.BODY
+    },
+    {
+      id: 'body',
+      strokes: [
+        ['moveTo', -50, 0],
+        ['quadraticCurveTo', 20, 30, 35, 10],
+        ['lineTo', 35, -10],
+        ['quadraticCurveTo', 20, 24, -50, 0],
+      ],
+      fillStyle: SHIP.COLORS.SHADOW
+    },
+    {
+      id: 'window-1',
+      strokes: [
+        ['arc', -18 + 1 * 14, 0, 4, 0, 2 * Math.PI, false],
+      ],
+      fillStyle: SHIP.COLORS.WINDOWS
+    },
+    {
+      id: 'window-2',
+      strokes: [
+        ['arc', -18 + 2 * 14, 0, 4, 0, 2 * Math.PI, false],
+      ],
+      fillStyle: SHIP.COLORS.WINDOWS
+    },
+    {
+      id: 'window-3',
+      strokes: [
+        ['arc', -18 + 3 * 14, 0, 4, 0, 2 * Math.PI, false],
+      ],
+      fillStyle: SHIP.COLORS.WINDOWS
+    },
+    {
+      id: 'fin-1',
+      strokes: [
+        ['moveTo', 6, -14],
+        ['lineTo', 30, -28],
+        ['lineTo', 72, -30],
+        ['lineTo' , 34, -22],
+        ['lineTo' , 26, -10],
+        ['quadraticCurveTo', 18, -14, 6, -14]
+      ],
+      fillStyle: SHIP.COLORS.FINS
+    },
+    {
+      id: 'fin-2',
+      strokes: [
+        ['moveTo', 6, 14],
+        ['lineTo', 30, 28],
+        ['lineTo', 72, 30],
+        ['lineTo' , 34, 22],
+        ['lineTo' , 26, 10],
+        ['quadraticCurveTo', 18, 14, 6, 14]
+      ],
+      fillStyle: SHIP.COLORS.FINS
+    },
+  ]
+}
 export class Ship extends Body {
-  constructor(space: Space, layer: number, id: number) {
+  constructor(space: SpaceVisual, layer: number, id: number) {
     super(space, layer, id);
   }
 
@@ -107,57 +186,13 @@ export class Ship extends Body {
 
   drawShip() {
     const { x, y } = this.state.pos;
-    // exhaust port
-    this.ctx.beginPath();
-    this.ctx.moveTo(x + 35, y - 10);
-    this.ctx.lineTo(x + 45, y - 5);
-    this.ctx.lineTo(x + 45, y + 5);
-    this.ctx.lineTo(x + 35, y + 10);
-    this.ctx.fillStyle = SHIP.COLORS.EXHAUST_PORT;
-    this.ctx.fill();
 
-    // body
-    this.ctx.beginPath();
-    this.ctx.moveTo(x + 35, y - 10);
-    this.ctx.quadraticCurveTo(x + 20, y - 30, x - 50, y);
-    this.ctx.quadraticCurveTo(x + 20, y + 30, x + 35, y + 10);
-    this.ctx.fillStyle = SHIP.COLORS.BODY;
-    this.ctx.fill();
-    this.ctx.beginPath();
-    this.ctx.moveTo(x - 50, y);
-    this.ctx.quadraticCurveTo(x + 20, y + 30, x + 35, y + 10);
-    this.ctx.lineTo(x + 35, y - 10);
-    this.ctx.quadraticCurveTo(x + 20, y + 24, x - 50, y);
-    this.ctx.fillStyle = SHIP.COLORS.SHADOW;
-    this.ctx.fill();
-
-    // 3 windows
-    for (let i = 0; i < 3; ++i) {
-      this.ctx.beginPath();
-      this.ctx.arc(x - 18 + i * 14, y, 4, 0, 2 * Math.PI, false);
-      this.ctx.fillStyle = SHIP.COLORS.WINDOWS;
-      this.ctx.fill();
-    }
-
-    // fins
-    this.ctx.beginPath();
-    this.ctx.moveTo(x + 6, y - 14);
-    this.ctx.lineTo(x + 30, y - 28);
-    this.ctx.lineTo(x + 72, y - 30);
-    this.ctx.lineTo(x + 34, y - 22);
-    this.ctx.lineTo(x + 26, y - 10);
-    this.ctx.quadraticCurveTo(x + 18, y - 14, x + 6, y - 14);
-    this.ctx.fillStyle = SHIP.COLORS.FINS;
-    this.ctx.fill();
-    this.ctx.beginPath();
-    this.ctx.moveTo(x + 6, y + 14);
-    this.ctx.lineTo(x + 30, y + 28);
-    this.ctx.lineTo(x + 72, y + 30);
-    this.ctx.lineTo(x + 34, y + 22);
-    this.ctx.lineTo(x + 26, y + 10);
-    this.ctx.quadraticCurveTo(x + 18, y + 14, x + 6, y + 14);
-    this.ctx.fillStyle = SHIP.COLORS.FINS;
-    this.ctx.fill();
+    draw(this.ctx,
+      SHIP_INSTRUCTIONS,
+      {
+        center: [x, y]
+      }
+    );
   }
 }
 
