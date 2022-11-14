@@ -16,6 +16,10 @@ const BODY = {
   },
 };
 
+function toStringA({ r, g, b }: any, a: number): string {
+  return `rgba(${r},${g},${b}, ${a})`;
+}
+
 export class Body {
   visual: Space;
   ctx: CanvasRenderingContext2D;
@@ -176,15 +180,11 @@ export class Body {
     );
     grd.addColorStop(
       0,
-      colorSpectrum[colorSpectrum.length - 1].toStringA(
-        BODY.COLOR.OVERLAY_OPACITY_INSIDE
-      )
+      toStringA(colorSpectrum[colorSpectrum.length - 1], BODY.COLOR.OVERLAY_OPACITY_INSIDE)
     );
     grd.addColorStop(
       1,
-      colorSpectrum[colorSpectrum.length - 1].toStringA(
-        BODY.COLOR.OVERLAY_OPACITY_OUTSIDE
-      )
+      toStringA(colorSpectrum[colorSpectrum.length - 1], BODY.COLOR.OVERLAY_OPACITY_OUTSIDE)
     );
     this.ctx.beginPath();
     this.ctx.arc(pos.x, pos.y, radius, 0, 2 * Math.PI, false);
@@ -196,16 +196,22 @@ export class Body {
     const { radius, colorSpectrum } = this.prop;
     const { x, y } = this.state.pos;
     const grd = this.ctx.createLinearGradient(x, y - radius, x, y + radius);
-    grd.addColorStop(0, colorSpectrum[0].toStringA(BODY.TRAIL.OPACITY_OUTSIDE));
+    grd.addColorStop(
+      0,
+      toStringA(colorSpectrum[0], BODY.TRAIL.OPACITY_OUTSIDE)
+    );
     grd.addColorStop(
       BODY.TRAIL.COLOR_STOP,
-      colorSpectrum[0].toStringA(BODY.TRAIL.OPACITY_INSIDE)
+      toStringA(colorSpectrum[0], BODY.TRAIL.OPACITY_INSIDE)
     );
     grd.addColorStop(
       1 - BODY.TRAIL.COLOR_STOP,
-      colorSpectrum[0].toStringA(BODY.TRAIL.OPACITY_INSIDE)
+      toStringA(colorSpectrum[0], BODY.TRAIL.OPACITY_INSIDE)
     );
-    grd.addColorStop(1, colorSpectrum[0].toStringA(BODY.TRAIL.OPACITY_OUTSIDE));
+    grd.addColorStop(
+      1,
+      toStringA(colorSpectrum[0], BODY.TRAIL.OPACITY_OUTSIDE)
+    );
     this.ctx.beginPath();
     this.ctx.rect(x, y - radius, this.visual.W * 2, 2 * radius);
     this.ctx.fillStyle = grd;

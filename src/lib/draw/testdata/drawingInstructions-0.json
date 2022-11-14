@@ -1,9 +1,9 @@
 {
   "center": [100, 100],
-  "shapes": [
+  "layers": [
     {
       "id": "thruster",
-      "steps": [
+      "strokes": [
         ["moveTo", 35, -10],
         ["lineTo", 45, -5],
         ["lineTo", 45, 5],
@@ -12,7 +12,7 @@
       "fillStyle": "#000"
     },
     {
-      "steps": [
+      "strokes": [
         ["move", 35, -10],
         ["quadraticCurveTo", 20, -30, -50, 0],
         ["quadraticCurveTo", 20, 30, 35, 10]
@@ -20,7 +20,7 @@
       "fillStyle": "#000"
     },
     {
-      "steps": [
+      "strokes": [
         ["arc", 75, 75, 50, 0, 6.28, true]
       ],
       "fillStyle": "#000"

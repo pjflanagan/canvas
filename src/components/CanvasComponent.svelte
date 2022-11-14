@@ -18,6 +18,8 @@
 
     const v = new visual(context);
     handleMouseMove = v.handleMouseMove;
+    v.setup();
+    v.start();
     
   });
   

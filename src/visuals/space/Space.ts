@@ -6,6 +6,7 @@ import { Star } from "./Star";
 import { Moon } from "./Moon";
 import { Ship } from "./Ship";
 import { Planet } from "./Planet";
+import { draw } from "$lib/draw";
 
 const CANVAS = {
   STARS: { min: 84, max: 164 },
@@ -72,10 +73,18 @@ export class Space extends Visual {
   }
 
   drawBackground() {
-    this.ctx.beginPath();
-    this.ctx.rect(0, 0, this.W, this.H);
-    this.ctx.fillStyle = "#1c1c1c";
-    this.ctx.fill();
+    console.log('drawBackground');
+    draw(this.ctx, {
+      layers: [
+        {
+          id: 'background',
+          strokes: [
+            ['rect', 0, 0, this.W, this.H]
+          ],
+          fillStyle: "#1c1c1c"
+        }
+      ]
+    })
   }
 }
 

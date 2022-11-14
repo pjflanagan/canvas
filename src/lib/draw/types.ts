@@ -1,25 +1,31 @@
 
 export type Point = [number, number];
 
-type MoveToStep = ['moveTo', number, number];
-type LineToStep = ['lineTo', number, number];
-type QuadraticCurveToStep = ['quadraticCurveTo', number, number, number, number];
-type ArcStep = ['arc', number, number, number, number, number, boolean];
-type EllipseStep = ['ellipse', number, number, number, number, number, number, number, boolean];
+type MoveToStroke = ['moveTo', number, number];
+type LineToStroke = ['lineTo', number, number];
+type RectStroke = ['rect', number, number, number, number];
+type QuadraticCurveToStroke = ['quadraticCurveTo', number, number, number, number];
+type ArcStroke = ['arc', number, number, number, number, number, boolean];
+type EllipseStroke = ['ellipse', number, number, number, number, number, number, number, boolean];
 
-export type Step = MoveToStep | LineToStep | QuadraticCurveToStep | ArcStep | EllipseStep;
+export type StrokeInstruction = MoveToStroke
+  | LineToStroke
+  | RectStroke
+  | QuadraticCurveToStroke
+  | ArcStroke
+  | EllipseStroke;
 
-export type Shape = {
+export type LayerInstruction = {
   id: string;
-  steps: Step[];
+  strokes: StrokeInstruction[];
   fillStyle?: string;
   strokeStyle?: string;
   lineWidth?: number;
 }
 
 export type DrawingInstructions = {
-  center: Point;
-  shapes: Shape[];
+  center?: Point;
+  layers: LayerInstruction[];
 }
 
 export type ShapeModifiers = {
@@ -27,7 +33,7 @@ export type ShapeModifiers = {
   fillStyle?: string;
 }
 
-export type InstructionModifiers = {
+export type DrawingModifiers = {
   center?: Point;
   shapeModifiers?: ShapeModifiers[];
 }

@@ -31,7 +31,8 @@ export class Visual {
     this.handleScroll = this.handleScroll.bind(this);
 
     // user position
-    // TODO: THESE ARE FOR A SPECIFIC VISUAL AND SHOULD BE CHANGED
+    // TODO: THESE ARE MOUSE FOR A SPECIFIC VISUAL AND SHOULD BE CHANGED
+    // TO JUST BE COORDINATES
     this.angle = 0;
     this.strength = 0;
     this.scrollPercent = 0;

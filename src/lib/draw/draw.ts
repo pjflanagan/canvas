@@ -1,7 +1,7 @@
-import type { DrawingInstructions, InstructionModifiers, Point, Shape, ShapeModifiers, Step } from './types'
+import type { DrawingInstructions, DrawingModifiers, Point, LayerInstruction, ShapeModifiers, StrokeInstruction } from './types'
 
-function drawStep(ctx: CanvasRenderingContext2D, step: Step, center: Point): void {
-  const [x, y] = center;
+function drawStroke(ctx: CanvasRenderingContext2D, step: StrokeInstruction, center?: Point): void {
+  const [x, y] = center || [0, 0];
   const [moveType] = step;
   ctx.beginPath();
   switch(moveType) {
@@ -17,6 +17,9 @@ function drawStep(ctx: CanvasRenderingContext2D, step: Step, center: Point): voi
     case 'arc':
       ctx.arc(x + step[1], y + step[2], step[3], step[4], step[5], step[6]);
       break;
+    case 'rect':
+      ctx.rect(x + step[1], y + step[2], x + step[3], y + step[4]);
+      break;
     case 'ellipse':
       ctx.ellipse(x + step[1], y + step[2], step[3], step[4], step[5], step[6], step[7], step[8]);
       break;
@@ -25,9 +28,9 @@ function drawStep(ctx: CanvasRenderingContext2D, step: Step, center: Point): voi
   }
 }
 
-function drawShape(ctx: CanvasRenderingContext2D, shape: Shape, center: Point, modifiers?: ShapeModifiers): void {
+function drawLayer(ctx: CanvasRenderingContext2D, shape: LayerInstruction, center?: Point, modifiers?: ShapeModifiers): void {
   try {
-    shape.steps.forEach(s => drawStep(ctx, s, center));
+    shape.strokes.forEach(s => drawStroke(ctx, s, center));
   } catch (e) {
     throw `Error in shape [id: ${shape.id}]: ${e}`;
   }
@@ -43,10 +46,10 @@ function drawShape(ctx: CanvasRenderingContext2D, shape: Shape, center: Point, m
   }
 }
 
-export function draw(ctx: CanvasRenderingContext2D, instructions: DrawingInstructions, modifiers?: InstructionModifiers): void {
+export function draw(ctx: CanvasRenderingContext2D, instructions: DrawingInstructions, modifiers?: DrawingModifiers): void {
   const workingCenter = modifiers?.center || instructions.center;
-  instructions.shapes.forEach(s => {
+  instructions.layers.forEach(s => {
     const shapeModifiers = modifiers?.shapeModifiers?.find(m => m.id === s.id);
-    drawShape(ctx, s, workingCenter, shapeModifiers);
+    drawLayer(ctx, s, workingCenter, shapeModifiers);
   });
 }
