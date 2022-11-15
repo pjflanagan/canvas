@@ -31,7 +31,7 @@
 </script>
 
 <svelte:window bind:scrollY={y} on:scroll={() => handleScoll(y)}/>
-<ScrollerComponent />
+<ScrollerComponent heightMultiplier={v?.maxScrollHeightFactor || 0} /> 
 <canvas bind:this={canvasElement} on:mousemove={handleMouseMove} />
 
 <style lang="scss">

@@ -103,7 +103,7 @@ const SHIP_INSTRUCTIONS: DrawingInstructions = {
 }
 export class Ship extends Body {
   setup() {
-    const { W, H } = this.visual;
+    const { W, H } = this.visual.getSize();
     this.prop = {
       center: {
         x: W * SHIP.CENTER.x,
@@ -131,7 +131,8 @@ export class Ship extends Body {
   }
 
   getShipScrollShiftedCenter() {
-    const { scrollPercent, W, } = this.visual;
+    const { W, } = this.visual.getSize();
+    const { scrollPercent } = this.visual;
     return {
       x: Math.pow(scrollPercent - SHIP.BACKPEDAL, 2) * -SHIP.CENTER.x * W * 4,
       y: scrollPercent * -200, // Math.pow(scrollPercent - SHIP.BACKPEDAL, 2) * -SHIP.CENTER.y * H
@@ -145,7 +146,8 @@ export class Ship extends Body {
 
   drawExhaust() {
     const { pos } = this.state;
-    const { scrollPercent, W, H } = this.visual;
+    const { W, H } = this.visual.getSize();
+    const { scrollPercent } = this.visual;
     const { exhaustLength } = this.prop;
 
     const lineLenX = -exhaustLength * (scrollPercent - SHIP.BACKPEDAL) + exhaustLength;

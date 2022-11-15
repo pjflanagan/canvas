@@ -1,9 +1,10 @@
 <script lang="ts">
+  export let heightMultiplier: number;
 
+  console.log(heightMultiplier);
 </script>
 
-<div id="scroller">
-</div>
+<div id="scroller" style={`height: calc(100% * ${heightMultiplier})`} />
 
 <style lang="scss">
   div#scroller {
@@ -11,6 +12,5 @@
     top: 0;
     position: absolute;
     width: 100%;
-    height: 1000%;
   }
 </style>

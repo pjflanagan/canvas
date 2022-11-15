@@ -12,6 +12,7 @@ const CANVAS = {
   STARS: { min: 84, max: 164 },
   BACKGROUND_MOONS: { min: 2, max: 7 },
   FOREGROUND_MOONS: { min: 3, max: 5 },
+  SCROLL_FACTOR: 3,
 };
 
 export class SpaceVisual extends Visual {
@@ -27,6 +28,7 @@ export class SpaceVisual extends Visual {
     this.angle = 0;
     this.strength = 0;
     this.scrollPercent = 0;
+    this.maxScrollHeightFactor = CANVAS.SCROLL_FACTOR;
   }
 
   setup() {
@@ -77,7 +79,7 @@ export class SpaceVisual extends Visual {
     };
     this.angle = Math.atan2(this.mousePos.y - center.y, this.mousePos.x - center.x);
     this.strength = distance(center, this.mousePos) / (this.diagonalLength / 2);
-    this.scrollPercent = Math.min(this.scrollY / (this.H * 3), 1);
+    this.scrollPercent = Math.min(this.scrollY / (this.H * CANVAS.SCROLL_FACTOR), 1);
 
     this.drawBackground();
     this.bodies.forEach((body) => {

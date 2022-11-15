@@ -4,15 +4,18 @@
 import { type Point, distance } from "$lib/util";
 
 export class Visual {
-  ctx: CanvasRenderingContext2D;
-  W: number;
-  H: number;
-  shorterSide: number;
-  diagonalLength: number;
-  isRunning?: boolean;
-  animationReq?: number;
-  mousePos: Point;
-  scrollY: number;
+  protected ctx: CanvasRenderingContext2D;
+  protected W: number;
+  protected H: number;
+  protected shorterSideLength: number;
+  protected diagonalLength: number;
+  protected isRunning?: boolean;
+  protected animationReq?: number;
+  protected mousePos: Point;
+  protected scrollY: number;
+
+  // multiplied by H to get the length of max scroll
+  public maxScrollHeightFactor: number;
 
   constructor(context: CanvasRenderingContext2D) {
     this.ctx = context;
@@ -21,12 +24,13 @@ export class Visual {
     this.W = window.innerWidth;
     this.H = window.innerHeight;
   
-    this.shorterSide = Math.min(this.W, this.H);
+    this.shorterSideLength = Math.min(this.W, this.H);
     this.diagonalLength = distance({ x: 0, y: 0 }, { x: this.W, y: this.H });
 
     // user input
     this.handleMouseMove = this.handleMouseMove.bind(this);
     this.handleScroll = this.handleScroll.bind(this);
+    this.maxScrollHeightFactor = 0;
 
     // user position
     this.mousePos = {
@@ -35,6 +39,26 @@ export class Visual {
     }
     // TODO: This should just be a number, if percent is important, calculate it in the child
     this.scrollY = 0;
+  }
+
+  getContext(): CanvasRenderingContext2D {
+    return this.ctx;
+  }
+
+  getSize() {
+    return {
+      H: this.H, 
+      W: this.W,
+      shorterSideLength: this.shorterSideLength, 
+      diagonalLength: this.diagonalLength
+    }
+  }
+
+  getUserPosition() {
+    return {
+      scrollY: this.scrollY,
+      mousePos: this.mousePos
+    }
   }
 
   setup() {

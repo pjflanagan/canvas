@@ -31,13 +31,14 @@ export class Planet extends Body {
   }
 
   setup() {
+    const { W, H } = this.visual.getSize();
     const color = Color.getRandomColor(0.9); // random color TODO: use a pallet
     const toColor = Color.getRandomColor(0.9);
 
     // unchanging props
     this.prop = {
-      center: { x: this.visual.W / 2, y: this.visual.H / 2 }, // planet is in the center
-      radius: Random.prop(PLANET.RADIUS, this.visual.H),
+      center: { x: W / 2, y: H / 2 }, // planet is in the center
+      radius: Random.prop(PLANET.RADIUS, H),
       colorSpectrum: Color.makeSpectrum(color, toColor, PLANET.COLORS),
       offsetRadiusMax: PLANET.OFFSET.MAX_RADIUS,
       offsetSpeed: PLANET.OFFSET.SPEED,

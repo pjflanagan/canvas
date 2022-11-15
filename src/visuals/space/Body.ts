@@ -35,7 +35,7 @@ export class Body {
   constructor(visual: SpaceVisual, layer: number, id: number) {
     // general info
     this.visual = visual;
-    this.ctx = this.visual.ctx;
+    this.ctx = this.visual.getContext();
     this.id = `${layer}-${id}`;
     this.layer = layer;
 
@@ -196,6 +196,7 @@ export class Body {
   }
 
   drawTrail() {
+    const { W } = this.visual.getSize();
     const { radius, colorSpectrum } = this.prop;
     const { x, y } = this.state.pos;
     const grd = this.ctx.createLinearGradient(x, y - radius, x, y + radius);
@@ -216,7 +217,7 @@ export class Body {
       Color.toString(colorSpectrum[0], BODY.TRAIL.OPACITY_OUTSIDE)
     );
     this.ctx.beginPath();
-    this.ctx.rect(x, y - radius, this.visual.W * 2, 2 * radius);
+    this.ctx.rect(x, y - radius, W * 2, 2 * radius);
     this.ctx.fillStyle = grd;
     this.ctx.fill();
   }
