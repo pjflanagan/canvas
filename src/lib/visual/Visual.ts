@@ -12,8 +12,7 @@ export class Visual {
   isRunning?: boolean;
   animationReq?: number;
   mousePos: Point;
-
-  scrollPercent: number;
+  scrollY: number;
 
   constructor(context: CanvasRenderingContext2D) {
     this.ctx = context;
@@ -35,7 +34,7 @@ export class Visual {
       y: 0
     }
     // TODO: This should just be a number, if percent is important, calculate it in the child
-    this.scrollPercent = 0;
+    this.scrollY = 0;
   }
 
   setup() {
@@ -53,9 +52,8 @@ export class Visual {
     };
   }
 
-  handleScroll() {
-    const scroll = window.scrollY;
-    this.scrollPercent = Math.min(scroll / (this.H * 3), 1);
+  handleScroll(scrollY: number) {
+    this.scrollY = scrollY
   }
 
   start() {

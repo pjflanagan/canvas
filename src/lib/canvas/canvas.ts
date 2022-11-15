@@ -1,5 +1,5 @@
-import type { Point } from '$lib/util';
-import type { DrawingInstructions, DrawingModifiers, LayerInstruction, ShapeModifiers, StrokeInstruction } from './types'
+import { Color, type Point } from '$lib/util';
+import type { DrawingInstructions, DrawingModifiers, LayerInstruction, ShapeModifiers, StrokeInstruction, GradientInstructions } from './types'
 
 function drawStroke(ctx: CanvasRenderingContext2D, step: StrokeInstruction, center?: Point): void {
   const {x, y} = center || {x: 0, y: 0};
@@ -47,10 +47,24 @@ function drawLayer(ctx: CanvasRenderingContext2D, shape: LayerInstruction, cente
   }
 }
 
-export function draw(ctx: CanvasRenderingContext2D, instructions: DrawingInstructions, modifiers?: DrawingModifiers): void {
-  const workingCenter = modifiers?.center || instructions.center;
-  instructions.layers.forEach(s => {
-    const shapeModifiers = modifiers?.shapeModifiers?.find(m => m.id === s.id);
-    drawLayer(ctx, s, workingCenter, shapeModifiers);
-  });
+export class Canvas {
+
+  // Draws a fix shape that can be moved (not rotated or resized)
+  // If you want to draw something with some parts fixed and some parts variable, you will have to do so manually
+  static draw(ctx: CanvasRenderingContext2D, instructions: DrawingInstructions, modifiers?: DrawingModifiers): void {
+    const workingCenter = modifiers?.center || instructions.center;
+    instructions.layers.forEach(s => {
+      const shapeModifiers = modifiers?.shapeModifiers?.find(m => m.id === s.id);
+      drawLayer(ctx, s, workingCenter, shapeModifiers);
+    });
+  }
+  
+  static createLinearGradient(ctx: CanvasRenderingContext2D, instructions: GradientInstructions): CanvasGradient {
+    const { size, colorStops } = instructions;
+    const grd = ctx.createLinearGradient(size[0], size[1], size[2], size[3]);
+    colorStops.forEach(([percent, color]) => {
+      grd.addColorStop(percent, typeof color === 'string' ? color : Color.toString(color));
+    });
+    return grd;
+  }
 }

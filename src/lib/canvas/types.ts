@@ -1,6 +1,6 @@
-import type { Point } from "$lib/util";
+import type { IColor, Point } from "$lib/util";
 
-type MoveToStroke = ['moveTo', number, number];
+type MoveToStroke = ['moveTo', number, number,];
 type LineToStroke = ['lineTo', number, number];
 type RectStroke = ['rect', number, number, number, number];
 type QuadraticCurveToStroke = ['quadraticCurveTo', number, number, number, number];
@@ -14,10 +14,17 @@ export type StrokeInstruction = MoveToStroke
   | ArcStroke
   | EllipseStroke;
 
+export type GradientInstructions = {
+  size: [number, number, number, number];
+  colorStops: [number, IColor | string][];
+}
+
+type FillStyle = string | CanvasGradient;
+
 export type LayerInstruction = {
   id: string;
   strokes: StrokeInstruction[];
-  fillStyle?: string;
+  fillStyle?: FillStyle;
   strokeStyle?: string;
   lineWidth?: number;
 }
@@ -29,7 +36,7 @@ export type DrawingInstructions = {
 
 export type ShapeModifiers = {
   id: string;
-  fillStyle?: string;
+  fillStyle?: FillStyle;
 }
 
 export type DrawingModifiers = {

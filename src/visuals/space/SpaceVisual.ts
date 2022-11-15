@@ -6,7 +6,7 @@ import { Star } from "./Star";
 import { Moon } from "./Moon";
 import { Ship } from "./Ship";
 import { Planet } from "./Planet";
-import { draw } from "$lib/draw";
+import { Canvas } from "$lib/canvas";
 
 const CANVAS = {
   STARS: { min: 84, max: 164 },
@@ -18,6 +18,7 @@ export class SpaceVisual extends Visual {
   bodies: Body[];
   angle: number;
   strength: number;
+  scrollPercent: number;
 
   constructor(context: CanvasRenderingContext2D) {
     super(context);
@@ -25,6 +26,7 @@ export class SpaceVisual extends Visual {
     this.bodies = [];
     this.angle = 0;
     this.strength = 0;
+    this.scrollPercent = 0;
   }
 
   setup() {
@@ -75,6 +77,7 @@ export class SpaceVisual extends Visual {
     };
     this.angle = Math.atan2(this.mousePos.y - center.y, this.mousePos.x - center.x);
     this.strength = distance(center, this.mousePos) / (this.diagonalLength / 2);
+    this.scrollPercent = Math.min(this.scrollY / (this.H * 3), 1);
 
     this.drawBackground();
     this.bodies.forEach((body) => {
@@ -84,12 +87,12 @@ export class SpaceVisual extends Visual {
   }
 
   drawBackground() {
-    draw(this.ctx, {
+    Canvas.draw(this.ctx, {
       layers: [
         {
           id: 'background',
           strokes: [
-            ['rect', 0, 0, this.W, this.H]
+            ['rect',  0, 0, this.W, this.H]
           ],
           fillStyle: "#1c1c1c"
         }

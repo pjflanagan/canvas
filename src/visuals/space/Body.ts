@@ -168,7 +168,7 @@ export class Body {
         2 * Math.PI,
         false
       );
-      this.ctx.fillStyle = colorSpectrum[i].toString(); //A(1-(.05*i));
+      this.ctx.fillStyle = Color.toString(colorSpectrum[i]); //A(1-(.05*i));
       this.ctx.fill();
     }
 
