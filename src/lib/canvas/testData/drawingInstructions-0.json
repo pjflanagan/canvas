@@ -1,29 +1,27 @@
 {
-  "center": [100, 100],
-  "layers": [
-    {
-      "id": "thruster",
-      "strokes": [
-        ["moveTo", 35, -10],
-        ["lineTo", 45, -5],
-        ["lineTo", 45, 5],
-        ["lineTo" , 35, 10]
-      ],
-      "fillStyle": "#000"
-    },
-    {
-      "strokes": [
-        ["move", 35, -10],
-        ["quadraticCurveTo", 20, -30, -50, 0],
-        ["quadraticCurveTo", 20, 30, 35, 10]
-      ],
-      "fillStyle": "#000"
-    },
-    {
-      "strokes": [
-        ["arc", 75, 75, 50, 0, 6.28, true]
-      ],
-      "fillStyle": "#000"
-    }
-  ]
+	"center": [100, 100],
+	"layers": [
+		{
+			"id": "thruster",
+			"strokes": [
+				["moveTo", 35, -10],
+				["lineTo", 45, -5],
+				["lineTo", 45, 5],
+				["lineTo", 35, 10]
+			],
+			"fillStyle": "#000"
+		},
+		{
+			"strokes": [
+				["move", 35, -10],
+				["quadraticCurveTo", 20, -30, -50, 0],
+				["quadraticCurveTo", 20, 30, 35, 10]
+			],
+			"fillStyle": "#000"
+		},
+		{
+			"strokes": [["arc", 75, 75, 50, 0, 6.28, true]],
+			"fillStyle": "#000"
+		}
+	]
 }

@@ -1,4 +1,3 @@
-
 // Gridly Bear
 
 export * from './Grid';

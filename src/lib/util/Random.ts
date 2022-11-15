@@ -1,59 +1,56 @@
-import { Color, type IColor } from "./Color";
+import { Color, type IColor } from './Color';
 
 export class Random {
-  static number(min: number, max: number): number {
-    return Math.floor(Math.random() * (max - min)) + min;
-  }
+	static number(min: number, max: number): number {
+		return Math.floor(Math.random() * (max - min)) + min;
+	}
 
-  static prop(
-    { min, max }: { min: number, max: number },
-    comp = 1
-  ): number {
-    return Random.float(min, max) * comp;
-  }
-  
-  static float(min: number, max: number): number  {
-    return Math.random() * (max - min) + min;
-  }
-  
-  static boolean(): boolean {
-    return Random.odds(0.5);
-  }
-  
-  static odds(likelihood: number): boolean {
-    return Math.random() < likelihood;
-  }
-  
-  static color(a = 1): IColor {
-    return Color.getRandomColor(a);
-  }
+	static prop({ min, max }: { min: number; max: number }, comp = 1): number {
+		return Random.float(min, max) * comp;
+	}
 
-  static subset<T>(arr: T[], size: number): T[] {
-    const shuffled = arr.slice(0);
-    let i = arr.length;
-    let temp: T;
-    let index: number;
-    while (i--) {
-        index = Math.floor((i + 1) * Math.random());
-        temp = shuffled[index];
-        shuffled[index] = shuffled[i];
-        shuffled[i] = temp;
-    }
-    return shuffled.slice(0, size);
-  }
+	static float(min: number, max: number): number {
+		return Math.random() * (max - min) + min;
+	}
 
-  static shuffle<T>(array: T[]) {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        const temp = array[i];
-        array[i] = array[j];
-        array[j] = temp;
-    }
-    return array;
-  }
+	static boolean(): boolean {
+		return Random.odds(0.5);
+	}
 
-  static insert<T>(array: T[], value: T): T[] {
-    array.splice(Random.number(0,array.length), 0, value);
-    return array;
-  }
+	static odds(likelihood: number): boolean {
+		return Math.random() < likelihood;
+	}
+
+	static color(a = 1): IColor {
+		return Color.getRandomColor(a);
+	}
+
+	static subset<T>(arr: T[], size: number): T[] {
+		const shuffled = arr.slice(0);
+		let i = arr.length;
+		let temp: T;
+		let index: number;
+		while (i--) {
+			index = Math.floor((i + 1) * Math.random());
+			temp = shuffled[index];
+			shuffled[index] = shuffled[i];
+			shuffled[i] = temp;
+		}
+		return shuffled.slice(0, size);
+	}
+
+	static shuffle<T>(array: T[]) {
+		for (let i = array.length - 1; i > 0; i--) {
+			const j = Math.floor(Math.random() * (i + 1));
+			const temp = array[i];
+			array[i] = array[j];
+			array[j] = temp;
+		}
+		return array;
+	}
+
+	static insert<T>(array: T[], value: T): T[] {
+		array.splice(Random.number(0, array.length), 0, value);
+		return array;
+	}
 }

@@ -1,101 +1,100 @@
-
 // this is a class that can be extended to make different visuals
 
-import { type Point, distance } from "$lib/util";
+import { type Point, distance } from '$lib/util';
 
 export class Visual {
-  protected ctx: CanvasRenderingContext2D;
-  protected W: number;
-  protected H: number;
-  protected shorterSideLength: number;
-  protected diagonalLength: number;
-  protected isRunning?: boolean;
-  protected animationReq?: number;
-  protected mousePos: Point;
-  protected scrollY: number;
+	protected ctx: CanvasRenderingContext2D;
+	protected W: number;
+	protected H: number;
+	protected shorterSideLength: number;
+	protected diagonalLength: number;
+	protected isRunning?: boolean;
+	protected animationReq?: number;
+	protected mousePos: Point;
+	protected scrollY: number;
 
-  // multiplied by H to get the length of max scroll
-  public maxScrollHeightFactor: number;
+	// multiplied by H to get the length of max scroll
+	public maxScrollHeight: number;
 
-  constructor(context: CanvasRenderingContext2D) {
-    this.ctx = context;
+	constructor(context: CanvasRenderingContext2D) {
+		this.ctx = context;
 
-    // properties
-    this.W = window.innerWidth;
-    this.H = window.innerHeight;
-  
-    this.shorterSideLength = Math.min(this.W, this.H);
-    this.diagonalLength = distance({ x: 0, y: 0 }, { x: this.W, y: this.H });
+		// properties
+		this.W = window.innerWidth;
+		this.H = window.innerHeight;
 
-    // user input
-    this.handleMouseMove = this.handleMouseMove.bind(this);
-    this.handleScroll = this.handleScroll.bind(this);
-    this.maxScrollHeightFactor = 0;
+		this.shorterSideLength = Math.min(this.W, this.H);
+		this.diagonalLength = distance({ x: 0, y: 0 }, { x: this.W, y: this.H });
 
-    // user position
-    this.mousePos = {
-      x: 0,
-      y: 0
-    }
-    // TODO: This should just be a number, if percent is important, calculate it in the child
-    this.scrollY = 0;
-  }
+		// user input
+		this.handleMouseMove = this.handleMouseMove.bind(this);
+		this.handleScroll = this.handleScroll.bind(this);
+		this.maxScrollHeight = 0;
 
-  getContext(): CanvasRenderingContext2D {
-    return this.ctx;
-  }
+		// user position
+		this.mousePos = {
+			x: 0,
+			y: 0
+		};
+		// TODO: This should just be a number, if percent is important, calculate it in the child
+		this.scrollY = 0;
+	}
 
-  getSize() {
-    return {
-      H: this.H, 
-      W: this.W,
-      shorterSideLength: this.shorterSideLength, 
-      diagonalLength: this.diagonalLength
-    }
-  }
+	getContext(): CanvasRenderingContext2D {
+		return this.ctx;
+	}
 
-  getUserPosition() {
-    return {
-      scrollY: this.scrollY,
-      mousePos: this.mousePos
-    }
-  }
+	getSize() {
+		return {
+			H: this.H,
+			W: this.W,
+			shorterSideLength: this.shorterSideLength,
+			diagonalLength: this.diagonalLength
+		};
+	}
 
-  setup() {
-    throw 'Method needs to be implemented by child of Canvas.';
-  }
+	getUserPosition() {
+		return {
+			scrollY: this.scrollY,
+			mousePos: this.mousePos
+		};
+	}
 
-  drawFrame() {
-    throw 'Method needs to be implemented by child of Canvas.';
-  }
+	setup() {
+		throw 'Method needs to be implemented by child of Canvas.';
+	}
 
-  handleMouseMove(e: MouseEvent) {
-    this.mousePos = {
-      x: e.clientX,
-      y: e.clientY,
-    };
-  }
+	drawFrame() {
+		throw 'Method needs to be implemented by child of Canvas.';
+	}
 
-  handleScroll(scrollY: number) {
-    this.scrollY = scrollY
-  }
+	handleMouseMove(e: MouseEvent) {
+		this.mousePos = {
+			x: e.clientX,
+			y: e.clientY
+		};
+	}
 
-  start() {
-    if (!this.isRunning) {
-      this.isRunning = true;
-      this.animate();
-    }
-  }
+	handleScroll(scrollY: number) {
+		this.scrollY = scrollY;
+	}
 
-  animate() {
-    this.drawFrame();
-    this.animationReq = window.requestAnimationFrame(this.animate.bind(this));
-  }
+	start() {
+		if (!this.isRunning) {
+			this.isRunning = true;
+			this.animate();
+		}
+	}
 
-  stop() {
-    if (this.animationReq) {
-      window.cancelAnimationFrame(this.animationReq);
-    }
-    this.isRunning = false;
-  }
+	animate() {
+		this.drawFrame();
+		this.animationReq = window.requestAnimationFrame(this.animate.bind(this));
+	}
+
+	stop() {
+		if (this.animationReq) {
+			window.cancelAnimationFrame(this.animationReq);
+		}
+		this.isRunning = false;
+	}
 }

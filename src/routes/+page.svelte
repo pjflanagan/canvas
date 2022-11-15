@@ -1,9 +1,19 @@
-<script>
+<script lang="ts">
 	import { SpaceVisual } from '../visuals/space/index';
-  import CanvasComponent from '../components/CanvasComponent.svelte';
+	import CanvasComponent from '../components/CanvasComponent.svelte';
+	// import { onMount } from 'svelte/types/runtime/internal/lifecycle';
+	// import type { Visual } from '$lib/visual';
 
-  // TODO: some type of switch for which design we're doing
+	// let visual: typeof Visual;
+
+	// onMount(() => {
+	//   switch(pageName) {
+	//     case 'space':
+	//     default:
+	//       visual = SpaceVisual;
+	//       break;
+	//   }
+	// })
 </script>
 
-<!-- Variable controlls component -->
 <CanvasComponent visual={SpaceVisual} />

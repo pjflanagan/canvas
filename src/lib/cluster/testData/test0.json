@@ -1,35 +1,5 @@
 {
-  "description": "4 groups: 1 chain, 1 all overlapping first, 2 alone",
-  "data": [
-    "abc",
-    "cde",
-    "fgb",
-    "jkl",
-    "kmn",
-    "jop",
-    "lqr",
-    "rst",
-    "uvw",
-    "xyz"
-  ],
-  "expected": [
-    [
-      "abc",
-      "cde",
-      "fgb"
-    ],
-    [
-      "jkl",
-      "kmn",
-      "jop",
-      "lqr",
-      "rst"
-    ],
-    [
-      "uvw"
-    ],
-    [
-      "xyz"
-    ]
-  ]
+	"description": "4 groups: 1 chain, 1 all overlapping first, 2 alone",
+	"data": ["abc", "cde", "fgb", "jkl", "kmn", "jop", "lqr", "rst", "uvw", "xyz"],
+	"expected": [["abc", "cde", "fgb"], ["jkl", "kmn", "jop", "lqr", "rst"], ["uvw"], ["xyz"]]
 }

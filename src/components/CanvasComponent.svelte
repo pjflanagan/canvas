@@ -7,9 +7,9 @@
 
 	let canvasElement: HTMLCanvasElement;
 	let handleMouseMove: (e: MouseEvent) => void;
-  let handleScoll: (scrollY: number) => void;
+	let handleScoll: (scrollY: number) => void;
 	let v: Visual;
-  let y: number;
+	let y: number;
 
 	onMount(() => {
 		if (!v) {
@@ -23,15 +23,15 @@
 
 			v = new visual(context);
 			handleMouseMove = v.handleMouseMove;
-      handleScoll = v.handleScroll;
+			handleScoll = v.handleScroll;
 			v.setup();
 			v.start();
 		}
 	});
 </script>
 
-<svelte:window bind:scrollY={y} on:scroll={() => handleScoll(y)}/>
-<ScrollerComponent heightMultiplier={v?.maxScrollHeightFactor || 0} /> 
+<svelte:window bind:scrollY={y} on:scroll={() => handleScoll(y)} />
+<ScrollerComponent height={v?.maxScrollHeight} />
 <canvas bind:this={canvasElement} on:mousemove={handleMouseMove} />
 
 <style lang="scss">
