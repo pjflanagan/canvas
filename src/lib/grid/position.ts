@@ -26,3 +26,7 @@ export function serializePosition(position: Position): string {
 	const y = pad(Math.floor(position.y * 1000));
 	return `${x}-${y}`;
 }
+
+export function arePositionsTheSame(a: Position, b: Position): boolean {
+	return serializePosition(a) === serializePosition(b);
+}

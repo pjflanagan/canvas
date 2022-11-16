@@ -22,25 +22,31 @@ export type GradientInstructions = {
 
 type FillStyle = string | CanvasGradient;
 
-export type LayerInstruction = {
-	id: string;
-	strokes: StrokeInstruction[];
+type LayerProperties = {
 	fillStyle?: FillStyle;
 	strokeStyle?: string;
 	lineWidth?: number;
+	rotation?: number;
+}
+
+export type LayerInstruction = LayerProperties & {
+	id: string;
+	strokes: StrokeInstruction[];
 };
 
-export type DrawingInstructions = {
-	center?: Point;
+type DrawingProperties = {
+	position?: Point;
+	rotation?: number;
+}
+
+export type DrawingInstructions = DrawingProperties & {
 	layers: LayerInstruction[];
 };
 
-export type ShapeModifiers = {
+export type LayerModifiers = LayerProperties & {
 	id: string;
-	fillStyle?: FillStyle;
 };
 
-export type DrawingModifiers = {
-	center?: Point;
-	shapeModifiers?: ShapeModifiers[];
+export type DrawingModifiers = DrawingProperties & {
+	layerModifiers?: LayerModifiers[];
 };

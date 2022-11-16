@@ -5,13 +5,10 @@ export type Point = {
 
 export const ZERO_POINT = { x: 0, y: 0 };
 
-export const distance = (a: Point, b: Point) =>
-	Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
-
 type CircleIntersectionParams = {
-	eRadx: number;
-	eRady: number;
-	cRad: number;
+	ellipseRadiusX: number;
+	ellipseRadiusY: number;
+	circleRadius: number;
 };
 
 type CircleIntersectionPoint = Point & {
@@ -19,50 +16,41 @@ type CircleIntersectionPoint = Point & {
 	theta: number;
 };
 
-export const ellipseCircleIntersection = ({ eRadx, eRady, cRad }: CircleIntersectionParams) => {
-	// https://www.analyzemath.com/EllipseProblems/ellipse_intersection.html
-	const num = eRadx * eRadx - cRad * cRad;
-	const denom = (eRadx * eRadx) / (eRady * eRady) - 1;
-	const y = Math.sqrt(num / denom);
-	const x = Math.sqrt(cRad * cRad - y * y);
-	const values: CircleIntersectionPoint[] = [
-		{ x, y, phi: Math.atan2(y, x), theta: -1 },
-		{ x: -x, y, phi: Math.atan2(y, -x), theta: -1 },
-		{ x, y: -y, phi: Math.atan2(-y, x), theta: -1 },
-		{ x: -x, y: -y, phi: Math.atan2(-y, -x), theta: -1 }
-	];
-	// https://www.petercollingridge.co.uk/tutorials/computational-geometry/finding-angle-around-ellipse/
-	values.forEach((v) => {
-		v.theta = Math.atan((eRadx / eRady) * Math.tan(v.phi));
-	});
-	return values;
-};
-
-export class LinearFormula {
-	m: number;
-	b: number;
-
-	constructor(min: Point, max: Point) {
-		this.m = (max.y - min.y) / (max.x - min.x);
-		this.b = min.y - this.m * min.x;
+export class Geometry {
+	static distance(a: Point, b: Point) {
+		return Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
 	}
 
-	calc(x: number) {
-		return this.m * x + this.b;
+	// Get's the 4 intersection points of a concentric ellipse and circle
+	// phi, idk what this represents anymore, but it's used to calculate theta
+	// theta is the angle that x and y are at to the center
+	static ellipseCircleIntersection({ ellipseRadiusX, ellipseRadiusY, circleRadius }: CircleIntersectionParams): CircleIntersectionPoint[] {
+		// https://www.analyzemath.com/EllipseProblems/ellipse_intersection.html
+		const num = ellipseRadiusX * ellipseRadiusX - circleRadius * circleRadius;
+		const denom = (ellipseRadiusX * ellipseRadiusX) / (ellipseRadiusY * ellipseRadiusY) - 1;
+		const y = Math.sqrt(num / denom);
+		const x = Math.sqrt(circleRadius * circleRadius - y * y);
+		const values: CircleIntersectionPoint[] = [
+			{ x, y, phi: Math.atan2(y, x), theta: -1 },
+			{ x: -x, y, phi: Math.atan2(y, -x), theta: -1 },
+			{ x, y: -y, phi: Math.atan2(-y, x), theta: -1 },
+			{ x: -x, y: -y, phi: Math.atan2(-y, -x), theta: -1 }
+		];
+
+		// https://www.petercollingridge.co.uk/tutorials/computational-geometry/finding-angle-around-ellipse/
+		values.forEach((v) => {
+			v.theta = Math.atan((ellipseRadiusX / ellipseRadiusY) * Math.tan(v.phi));
+		});
+
+		return values;
+	};
+
+	static getAngleTo(sourcePoint: Point, targetPoint: Point): number {
+		return Math.atan2(sourcePoint.x - targetPoint.x,  sourcePoint.y - targetPoint.y);
 	}
-}
 
-export class QuadraticFormula {
-	vertex: Point;
-	a: number;
-
-	constructor(point: Point, vertex: Point) {
-		this.vertex = vertex;
-		this.a = point.y - vertex.y / Math.pow(point.x - vertex.x, 2);
-	}
-
-	calc(x: number) {
-		const { a, vertex } = this;
-		return a * Math.pow(x - vertex.x, 2) + vertex.y;
+	// returns the signed delta angle between two angles
+	static getDeltaAngle(sourceAngle: number, targetAngle: number): number {
+		return Math.atan2(Math.sin(targetAngle - sourceAngle), Math.cos(targetAngle - sourceAngle));
 	}
 }

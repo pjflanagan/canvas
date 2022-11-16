@@ -182,7 +182,7 @@ export class Ship extends Body {
 		const { x, y } = this.state.pos;
 
 		Canvas.draw(this.ctx, SHIP_INSTRUCTIONS, {
-			center: { x, y }
+			position: { x, y }
 		});
 	}
 }

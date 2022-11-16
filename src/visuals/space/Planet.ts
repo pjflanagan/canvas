@@ -1,5 +1,5 @@
 import { Body } from './Body';
-import { Color, ellipseCircleIntersection, Random, type IColor } from '$lib/util';
+import { Color, Geometry, Random, type IColor } from '$lib/util';
 import type { SpaceVisual } from './SpaceVisual';
 
 const PLANET = {
@@ -32,7 +32,7 @@ export class Planet extends Body {
 
 	setup() {
 		const { W, H } = this.visual.getSize();
-		const color = Color.getRandomColor(0.9); // random color TODO: use a pallet
+		const color = Color.getRandomColor(0.9);
 		const toColor = Color.getRandomColor(0.9);
 
 		// unchanging props
@@ -102,21 +102,21 @@ export class Planet extends Body {
 		const { x, y } = this.state.pos;
 		const angle = this.state.ringAngle;
 
-		// TODO: we also need to move the x,y radius to pass over the planet
+		// v2: we also need to move the x,y radius to pass over the planet
 		// if x is less than zero and then reset x to be abs(x) before we draw
 		// to get it to flip to the other side we would draw intersection[2 and 3]?
 
 		this.prop.rings.forEach((ring: Ring, i: number) => {
 			const offset = {
-				// TODO: offset should be calculated based on circle in z direction?
-				x: radius / 2 - 120 * scrollPercent + i, // TODO: make linear equation for this
+				// v2: offset should be calculated based on circle in z direction?
+				x: radius / 2 - 120 * scrollPercent + i, // v2: make linear equation for this
 				// dx: use a multiplier on the x diff to make them the same at 0 and further apart at the peaks
 				y: radius + ring.offsetY
 			};
-			const intersection = ellipseCircleIntersection({
-				eRadx: offset.x,
-				eRady: offset.y,
-				cRad: radius
+			const intersection = Geometry.ellipseCircleIntersection({
+				ellipseRadiusX: offset.x,
+				ellipseRadiusY: offset.y,
+				circleRadius: radius
 			});
 			this.ctx.beginPath();
 			this.ctx.ellipse(
@@ -125,7 +125,7 @@ export class Planet extends Body {
 				offset.x,
 				offset.y,
 				angle,
-				intersection[0].theta,
+				intersection[0].theta, // cut off the ellipse at the angle of intersection
 				intersection[1].theta
 			);
 			this.ctx.strokeStyle = Color.toString(ring.color, 0.8);

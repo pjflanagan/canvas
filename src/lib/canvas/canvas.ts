@@ -3,7 +3,7 @@ import type {
 	DrawingInstructions,
 	DrawingModifiers,
 	LayerInstruction,
-	ShapeModifiers,
+	LayerModifiers,
 	StrokeInstruction,
 	GradientInstructions
 } from './types';
@@ -39,7 +39,7 @@ function drawLayer(
 	ctx: CanvasRenderingContext2D,
 	shape: LayerInstruction,
 	center?: Point,
-	modifiers?: ShapeModifiers
+	modifiers?: LayerModifiers
 ): void {
 	ctx.beginPath();
 	try {
@@ -67,9 +67,9 @@ export class Canvas {
 		instructions: DrawingInstructions,
 		modifiers?: DrawingModifiers
 	): void {
-		const workingCenter = modifiers?.center || instructions.center;
+		const workingCenter = modifiers?.position || instructions.position;
 		instructions.layers.forEach((s) => {
-			const shapeModifiers = modifiers?.shapeModifiers?.find((m) => m.id === s.id);
+			const shapeModifiers = modifiers?.layerModifiers?.find((m) => m.id === s.id);
 			drawLayer(ctx, s, workingCenter, shapeModifiers);
 		});
 	}

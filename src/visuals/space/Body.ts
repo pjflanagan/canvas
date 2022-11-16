@@ -116,7 +116,7 @@ export class Body {
 		}
 
 		// calculate the delta x and y for the new
-		const { x: newX, y: newY } = Motion.moveInDirection(
+		const { x: newX, y: newY } = Motion.moveTowardsPoint(
 			this.state.offset,
 			this.state.offset.to,
 			this.prop.offsetSpeed

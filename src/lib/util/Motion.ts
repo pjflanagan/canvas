@@ -1,15 +1,35 @@
-import { type Point, distance } from './Geometry';
+import { type Point, Geometry } from './Geometry';
 
 export class Motion {
-	static hasReachedPoint(a: Point, b: Point, threshold: number): boolean {
-		return distance(a, b) < threshold;
+	static hasReachedPoint(sourcePoint: Point, targetPoint: Point, threshold: number): boolean {
+		return Geometry.distance(sourcePoint, targetPoint) < threshold;
 	}
 
-	static moveInDirection(cur: Point, to: Point, speed: number): Point {
-		const a = Math.atan2(to.y - cur.y, to.x - cur.x);
+	// returns a new position in the direction of a point
+	// if the point is closer than the speed, it returns the original point
+	static moveTowardsPoint(cur: Point, to: Point, speed: number): Point {
+		if (Motion.hasReachedPoint(cur, to, speed)) {
+			return cur;
+		}
+		const angle = Math.atan2(to.y - cur.y, to.x - cur.x);
+		return Motion.moveAtAngle(cur, angle, speed);
+	}
+
+	// returns a new position in the direction of an angle
+	static moveAtAngle(pos: Point, angle: number, speed: number): Point {
 		return {
-			x: cur.x + speed * Math.cos(a),
-			y: cur.y + speed * Math.sin(a)
-		};
+			x: pos.x + Math.cos(angle) * speed,
+			y: pos.y + Math.sin(angle) * speed,
+		}
+	}
+
+	// returns the new angle source should be rotated at
+	// if the delta is less than the rotation speed, it does not change the angle
+	static rotateTowardsAngleAtSpeed(sourceAngle: number, targetAngle: number, rotationSpeed: number): number {
+		const deltaAngle = Geometry.getDeltaAngle(sourceAngle, targetAngle);
+		if (Math.abs(deltaAngle) < Math.abs(rotationSpeed)) {
+			return sourceAngle;
+		}
+		return sourceAngle + Math.sign(deltaAngle) * rotationSpeed;
 	}
 }

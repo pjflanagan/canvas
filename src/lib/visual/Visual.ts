@@ -1,6 +1,6 @@
 // this is a class that can be extended to make different visuals
 
-import { type Point, distance } from '$lib/util';
+import { type Point, Geometry } from '$lib/util';
 
 export class Visual {
 	protected ctx: CanvasRenderingContext2D;
@@ -24,7 +24,7 @@ export class Visual {
 		this.H = window.innerHeight;
 
 		this.shorterSideLength = Math.min(this.W, this.H);
-		this.diagonalLength = distance({ x: 0, y: 0 }, { x: this.W, y: this.H });
+		this.diagonalLength = Geometry.distance({ x: 0, y: 0 }, { x: this.W, y: this.H });
 
 		// user input
 		this.handleMouseMove = this.handleMouseMove.bind(this);
@@ -36,8 +36,15 @@ export class Visual {
 			x: 0,
 			y: 0
 		};
-		// TODO: This should just be a number, if percent is important, calculate it in the child
 		this.scrollY = 0;
+	}
+
+	setup() {
+		throw 'Method needs to be implemented by child of Canvas.';
+	}
+
+	drawFrame() {
+		throw 'Method needs to be implemented by child of Canvas.';
 	}
 
 	getContext(): CanvasRenderingContext2D {
@@ -58,14 +65,6 @@ export class Visual {
 			scrollY: this.scrollY,
 			mousePos: this.mousePos
 		};
-	}
-
-	setup() {
-		throw 'Method needs to be implemented by child of Canvas.';
-	}
-
-	drawFrame() {
-		throw 'Method needs to be implemented by child of Canvas.';
 	}
 
 	handleMouseMove(e: MouseEvent) {

@@ -1,5 +1,5 @@
 import { Visual } from '$lib/visual';
-import { distance, Random } from '$lib/util';
+import { Geometry, Random } from '$lib/util';
 import type { Body } from './Body';
 import { Star } from './Star';
 import { Moon } from './Moon';
@@ -53,7 +53,7 @@ export class SpaceVisual extends Visual {
 		}
 
 		this.bodies.push(new Planet(this, 4, 0));
-		this.bodies.push(new Ship(this, 5, 0)); // TODO: SET LAYERS AS NAMES SHIP_LAYER
+		this.bodies.push(new Ship(this, 5, 0));
 
 		const fgMoonCount = Random.prop(CANVAS.FOREGROUND_MOONS);
 		for (let i = 0; i < fgMoonCount; ++i) {
@@ -77,7 +77,7 @@ export class SpaceVisual extends Visual {
 			y: this.H / 2
 		};
 		this.angle = Math.atan2(this.mousePos.y - center.y, this.mousePos.x - center.x);
-		this.strength = distance(center, this.mousePos) / (this.diagonalLength / 2);
+		this.strength = Geometry.distance(center, this.mousePos) / (this.diagonalLength / 2);
 		this.scrollPercent = Math.min(this.scrollY / (this.H * CANVAS.SCROLL_HEIGHT_MULTIPLIER), 1);
 
 		this.drawBackground();
