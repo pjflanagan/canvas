@@ -1,6 +1,7 @@
 import { Color, type IColor } from './Color';
 
 export class Random {
+	// max is exclusive
 	static number(min: number, max: number): number {
 		return Math.floor(Math.random() * (max - min)) + min;
 	}
@@ -23,6 +24,13 @@ export class Random {
 
 	static color(a = 1): IColor {
 		return Color.getRandomColor(a);
+	}
+
+	static arrayItem<T>(arr: T[]): T | undefined {
+		if (arr.length === 0) {
+			return undefined;
+		}
+		return arr[Random.number(0, arr.length)];
 	}
 
 	static subset<T>(arr: T[], size: number): T[] {

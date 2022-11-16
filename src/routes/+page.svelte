@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { SpaceVisual } from '../visuals/space/index';
 	import CanvasComponent from '../components/CanvasComponent.svelte';
+	import { SwarmVisual } from '../visuals/swarm';
 	// import { onMount } from 'svelte/types/runtime/internal/lifecycle';
 	// import type { Visual } from '$lib/visual';
 
@@ -16,4 +17,4 @@
 	// })
 </script>
 
-<CanvasComponent visual={SpaceVisual} />
+<CanvasComponent visual={SwarmVisual} />

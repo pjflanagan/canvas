@@ -1,1 +1,1 @@
-export * from "./SwarmVisual";
+export * from './SwarmVisual';

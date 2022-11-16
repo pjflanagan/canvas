@@ -1,1 +1,1 @@
-export * from "./MoleculeVisual";
+export * from './MoleculeVisual';

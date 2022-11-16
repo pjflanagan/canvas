@@ -8,8 +8,12 @@ import type {
 	GradientInstructions
 } from './types';
 
-function drawStroke(ctx: CanvasRenderingContext2D, step: StrokeInstruction, center?: Point): void {
-	const { x, y } = center || { x: 0, y: 0 };
+function drawStroke(
+	ctx: CanvasRenderingContext2D,
+	step: StrokeInstruction,
+	position?: Point
+): void {
+	const { x, y } = position || { x: 0, y: 0 };
 	const [moveType] = step;
 	switch (moveType) {
 		case 'moveTo':
@@ -37,24 +41,26 @@ function drawStroke(ctx: CanvasRenderingContext2D, step: StrokeInstruction, cent
 
 function drawLayer(
 	ctx: CanvasRenderingContext2D,
-	shape: LayerInstruction,
-	center?: Point,
+	layer: LayerInstruction,
+	position?: Point,
 	modifiers?: LayerModifiers
 ): void {
 	ctx.beginPath();
+
 	try {
-		shape.strokes.forEach((s) => drawStroke(ctx, s, center));
+		layer.strokes.forEach((s) => drawStroke(ctx, s, position));
 	} catch (e) {
-		throw `Error in shape [id: ${shape.id}]: ${e}`;
+		throw `Error in shape [id: ${layer.id}]: ${e}`;
 	}
-	const fillStyle = modifiers?.fillStyle || shape.fillStyle;
+
+	const fillStyle = modifiers?.fillStyle || layer.fillStyle;
 	if (fillStyle) {
 		ctx.fillStyle = fillStyle;
 		ctx.fill();
 	}
-	if (shape.lineWidth && shape.strokeStyle) {
-		ctx.strokeStyle = shape.strokeStyle;
-		ctx.lineWidth = shape.lineWidth;
+	if (layer.lineWidth && layer.strokeStyle) {
+		ctx.strokeStyle = layer.strokeStyle;
+		ctx.lineWidth = layer.lineWidth;
 		ctx.stroke();
 	}
 }
@@ -67,10 +73,11 @@ export class Canvas {
 		instructions: DrawingInstructions,
 		modifiers?: DrawingModifiers
 	): void {
-		const workingCenter = modifiers?.position || instructions.position;
-		instructions.layers.forEach((s) => {
-			const shapeModifiers = modifiers?.layerModifiers?.find((m) => m.id === s.id);
-			drawLayer(ctx, s, workingCenter, shapeModifiers);
+		const drawingPosition = modifiers?.position || instructions.position;
+		// const drawingRotation = modifiers?.rotation || instructions.rotation;
+		instructions.layers.forEach((l) => {
+			const shapeModifiers = modifiers?.layerModifiers?.find((m) => m.id === l.id);
+			drawLayer(ctx, l, drawingPosition, shapeModifiers);
 		});
 	}
 

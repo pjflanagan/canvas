@@ -1,5 +1,3 @@
-import { Visual } from "$lib/visual";
+import { Visual } from '$lib/visual';
 
-export class MoleculeVisual extends Visual {
-
-}
+export class MoleculeVisual extends Visual {}

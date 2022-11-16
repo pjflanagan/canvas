@@ -27,7 +27,7 @@ type LayerProperties = {
 	strokeStyle?: string;
 	lineWidth?: number;
 	rotation?: number;
-}
+};
 
 export type LayerInstruction = LayerProperties & {
 	id: string;
@@ -37,7 +37,7 @@ export type LayerInstruction = LayerProperties & {
 type DrawingProperties = {
 	position?: Point;
 	rotation?: number;
-}
+};
 
 export type DrawingInstructions = DrawingProperties & {
 	layers: LayerInstruction[];

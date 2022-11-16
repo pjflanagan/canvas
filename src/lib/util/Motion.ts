@@ -18,18 +18,22 @@ export class Motion {
 	// returns a new position in the direction of an angle
 	static moveAtAngle(pos: Point, angle: number, speed: number): Point {
 		return {
-			x: pos.x + Math.cos(angle) * speed,
-			y: pos.y + Math.sin(angle) * speed,
-		}
+			x: pos.x + Math.sin(angle) * -speed,
+			y: pos.y + Math.cos(angle) * -speed
+		};
 	}
 
 	// returns the new angle source should be rotated at
 	// if the delta is less than the rotation speed, it does not change the angle
-	static rotateTowardsAngleAtSpeed(sourceAngle: number, targetAngle: number, rotationSpeed: number): number {
+	static rotateTowardsAngleAtSpeed(
+		sourceAngle: number,
+		targetAngle: number,
+		rotationSpeed: number
+	): number {
 		const deltaAngle = Geometry.getDeltaAngle(sourceAngle, targetAngle);
 		if (Math.abs(deltaAngle) < Math.abs(rotationSpeed)) {
 			return sourceAngle;
 		}
-		return sourceAngle + Math.sign(deltaAngle) * rotationSpeed;
+		return sourceAngle - Math.sign(deltaAngle) * rotationSpeed;
 	}
 }

@@ -1,4 +1,4 @@
-import type { Point } from "./Geometry";
+import type { Point } from './Geometry';
 
 export class LinearFormula {
 	m: number;
