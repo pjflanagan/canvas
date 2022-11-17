@@ -58,9 +58,9 @@ function drawLayer(
 		ctx.fillStyle = fillStyle;
 		ctx.fill();
 	}
-	if (layer.lineWidth && layer.strokeStyle) {
+	if (layer.strokeStyle) {
 		ctx.strokeStyle = layer.strokeStyle;
-		ctx.lineWidth = layer.lineWidth;
+		ctx.lineWidth = layer.lineWidth || 1;
 		ctx.stroke();
 	}
 }

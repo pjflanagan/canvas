@@ -1,4 +1,4 @@
-import { Canvas } from '$lib/canvas';
+import { Canvas, type DrawingInstructions } from '$lib/canvas';
 import { Color, Geometry, Motion, Random, type Point } from '$lib/util';
 import type { SwarmVisual } from './SwarmVisual';
 
@@ -8,15 +8,71 @@ import type { SwarmVisual } from './SwarmVisual';
 const MEMBER = {
 	LENGTH: 26,
 	ANGLE: 0.25,
-	ROTATIONAL_SPEED: 0.04,
-	MAX_SPEED: 4
+	ROTATIONAL_SPEED: {
+    min: 0.02,
+    max: 0.12
+  },
+	SPEED: {
+    min: 2.6,
+    max: 4.8
+  }
 };
 
 enum MovementType {
 	TO,
 	FOLLOWING,
-	MOUSE
+	MOUSE_FLEE,
+  MOUSE_TO
 }
+
+function getRandomMovementType(): MovementType {
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  return Random.arrayItemWeighted(
+    [MovementType.TO,  MovementType.FOLLOWING, MovementType.MOUSE_TO],
+    [6, 5, 2]
+  )!;
+}
+
+function getArrowDrawingInstructions(position: Point, rotation: number, color: string): DrawingInstructions {
+  return {
+    position: position,
+    layers: [
+      {
+        id: 'pointer',
+        strokes: [
+          ['moveTo', 0, 0],
+          [
+            'lineTo',
+            Math.sin(rotation - MEMBER.ANGLE) * MEMBER.LENGTH,
+            Math.cos(rotation - MEMBER.ANGLE) * MEMBER.LENGTH
+          ],
+          [
+            'lineTo',
+            Math.sin(rotation + MEMBER.ANGLE) * MEMBER.LENGTH,
+            Math.cos(rotation + MEMBER.ANGLE) * MEMBER.LENGTH
+          ]
+        ],
+        fillStyle: color,
+      }
+    ]
+  }
+}
+
+// function getFishDrawingInstructions(position: Point, rotation: number): DrawingInstructions {
+//   return {
+//     position,
+//     layers: [
+//       {
+//         id: 'head',
+//         strokes: [
+//           ['ellipse', 0, 8, 6, 16, rotation, 0, Math.PI * 2, false]
+//         ],
+//         fillStyle: '#f14d10'
+//       }
+//     ]
+//   }
+// }
+
 export class Member {
 	visual: SwarmVisual;
 	movement: {
@@ -26,11 +82,17 @@ export class Member {
 	};
 	position: Point;
 	rotation: number;
-	angularVelocity: number;
 	color: string;
+  rotationalSpeed: number;
+  speed: number;
 
 	constructor(visual: SwarmVisual) {
 		this.visual = visual;
+
+		this.color = Color.toString(Color.getRandomColor());
+    this.rotationalSpeed = Random.prop(MEMBER.ROTATIONAL_SPEED);
+    this.speed = Random.prop(MEMBER.SPEED);
+  
 		this.movement = {
 			movementType: MovementType.TO,
 			to: this.visual.getRandomInboundsPoint(),
@@ -38,16 +100,15 @@ export class Member {
 		};
 		this.position = this.visual.getRandomInboundsPoint();
 		this.rotation = Random.float(-Math.PI, Math.PI);
-		this.angularVelocity = 0.08;
-		this.color = Color.toString(Color.getRandomColor());
 	}
 
 	getToPoint(): Point {
 		switch (this.movement.movementType) {
-			case MovementType.MOUSE:
+			case MovementType.MOUSE_TO:
 				return this.visual.getUserPosition().mousePos;
 			case MovementType.FOLLOWING:
 				return this.movement.following.getTailPoint();
+      case MovementType.MOUSE_FLEE:
 			case MovementType.TO:
 			default:
 				return this.movement.to;
@@ -63,73 +124,73 @@ export class Member {
 		);
 	}
 
-	getRandomMovementType(): MovementType {
-		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-		return Random.arrayItem([MovementType.TO, MovementType.MOUSE, MovementType.FOLLOWING])!;
-	}
-
 	selectNewToPoint() {
 		this.movement = {
-			movementType: this.getRandomMovementType(),
+			movementType: getRandomMovementType(),
 			to: this.visual.getRandomInboundsPoint(),
 			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 			following: this.visual.getRandomMember()!
 		};
 	}
 
+  shouldFleeMouse() {
+    return this.movement.movementType !== MovementType.MOUSE_FLEE
+      && Motion.hasReachedPoint(this.position, this.visual.getUserPosition().mousePos, 56);
+  }
+
+  selectPointAwayFromMouse() {
+		this.movement.movementType = MovementType.MOUSE_FLEE;
+    this.movement.to = Motion.getPointInDirection(this.position, this.rotation + Math.PI, 100);
+  }
+
 	move() {
 		if (this.shouldSelectNewToPoint()) {
 			this.selectNewToPoint();
 		}
+    // else if (this.shouldFleeMouse()) {
+    //   this.selectPointAwayFromMouse();
+    // }
 		const toPoint = this.getToPoint();
 		const angleTo = Geometry.getAngleTo(this.position, toPoint);
 		this.rotation = Motion.rotateTowardsAngleAtSpeed(
 			this.rotation,
 			angleTo,
-			MEMBER.ROTATIONAL_SPEED
+			this.rotationalSpeed
 		);
-		this.position = Motion.moveAtAngle(this.position, this.rotation, MEMBER.MAX_SPEED);
+		this.position = Motion.moveAtAngle(this.position, this.rotation, this.speed);
 	}
 
 	draw() {
-		Canvas.draw(this.visual.getContext(), {
-			position: this.position,
-			layers: [
-				{
-					id: 'bird-pointer',
-					strokes: [
-						['moveTo', 0, 0],
-						[
-							'lineTo',
-							Math.sin(this.rotation - MEMBER.ANGLE) * MEMBER.LENGTH,
-							Math.cos(this.rotation - MEMBER.ANGLE) * MEMBER.LENGTH
-						],
-						[
-							'lineTo',
-							Math.sin(this.rotation + MEMBER.ANGLE) * MEMBER.LENGTH,
-							Math.cos(this.rotation + MEMBER.ANGLE) * MEMBER.LENGTH
-						]
-					],
-					fillStyle: this.getColor(),
-					rotation: this.rotation
-				}
-			]
-		});
-
-		// const to = this.getToPoint();
-		// if (to) {
-		//   this.visual.getContext().beginPath();
-		//   this.visual.getContext().moveTo(this.position.x, this.position.y);
-		//   this.visual.getContext().lineTo(to.x, to.y);
-		//   this.visual.getContext().strokeStyle = this.getMotionColor() + "4";
-		//   this.visual.getContext().stroke();
-		// }
+		Canvas.draw(
+      this.visual.getContext(),
+      getArrowDrawingInstructions(this.position, this.rotation, this.getColor())
+    );
 	}
+
+  drawLineToToPoint() {
+    const to = this.getToPoint();
+		if (to) {
+      Canvas.draw(
+        this.visual.getContext(),
+        {
+          position: this.position,
+          layers: [
+            {
+              id: 'line',
+              strokes: [
+                ['moveTo', this.position.x, this.position.y],
+                ['lineTo', to.x, to.y],
+              ],
+              strokeStyle: this.getMotionColor() + "4"
+            }
+          ]
+        }
+      )
+		}
+  }
 
 	getColor() {
 		switch (this.movement.movementType) {
-			case MovementType.MOUSE:
-				return '#000';
 			case MovementType.FOLLOWING:
 				return this.movement.following.color;
 			case MovementType.TO:
@@ -148,13 +209,13 @@ export class Member {
 
 	getMotionColor() {
 		switch (this.movement.movementType) {
-			case MovementType.MOUSE:
-				return '#000';
+			case MovementType.MOUSE_TO:
+				return Color.toString({ r: 0, g: 0, b: 0, a:  1 -  Geometry.distance(this.position, this.visual.getUserPosition().mousePos) / this.visual.getSize().diagonalLength });
 			case MovementType.FOLLOWING:
-				return '#00F';
+				return Color.toString({ r: 0, g: 0, b: 255, a: 1 - Geometry.distance(this.position, this.movement.following.getTailPoint()) / this.visual.getSize().diagonalLength });
 			case MovementType.TO:
 			default:
-				return '#F00';
+				return Color.toString({ r: 255, g: 0, b: 0, a: 1 - Geometry.distance(this.position, this.movement.to) / this.visual.getSize().diagonalLength });
 		}
 	}
 

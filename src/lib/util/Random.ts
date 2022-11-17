@@ -26,6 +26,19 @@ export class Random {
 		return Color.getRandomColor(a);
 	}
 
+	static arrayItemWeighted<T>(arr: T[], weigths: number[]): T | undefined {
+		if (arr.length === 0) {
+			return undefined;
+		}
+		const selectionArray: T[] = [];
+		weigths.forEach((w, index) => {
+			for (let i = 0; i < w; ++i) {
+				selectionArray.push(arr[index]);
+			}
+		});
+		return Random.arrayItem(selectionArray);
+	}
+
 	static arrayItem<T>(arr: T[]): T | undefined {
 		if (arr.length === 0) {
 			return undefined;

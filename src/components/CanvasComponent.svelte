@@ -8,6 +8,7 @@
 	let canvasElement: HTMLCanvasElement;
 	let handleMouseMove: (e: MouseEvent) => void;
 	let handleScoll: (scrollY: number) => void;
+	let handleMouseDown: (e: MouseEvent) => void;
 	let v: Visual;
 	let y: number;
 
@@ -24,6 +25,7 @@
 			v = new visual(context);
 			handleMouseMove = v.handleMouseMove;
 			handleScoll = v.handleScroll;
+			handleMouseDown = v.handleMouseDown;
 			v.setup();
 			v.start();
 		}
@@ -32,7 +34,7 @@
 
 <svelte:window bind:scrollY={y} on:scroll={() => handleScoll(y)} />
 <ScrollerComponent height={v?.maxScrollHeight} />
-<canvas bind:this={canvasElement} on:mousemove={handleMouseMove} />
+<canvas bind:this={canvasElement} on:mousemove={handleMouseMove} on:mousedown={handleMouseDown} />
 
 <style lang="scss">
 	canvas {

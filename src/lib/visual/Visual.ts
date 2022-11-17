@@ -29,6 +29,7 @@ export class Visual {
 		// user input
 		this.handleMouseMove = this.handleMouseMove.bind(this);
 		this.handleScroll = this.handleScroll.bind(this);
+		this.handleMouseDown = this.handleMouseDown.bind(this);
 		this.maxScrollHeight = 0;
 
 		// user position
@@ -72,6 +73,11 @@ export class Visual {
 			x: e.clientX,
 			y: e.clientY
 		};
+	}
+
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	handleMouseDown(_e: MouseEvent) {
+		return;
 	}
 
 	handleScroll(scrollY: number) {

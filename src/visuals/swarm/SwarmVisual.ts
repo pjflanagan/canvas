@@ -3,6 +3,10 @@ import { Random, type Point } from '$lib/util';
 import { Visual } from '$lib/visual';
 import { Member } from './Member';
 
+const SWARM = {
+	MEMBER_COUNT: 500,
+}
+
 export class SwarmVisual extends Visual {
 	members: Member[];
 
@@ -13,7 +17,7 @@ export class SwarmVisual extends Visual {
 	}
 
 	setup() {
-		for (let i = 0; i < 200; ++i) {
+		for (let i = 0; i < SWARM.MEMBER_COUNT; ++i) {
 			this.members.push(new Member(this));
 		}
 		this.members.forEach((m) => m.selectNewToPoint());

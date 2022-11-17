@@ -5,6 +5,13 @@ export class Motion {
 		return Geometry.distance(sourcePoint, targetPoint) < threshold;
 	}
 
+	static getPointInDirection(cur: Point, angle: number, radius: number): Point {
+		return {
+			x: cur.x + Math.sin(angle) * radius,
+			y: cur.y + Math.cos(angle) * radius
+		}
+	}
+
 	// returns a new position in the direction of a point
 	// if the point is closer than the speed, it returns the original point
 	static moveTowardsPoint(cur: Point, to: Point, speed: number): Point {
