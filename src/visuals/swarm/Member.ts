@@ -105,7 +105,7 @@ export class Member {
 		const toPoint = this.getToPoint();
 		const angleTo = Geometry.getAngleTo(this.position, toPoint);
 		this.rotation = Motion.rotateTowardsAngleAtSpeed(this.rotation, angleTo, this.rotationalSpeed);
-		this.position = Motion.moveAtAngle(this.position, this.rotation, this.speed);
+		this.position = Motion.moveInDirectionOfAngle(this.position, this.rotation, this.speed);
 	}
 
 	draw() {

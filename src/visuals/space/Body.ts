@@ -63,6 +63,15 @@ export class Body {
 		throw 'Method needs to be implemented by child of Body.';
 	}
 
+	drawLine() {
+		const { x, y } = this.state.pos;
+		this.ctx.beginPath();
+		this.ctx.moveTo(x + this.state.offset.x, y + this.state.offset.y);
+		this.ctx.lineTo(x + this.state.offset.to.x, y + this.state.offset.to.y);
+		this.ctx.strokeStyle = '#F00';
+		this.ctx.stroke();
+	}
+
 	setupColors() {
 		const dir = Random.boolean() ? 1 : -1;
 		this.prop.colorProp = {

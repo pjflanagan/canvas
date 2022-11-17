@@ -1,5 +1,5 @@
-import { Canvas, type GradientInstructions } from '$lib/canvas';
-import { Color, Random, type IColor, type Point } from '$lib/util';
+import { Canvas } from '$lib/canvas';
+import { Random, type Point } from '$lib/util';
 import { Visual } from '$lib/visual';
 import { makeFish } from './Fish';
 import type { Member } from './Member';
@@ -8,6 +8,7 @@ const SWARM = {
 	MEMBER_COUNT: 180
 };
 export class SwarmVisual extends Visual {
+	static visualName = 'Koy Pond';
 	layers: (Member | boolean)[]; // TODO: a layer should also be Water
 	members: Member[];
 	// waterColors: IColor[];

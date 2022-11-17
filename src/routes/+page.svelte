@@ -1,20 +1,6 @@
 <script lang="ts">
-	import { SpaceVisual } from '../visuals/space/index';
-	import CanvasComponent from '../components/CanvasComponent.svelte';
 	import { SwarmVisual } from '../visuals/swarm';
-	// import { onMount } from 'svelte/types/runtime/internal/lifecycle';
-	// import type { Visual } from '$lib/visual';
-
-	// let visual: typeof Visual;
-
-	// onMount(() => {
-	//   switch(pageName) {
-	//     case 'space':
-	//     default:
-	//       visual = SpaceVisual;
-	//       break;
-	//   }
-	// })
+	import CanvasComponent from '../components/canvas/CanvasComponent.svelte';
 </script>
 
 <CanvasComponent visual={SwarmVisual} />

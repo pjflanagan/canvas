@@ -15,6 +15,7 @@ const CANVAS = {
 };
 
 export class SpaceVisual extends Visual {
+	static visualName = 'The Grand Tour';
 	bodies: Body[];
 	angle: number;
 	strength: number;
@@ -84,6 +85,7 @@ export class SpaceVisual extends Visual {
 		this.bodies.forEach((body) => {
 			body.move();
 			body.draw();
+			// body.drawLine();
 		});
 	}
 

@@ -18,8 +18,8 @@ export class Motion {
 
 	static getPointInDirection(cur: Point, angle: number, radius: number): Point {
 		return {
-			x: cur.x + Math.sin(angle) * radius,
-			y: cur.y + Math.cos(angle) * radius
+			x: cur.x + Math.cos(angle) * radius,
+			y: cur.y + Math.sin(angle) * radius
 		};
 	}
 
@@ -36,10 +36,19 @@ export class Motion {
 	// returns a new position in the direction of an angle
 	static moveAtAngle(pos: Point, angle: number, speed: number): Point {
 		return {
-			x: pos.x + Math.sin(angle) * -speed,
-			y: pos.y + Math.cos(angle) * -speed
+			x: pos.x + Math.cos(angle) * speed,
+			y: pos.y + Math.sin(angle) * speed
 		};
 	}
+
+		// returns a new position in the direction of an angle
+		static moveInDirectionOfAngle(pos: Point, angle: number, speed: number): Point {
+			return {
+				x: pos.x + Math.sin(angle) * -speed,
+				y: pos.y + Math.cos(angle) * -speed
+			};
+		}
+	
 
 	// returns the new angle source should be rotated at
 	// if the delta is less than the rotation speed, it does not change the angle

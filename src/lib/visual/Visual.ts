@@ -3,21 +3,23 @@
 import { type Point, Geometry } from '$lib/util';
 
 export class Visual {
+	static visualName: string;
 	protected ctx: CanvasRenderingContext2D;
 	protected W: number;
 	protected H: number;
 	protected shorterSideLength: number;
 	protected diagonalLength: number;
-	protected isRunning?: boolean;
 	protected animationReq?: number;
 	protected mousePos: Point;
 	protected scrollY: number;
 
 	// multiplied by H to get the length of max scroll
 	public maxScrollHeight: number;
+	public isRunning: boolean;
 
 	constructor(context: CanvasRenderingContext2D) {
 		this.ctx = context;
+		this.isRunning = false;
 
 		// properties
 		this.W = window.innerWidth;
@@ -30,6 +32,7 @@ export class Visual {
 		this.handleMouseMove = this.handleMouseMove.bind(this);
 		this.handleScroll = this.handleScroll.bind(this);
 		this.handleMouseDown = this.handleMouseDown.bind(this);
+		this.toggleStopStart = this.toggleStopStart.bind(this);
 		this.maxScrollHeight = 0;
 
 		// user position
@@ -101,5 +104,13 @@ export class Visual {
 			window.cancelAnimationFrame(this.animationReq);
 		}
 		this.isRunning = false;
+	}
+
+	toggleStopStart() {
+		if (this.isRunning) {
+			this.stop();
+		} else {
+			this.start();
+		}
 	}
 }
