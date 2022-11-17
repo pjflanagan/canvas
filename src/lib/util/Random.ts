@@ -1,6 +1,6 @@
 import { Color, type IColor } from './Color';
 
-type RangeProperty = { min: number; max: number }
+type RangeProperty = { min: number; max: number };
 export class Random {
 	// max is exclusive
 	static number(min: number, max: number): number {

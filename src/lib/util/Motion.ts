@@ -1,15 +1,26 @@
-import { type Point, Geometry } from './Geometry';
+import { type Point, Geometry, ZERO_POINT } from './Geometry';
 
 export class Motion {
 	static hasReachedPoint(sourcePoint: Point, targetPoint: Point, threshold: number): boolean {
 		return Geometry.distance(sourcePoint, targetPoint) < threshold;
 	}
 
+	static isInBounds(pos: Point, upperBounds: Point, lowerBounds: Point = ZERO_POINT): boolean {
+		return (
+			pos.x > lowerBounds.x && pos.x < upperBounds.x
+			&& pos.y > lowerBounds.y && pos.y < upperBounds.y
+		)
+	}
+
+	static isOutOfBounds(pos: Point, upperBounds: Point, lowerBounds: Point = ZERO_POINT): boolean {
+		return !Motion.isInBounds(pos, upperBounds, lowerBounds);
+	}
+
 	static getPointInDirection(cur: Point, angle: number, radius: number): Point {
 		return {
 			x: cur.x + Math.sin(angle) * radius,
 			y: cur.y + Math.cos(angle) * radius
-		}
+		};
 	}
 
 	// returns a new position in the direction of a point

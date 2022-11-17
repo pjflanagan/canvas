@@ -1,47 +1,65 @@
-import { Canvas } from '$lib/canvas';
-import { Random, type Point } from '$lib/util';
+import { Canvas, type GradientInstructions } from '$lib/canvas';
+import { Color, Random, type IColor, type Point } from '$lib/util';
 import { Visual } from '$lib/visual';
 import { makeFish } from './Fish';
 import type { Member } from './Member';
 
 const SWARM = {
-	MEMBER_COUNT: 280,
-}
-
+	MEMBER_COUNT: 180
+};
 export class SwarmVisual extends Visual {
+	layers: (Member | boolean)[]; // TODO: a layer should also be Water
 	members: Member[];
+	// waterColors: IColor[];
 
 	constructor(context: CanvasRenderingContext2D) {
 		super(context);
 
+		this.layers = [];
 		this.members = [];
+		// this.waterColors = Color.makeSpectrum(
+		// 	Color.hexToColor('#1c4da3')!,
+		// 	Color.hexToColor('#51a6d6')!,
+		// 	SWARM.MEMBER_COUNT / 14
+		// );
 	}
 
 	setup() {
 		for (let i = 0; i < SWARM.MEMBER_COUNT; ++i) {
-			this.members.push(makeFish(this));
+			const member = makeFish(this);
+			this.members.push(member);
+			this.layers.push(member);
+			if (i % 14 === 0) {
+				this.layers.push(true);
+			}
 		}
-		this.members.forEach((m) => m.selectNewToPoint());
+		this.members.forEach((m) => {
+			m.selectNewToPoint();
+		});
 	}
 
 	drawFrame() {
 		this.drawBackground();
-		this.members.forEach((m, i) => {
-			m.move();
-			m.draw();
-			if (i % 14 === 0) {
+		this.layers.forEach((l) => {
+			if (typeof l === 'boolean') {
 				this.drawLayer();
+			} else {
+				l.move();
+				l.draw();
 			}
 		});
 	}
 
 	drawLayer() {
+		const grd = this.ctx.createRadialGradient(this.W / 2, this.H / 2, 0, this.W / 2, this.H / 2, this.diagonalLength / 2);
+		grd.addColorStop(0, '#51a6d618');
+		grd.addColorStop(1, '#1c4da326');
 		Canvas.draw(this.ctx, {
 			layers: [
 				{
 					id: 'background',
 					strokes: [['rect', 0, 0, this.W, this.H]],
-					fillStyle: '#51a6d618'
+					fillStyle: grd,
 				}
 			]
 		});
@@ -53,7 +71,7 @@ export class SwarmVisual extends Visual {
 				{
 					id: 'background',
 					strokes: [['rect', 0, 0, this.W, this.H]],
-					fillStyle: '#51a6d6'
+					fillStyle: '#1c4da3'
 				}
 			]
 		});
@@ -70,8 +88,8 @@ export class SwarmVisual extends Visual {
 	getRandomOnScreenPoint(): Point {
 		return {
 			x: Random.number(0, this.W),
-			y: Random.number(0, this.H),
-		}
+			y: Random.number(0, this.H)
+		};
 	}
 
 	getRandomInboundsPoint(): Point {

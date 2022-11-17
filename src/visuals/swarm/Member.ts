@@ -2,130 +2,126 @@ import { Geometry, Motion, Random, type IColor, type Point } from '$lib/util';
 import type { SwarmVisual } from './SwarmVisual';
 
 export type MemberProperties = {
-  rotationalSpeed: number;
-  speed: number;
-  color: IColor;
-  length: number;
-}
+	rotationalSpeed: number;
+	speed: number;
+	color: IColor;
+	length: number;
+};
 
 export enum MovementType {
-  TO,
-  FOLLOWING,
-  MOUSE_FLEE,
-  MOUSE_TO
+	TO,
+	FOLLOWING,
+	MOUSE_FLEE,
+	MOUSE_TO
 }
 
 function getRandomMovementType(): MovementType {
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  return Random.arrayItemWeighted(
-    [MovementType.TO, MovementType.FOLLOWING, MovementType.MOUSE_TO],
-    [6, 5, 2]
-  )!;
+	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+	return Random.arrayItemWeighted(
+		[MovementType.TO, MovementType.FOLLOWING, MovementType.MOUSE_TO],
+		[4, 7, 2]
+	)!;
 }
 export class Member {
-  visual: SwarmVisual;
-  movement: {
-    movementType: MovementType;
-    to: Point;
-    following: Member;
-  };
-  position: Point;
-  rotation: number;
-  color: IColor;
-  rotationalSpeed: number;
-  speed: number;
-  length: number;
+	visual: SwarmVisual;
+	movement: {
+		movementType: MovementType;
+		to: Point;
+		following: Member;
+	};
+	position: Point;
+	rotation: number;
+	color: IColor;
+	rotationalSpeed: number;
+	speed: number;
+	length: number;
 
-  constructor(visual: SwarmVisual, properties: MemberProperties) {
-    this.visual = visual;
+	constructor(visual: SwarmVisual, properties: MemberProperties) {
+		this.visual = visual;
 
-    this.color = properties.color;
-    this.rotationalSpeed = properties.rotationalSpeed;
-    this.speed = properties.speed;
-    this.length = properties.length;
+		this.color = properties.color;
+		this.rotationalSpeed = properties.rotationalSpeed;
+		this.speed = properties.speed;
+		this.length = properties.length;
 
-    this.movement = {
-      movementType: MovementType.TO,
-      to: this.visual.getRandomOnScreenPoint(),
-      following: this // placeholder
-    };
-    this.position = this.visual.getRandomOnScreenPoint();
-    this.rotation = 0; // Random.float(-Math.PI, Math.PI);
-  }
+		this.movement = {
+			movementType: MovementType.TO,
+			to: this.visual.getRandomOnScreenPoint(),
+			following: this // placeholder
+		};
+		this.position = this.visual.getRandomOnScreenPoint();
+		this.rotation = Random.float(-Math.PI, Math.PI);
+	}
 
-  getToPoint(): Point {
-    switch (this.movement.movementType) {
-      case MovementType.MOUSE_TO:
-        return this.visual.getUserPosition().mousePos;
-      case MovementType.FOLLOWING:
-        return this.movement.following.getTailPoint();
-      case MovementType.MOUSE_FLEE:
-      case MovementType.TO:
-      default:
-        return this.movement.to;
-    }
-  }
+	getToPoint(): Point {
+		switch (this.movement.movementType) {
+			case MovementType.MOUSE_TO:
+				return this.visual.getUserPosition().mousePos;
+			case MovementType.FOLLOWING:
+				return this.movement.following.getTailPoint();
+			case MovementType.MOUSE_FLEE:
+			case MovementType.TO:
+			default:
+				return this.movement.to;
+		}
+	}
 
-  shouldSelectNewToPoint() {
-    const toPoint = this.getToPoint();
-    return (
-      Motion.hasReachedPoint(this.position, toPoint, 30) ||
-      this.isOutOfBounds() ||
-      Random.odds(0.001)
-    );
-  }
+	shouldSelectNewToPoint() {
+		const toPoint = this.getToPoint();
+		return (
+			Motion.hasReachedPoint(this.position, toPoint, 30) ||
+			this.isOutOfBounds() ||
+			Random.odds(0.001)
+		);
+	}
 
-  selectNewToPoint() {
-    this.movement = {
-      movementType: getRandomMovementType(),
-      to: this.visual.getRandomOnScreenPoint(),
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      following: this.visual.getRandomMember()!
-    };
-  }
+	selectNewToPoint() {
+		this.movement = {
+			movementType: getRandomMovementType(),
+			to: this.visual.getRandomOnScreenPoint(),
+			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+			following: this.visual.getRandomMember()!
+		};
+	}
 
-  shouldFleeMouse() {
-    return this.movement.movementType !== MovementType.MOUSE_FLEE
-      && Motion.hasReachedPoint(this.position, this.visual.getUserPosition().mousePos, 56);
-  }
+	shouldFleeMouse() {
+		return (
+			this.movement.movementType !== MovementType.MOUSE_FLEE &&
+			Motion.hasReachedPoint(this.position, this.visual.getUserPosition().mousePos, 56)
+		);
+	}
 
-  selectPointAwayFromMouse() {
-    this.movement.movementType = MovementType.MOUSE_FLEE;
-    this.movement.to = Motion.getPointInDirection(this.position, this.rotation + Math.PI, 100);
-  }
+	selectPointAwayFromMouse() {
+		this.movement.movementType = MovementType.MOUSE_FLEE;
+		this.movement.to = Motion.getPointInDirection(this.position, this.rotation + Math.PI, 100);
+	}
 
-  move() {
-    if (this.shouldSelectNewToPoint()) {
-      this.selectNewToPoint();
-    }
-    // else if (this.shouldFleeMouse()) {
-    //   this.selectPointAwayFromMouse();
-    // }
-    const toPoint = this.getToPoint();
-    const angleTo = Geometry.getAngleTo(this.position, toPoint);
-    this.rotation = Motion.rotateTowardsAngleAtSpeed(
-      this.rotation,
-      angleTo,
-      this.rotationalSpeed
-    );
-    this.position = Motion.moveAtAngle(this.position, this.rotation, this.speed);
-  }
+	move() {
+		if (this.shouldSelectNewToPoint()) {
+			this.selectNewToPoint();
+		} // else if (this.shouldFleeMouse()) {
+		//   this.selectPointAwayFromMouse();
+		// }
+		const toPoint = this.getToPoint();
+		const angleTo = Geometry.getAngleTo(this.position, toPoint);
+		this.rotation = Motion.rotateTowardsAngleAtSpeed(this.rotation, angleTo, this.rotationalSpeed);
+		this.position = Motion.moveAtAngle(this.position, this.rotation, this.speed);
+	}
 
-  draw() {
-    throw 'Child should implement this function';
-  }
+	draw() {
+		throw 'Child should implement this function';
+	}
 
-  getTailPoint(): Point {
-    const { x, y } = this.position;
-    return {
-      x: x + Math.sin(this.rotation) * this.length,
-      y: y + Math.cos(this.rotation) * this.length
-    };
-  }
+	getTailPoint(): Point {
+		const { x, y } = this.position;
+		return {
+			x: x + Math.sin(this.rotation) * this.length,
+			y: y + Math.cos(this.rotation) * this.length
+		};
+	}
 
-  isOutOfBounds(): boolean {
-    const { W, H } = this.visual.getSize();
-    const { x, y } = this.position;
-    return !(x > 0 && x < W && y > 0 && y < H);
-  }
+	isOutOfBounds(): boolean {
+		const { W, H } = this.visual.getSize();
+    return Motion.isOutOfBounds(this.position, { x: W, y: H });
+	}
 }

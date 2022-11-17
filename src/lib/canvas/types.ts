@@ -5,12 +5,22 @@ type Radius = number;
 type Angle = number;
 type CounterClockwise = boolean;
 
-type MoveToStroke = ['moveTo', number, number];
-type LineToStroke = ['lineTo', number, number];
-type RectStroke = ['rect', number, number, number, number];
-type QuadraticCurveToStroke = ['quadraticCurveTo', number, number, number, number];
+type MoveToStroke = ['moveTo', Coordinate, Coordinate];
+type LineToStroke = ['lineTo', Coordinate, Coordinate];
+type RectStroke = ['rect', Coordinate, Coordinate, Coordinate, Coordinate];
+type QuadraticCurveToStroke = ['quadraticCurveTo', Coordinate, Coordinate, Coordinate, Coordinate];
 type ArcStroke = ['arc', Coordinate, Coordinate, Radius, Angle, Angle, CounterClockwise];
-type EllipseStroke = ['ellipse', Coordinate, Coordinate, Radius, Radius, Angle, Angle, Angle, CounterClockwise];
+type EllipseStroke = [
+	'ellipse',
+	Coordinate,
+	Coordinate,
+	Radius,
+	Radius,
+	Angle,
+	Angle,
+	Angle,
+	CounterClockwise
+];
 
 export type StrokeInstruction =
 	| MoveToStroke

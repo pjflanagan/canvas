@@ -10,14 +10,15 @@ export type IColor = {
 export class Color {
 	static hexToColor(hex: string): IColor | undefined {
 		const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-		return result ? {
-			r: parseInt(result[1], 16),
-			g: parseInt(result[2], 16),
-			b: parseInt(result[3], 16),
-			a: 1
-		} : undefined;
+		return result
+			? {
+					r: parseInt(result[1], 16),
+					g: parseInt(result[2], 16),
+					b: parseInt(result[3], 16),
+					a: 1
+			  }
+			: undefined;
 	}
-	
 
 	static getRandomColor(a = 1): IColor {
 		return {
@@ -48,7 +49,7 @@ export class Color {
 			g: color.g - darkness,
 			b: color.b - darkness,
 			a: color.a
-		}
+		};
 	}
 
 	static toString(color: IColor, opacity?: number): string {
