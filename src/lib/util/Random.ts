@@ -1,12 +1,13 @@
 import { Color, type IColor } from './Color';
 
+type RangeProperty = { min: number; max: number }
 export class Random {
 	// max is exclusive
 	static number(min: number, max: number): number {
 		return Math.floor(Math.random() * (max - min)) + min;
 	}
 
-	static prop({ min, max }: { min: number; max: number }, comp = 1): number {
+	static prop({ min, max }: RangeProperty, comp = 1): number {
 		return Random.float(min, max) * comp;
 	}
 

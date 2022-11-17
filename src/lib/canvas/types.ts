@@ -1,5 +1,6 @@
 import type { IColor, Point } from '$lib/util';
 
+type Coordinate = number;
 type Radius = number;
 type Angle = number;
 type CounterClockwise = boolean;
@@ -8,8 +9,8 @@ type MoveToStroke = ['moveTo', number, number];
 type LineToStroke = ['lineTo', number, number];
 type RectStroke = ['rect', number, number, number, number];
 type QuadraticCurveToStroke = ['quadraticCurveTo', number, number, number, number];
-type ArcStroke = ['arc', number, number, number, number, number, boolean];
-type EllipseStroke = ['ellipse', number, number, Radius, Radius, Angle, Angle, Angle, CounterClockwise];
+type ArcStroke = ['arc', Coordinate, Coordinate, Radius, Angle, Angle, CounterClockwise];
+type EllipseStroke = ['ellipse', Coordinate, Coordinate, Radius, Radius, Angle, Angle, Angle, CounterClockwise];
 
 export type StrokeInstruction =
 	| MoveToStroke
