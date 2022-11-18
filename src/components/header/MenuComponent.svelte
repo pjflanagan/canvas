@@ -21,7 +21,7 @@
 <style lang="scss">
 	div#menu {
 		position: fixed;
-		z-index: 1;
+		z-index: 101;
 		width: 200px;
 		height: auto;
 		top: 38px;

@@ -1,11 +1,12 @@
 
 
-import { Geometry, Random, type Point3D } from "$lib/util";
+import { Geometry, Random, type Point, type Point3D } from "$lib/util";
 import { Visual } from "$lib/visual";
 import { Bug } from "./Bug";
 
-export const WORLD = {
-	BUG_COUNT: 2000,
+export const FIREFLY_VISUAL = {
+	BUGS_PER_LAYER: 200,
+	LAYER_COUNT: 10,
 	CLOSE_TO_POINT_DISTANCE: 20,
 	NEXT_POINT_DISTANCE: 100,
 	COLOR: [
@@ -34,11 +35,9 @@ export const WORLD = {
 export class FireflyVisual extends Visual {
   static visualName = 'Fire Files';
   static visualLink = 'fireflies';
-  bugs: Bug[];
-  D: number;
+  layers: Bug[];
   Wp100: number;
   Hp100: number;
-  Dp100: number;
   HALF_H: number;
   max: number;
   grd!: CanvasGradient;
@@ -48,15 +47,13 @@ export class FireflyVisual extends Visual {
 	constructor(ctx: CanvasRenderingContext2D) {
     super(ctx);
 
-		this.D = (this.W + this.H) / 2;
 		this.Wp100 = this.W + 100;
 		this.Hp100 = this.H + 100;
-    this.Dp100 = this.D + 100;
     this.HALF_H = this.H / 2;
-		this.bugs = [];
-		this.max = Geometry.distance3D(
-      { x: this.W, y: this.H, z: this.D },
-      { x: 0, y: 0, z: 0 }
+		this.layers = [];
+		this.max = Geometry.distance(
+      { x: this.W, y: this.H },
+      { x: 0, y: 0 }
     );
 	}
 
@@ -67,11 +64,13 @@ export class FireflyVisual extends Visual {
 
   drawFrame() {
 		this.drawBackground();
-		this.drawBugs();
+		this.drawLayers();
   }
 
+	// helpers
+
 	initBackground() {
-		this.color = WORLD.COLOR_INIT_LOCATIONS;
+		this.color = FIREFLY_VISUAL.COLOR_INIT_LOCATIONS;
 		this.toColor = [];
 		for (let i = 1; i < this.color.length - 2; ++i) {
 			this.toColor[i - 1] = this.color[i];
@@ -82,14 +81,16 @@ export class FireflyVisual extends Visual {
 	setGradient() {
 		this.grd = this.ctx.createLinearGradient(0, 0, 0, this.H);
 		for (let i = 0; i < this.color.length; ++i) {
-			this.grd.addColorStop(this.color[i], WORLD.COLOR[i]);
+			this.grd.addColorStop(this.color[i], FIREFLY_VISUAL.COLOR[i]);
 		}
 	}
 
 	initLayers() {
     // TODO: push some layers of trees
-		for (let i = 0; i < WORLD.BUG_COUNT; i++) {
-			this.bugs.push(new Bug(this, i));
+		for (let i = 0; i < FIREFLY_VISUAL.LAYER_COUNT; i++) {
+			for(let j = 0; j < FIREFLY_VISUAL.BUGS_PER_LAYER; j++) {
+				this.layers.push(new Bug(this, i));
+			}
 		}
 	}
 
@@ -100,8 +101,8 @@ export class FireflyVisual extends Visual {
 		this.ctx.fillStyle = this.grd;
     this.ctx.fill();
     
-    for(let i = 0; i < WORLD.HILLS.length; ++i) {
-      const { x, y, xr, yr, color } = WORLD.HILLS[i]
+    for(let i = 0; i < FIREFLY_VISUAL.HILLS.length; ++i) {
+      const { x, y, xr, yr, color } = FIREFLY_VISUAL.HILLS[i]
       this.ctx.beginPath();
       this.ctx.moveTo(100, this.HALF_H);
       this.ctx.ellipse(
@@ -120,32 +121,25 @@ export class FireflyVisual extends Visual {
     }
 	}
 
-	drawBugs() {
-		for (let i = WORLD.BUG_COUNT - 1; i >= 0; i--) {
-			const bug = this.bugs[i];
-			bug.draw();
-			bug.move(Date.now());
-		}
+	drawLayers() {
+		this.layers.forEach((l) => {
+			l.draw();
+			l.move(Date.now());
+		});
 	}
 
 	getRandomCoords() {
 		return {
 			x: Random.number(-100, this.Wp100),
 			y: Random.number(-100, this.Hp100),
-			z: Random.number(-100, this.Dp100)
 		};
 	}
 
-	isCloseToEdge({ x, y, z }: Point3D) {
+	isCloseToEdge({ x, y }: Point) {
 		return (
 			x < -100 || x > this.Wp100 ||
-			y < -100 || y > this.Hp100 ||
-			z < -100 || z > this.Dp100
+			y < -100 || y > this.Hp100
 		)
-	}
-
-	zScale(z: number) {
-		return (.5 * (z / this.D)) + .5;
 	}
 }
 

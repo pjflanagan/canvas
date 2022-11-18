@@ -1,5 +1,6 @@
 import { Random } from '$lib/util';
 import { Visual } from '$lib/visual';
+import { ControlType } from '$lib/visual/Controls';
 import { Planet } from './Planet';
 
 const WORLD = {
@@ -14,19 +15,19 @@ export enum LineMode {
 }
 
 enum Mode {
-	PLANET = 'PLANET',
-	ATOM = 'ATOM',
-	LINES = 'LINES',
-	TOROID = 'TOROID',
-	TRIANGLE = 'TRIANGLE'
+	Planet = 'Planet',
+	Atom = 'Atom',
+	Lines = 'Lines',
+	Toroid = 'Toroid',
+	Triangle = 'Triangle'
 }
 
-const MODE_LIST = [
-	Mode.PLANET,
-	Mode.ATOM,
-	Mode.LINES, // BROKEN
-	Mode.TOROID, // BROKEN
-	Mode.TRIANGLE
+const MODE_LIST: Mode[] = [
+	Mode.Planet,
+	Mode.Atom,
+	Mode.Lines,
+	Mode.Toroid,
+	Mode.Triangle
 ];
 
 type ModeProperties = {
@@ -40,7 +41,7 @@ type ModeProperties = {
 };
 
 const MODE_PROPERTY_MAP: { [key in Mode]: ModeProperties } = {
-	PLANET: {
+	Planet: {
 		FADE: '88',
 		PLANETS: true,
 		ORBITS: true,
@@ -49,7 +50,7 @@ const MODE_PROPERTY_MAP: { [key in Mode]: ModeProperties } = {
 		SECONDARY: LineMode.OFF,
 		TRIANGLE: false
 	},
-	ATOM: {
+	Atom: {
 		FADE: '10',
 		PLANETS: false,
 		ORBITS: false,
@@ -58,7 +59,7 @@ const MODE_PROPERTY_MAP: { [key in Mode]: ModeProperties } = {
 		SECONDARY: LineMode.OFF,
 		TRIANGLE: false
 	},
-	LINES: {
+	Lines: {
 		FADE: '01',
 		PLANETS: false,
 		ORBITS: false,
@@ -67,7 +68,7 @@ const MODE_PROPERTY_MAP: { [key in Mode]: ModeProperties } = {
 		SECONDARY: LineMode.OFF,
 		TRIANGLE: false
 	},
-	TOROID: {
+	Toroid: {
 		FADE: '01',
 		PLANETS: false,
 		ORBITS: false,
@@ -76,7 +77,7 @@ const MODE_PROPERTY_MAP: { [key in Mode]: ModeProperties } = {
 		SECONDARY: LineMode.TICKS,
 		TRIANGLE: false
 	},
-	TRIANGLE: {
+	Triangle: {
 		FADE: '88',
 		PLANETS: false,
 		ORBITS: false,
@@ -111,11 +112,37 @@ export class OrbitsVisual extends Visual {
 		this.planets = [];
 		this.speed = 1;
 		this.planetTracker = 0;
-		this.setup();
-		this.drawBackground();
-
-		this.animate = this.animate.bind(this);
-		this.start();
+		
+		this.controls = [
+			{
+				title: 'Playback',
+				controls: [
+					{
+						type: ControlType.BUTTON,
+						label: 'Clear',
+						disabled: false,
+						action: this.clearCanvas.bind(this)
+					},
+					{
+						type: ControlType.BUTTON,
+						label: 'Random',
+						disabled: false,
+						action: this.random.bind(this)
+					}
+				]
+			},
+			{
+				title: 'Visual',
+				controls: [
+					{
+						type: ControlType.RADIO,
+						selected: this.mode,
+						options: MODE_LIST,
+						select: this.setMode.bind(this)
+					}
+				]
+			}
+		]
 	}
 
 	setup() {
@@ -165,8 +192,8 @@ export class OrbitsVisual extends Visual {
 		this.mode = getRandomMode();
 	}
 
-	setMode(newMode: Mode) {
-		this.mode = newMode;
+	setMode(newMode: string) {
+		this.mode = Mode[newMode as keyof typeof Mode];
 	}
 
 	changeSpeed(speed: number) {

@@ -1,7 +1,5 @@
-import { Color, Geometry, Random, type IColor, type Point, type Point3D } from "$lib/util";
-import { WORLD, type FireflyVisual } from "./FireflyVisual";
-
-// TODO: remove 3D movement in favor of layers
+import { Geometry, Motion, Random, type Point } from "$lib/util";
+import { FIREFLY_VISUAL, type FireflyVisual } from "./FireflyVisual";
 
 const BUG = {
 	VELOCITY_MIN: .2,
@@ -16,23 +14,22 @@ const BUG = {
 export class Bug {
   visual: FireflyVisual;
   ctx: CanvasRenderingContext2D;
-  i: number;
-  pos: Point3D;
-  to!: Point3D;
+  layer: number;
+  pos: Point;
+  to!: Point;
   on: boolean;
   nextBlinkTime!: number;
   aXY!: number;
-  aZ!: number;
   v!: number;
   color: {
     body: string;
     glow: string;
   }
 
-	constructor(visual: FireflyVisual, i: number) {
+	constructor(visual: FireflyVisual, layer: number) {
 		this.visual = visual;
 		this.ctx = this.visual.getContext();
-		this.i = i;
+		this.layer = layer;
 
 		this.pos = this.visual.getRandomCoords();
 		this.chooseNewPoint();
@@ -73,6 +70,7 @@ export class Bug {
 		if (this.isCloseToPoint()) {
 			this.chooseNewPoint();
 		} else if (this.isCloseToEdge()) {
+			// just teleport them inbounds
 			this.pos = this.visual.getRandomCoords();
 			this.chooseNewPoint();
 		}
@@ -81,15 +79,7 @@ export class Bug {
 			this.blink(date);
 		}
 
-		const vx = Math.cos(this.aXY) * this.v;
-		const vy = Math.sin(this.aXY) * this.v;
-		const vz = Math.cos(this.aZ) * this.v;
-
-		this.pos = {
-			x: this.pos.x - vx,
-			y: this.pos.y - vy,
-			z: this.pos.z - vz
-		}
+		this.pos = Motion.moveAtAngle(this.pos, this.aXY, this.v);
 	}
 
 	draw() {
@@ -111,10 +101,6 @@ export class Bug {
 			this.ctx.closePath();
 		}
   }
-  
-  zScale() {
-    return this.visual.zScale(this.pos.z);
-  }
 
 	setColor() {
 		if (this.on) {
@@ -126,29 +112,19 @@ export class Bug {
     }
 	}
 
+	zScale() {
+		return 1.2 * this.layer / FIREFLY_VISUAL.LAYER_COUNT;
+	}
+
 	isCloseToPoint() {
-		return Geometry.distance3D(this.pos, this.to) < WORLD.CLOSE_TO_POINT_DISTANCE;
+		return Geometry.distance(this.pos, this.to) < FIREFLY_VISUAL.CLOSE_TO_POINT_DISTANCE;
 	}
 
 	chooseNewPoint() {
     // TODO: make this get random coords at the layer of the trees
     // with maybe a few that escape to the top
 		this.to = this.visual.getRandomCoords();
-		const { aXY, aZ } = this.getAngleTo();
-		this.aXY = aXY;
-		this.aZ = aZ;
+		this.aXY = Geometry.getAngleTo(this.pos, this.to);
 		this.v = Random.float(BUG.VELOCITY_MIN, BUG.VELOCITY_MAX);
-	}
-
-	getAngleTo() {
-		const to = this.to;
-		const pos = this.pos;
-		const dx = pos.x - to.x,
-			dy = pos.y - to.y,
-			dz = pos.z - to.z;
-		return {
-			aXY: -1.0 * Math.atan2(dx, dy) + Math.PI / 2,
-			aZ: 1.0 * Math.atan2(dx, dz) + Math.PI / 2
-		};
 	}
 }

@@ -1,7 +1,8 @@
 <script lang="ts">
 	import type { Visual } from '$lib/visual';
-	import { onMount } from 'svelte';
-	import ControlsComponent from './ControlsComponent.svelte';
+	import type { VisualControls } from '$lib/visual/Controls';
+	import { onDestroy, onMount } from 'svelte';
+	import ControlsComponent from '../controls/ControlsComponent.svelte';
 	import HeaderComponent from '../header/HeaderComponent.svelte';
 	import ScrollerComponent from './ScrollerComponent.svelte';
 
@@ -32,6 +33,15 @@
 			v.start();
 		}
 	});
+
+	onDestroy(() => {
+		if (v) {
+			v.stop();
+		}
+	})
+
+	let controls: VisualControls | undefined;
+	$: controls = v?.getControls();
 </script>
 
 <svelte:window bind:scrollY={y} on:scroll={() => handleScoll(y)} />
@@ -40,7 +50,9 @@
 	toggleStopStart={v?.toggleStopStart}
 	isRunning={v?.isRunning}
 />
-<ControlsComponent />
+{#if controls}
+	<ControlsComponent visualControls={controls} />
+{/if}
 <ScrollerComponent height={v?.maxScrollHeight} />
 <canvas bind:this={canvasElement} on:mousemove={handleMouseMove} on:mousedown={handleMouseDown} />
 

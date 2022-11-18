@@ -1,10 +1,12 @@
 // this is a class that can be extended to make different visuals
 
 import { type Point, Geometry } from '$lib/util';
+import type { VisualControls } from './Controls';
 
 export class Visual {
 	static visualName: string;
 	static visualLink: string;
+	protected controls?: VisualControls;
 	protected ctx: CanvasRenderingContext2D;
 	protected W: number;
 	protected H: number;
@@ -113,5 +115,9 @@ export class Visual {
 		} else {
 			this.start();
 		}
+	}
+
+	getControls(): VisualControls | undefined {
+		return this.controls;
 	}
 }
