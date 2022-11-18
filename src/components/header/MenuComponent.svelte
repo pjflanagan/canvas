@@ -13,7 +13,6 @@
 	{/each}
 	<div class="link">
 		<a href="/">Random</a>
-		<!-- TODO: make this random -->
 		<!-- <Icon src={TiArrowShuffle} color="#fff" size="16px" /> -->
 	</div>
 </div>

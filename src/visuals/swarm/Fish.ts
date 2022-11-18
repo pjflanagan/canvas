@@ -18,9 +18,9 @@ const FISH = {
 	HEAD_ANGLE: Geometry.degToRad(60), // this is the head bulge angle
 	HEAD_SIZE: 12,
 	FIN_POSITION: 16,
-	FIN_WIDTH: 10, // TODO: variable
+	FIN_WIDTH: 10, // v2: variable
 	FIN_LENGTH: 8,
-	TAIL_START: 28, // TODO: variable
+	TAIL_START: 28, // v2: variable
 	TAIL_ANGLE: Geometry.degToRad(14),
 	TAIL_LENGTH: 10
 };
@@ -74,7 +74,7 @@ function getFishDrawingInstructions(
 					['moveTo', sinRotation * FISH.TAIL_START, cosRotation * FISH.TAIL_START],
 					[
 						'lineTo',
-						sinRotation * FISH.TAIL_START + Math.sin(rotation - FISH.TAIL_ANGLE) * FISH.TAIL_LENGTH, // TODO: move rotation to draw, draw this without math in Math.sin()
+						sinRotation * FISH.TAIL_START + Math.sin(rotation - FISH.TAIL_ANGLE) * FISH.TAIL_LENGTH, // TODO: move rotation to draw, draw this without math inside Math.sin()
 						cosRotation * FISH.TAIL_START + Math.cos(rotation - FISH.TAIL_ANGLE) * FISH.TAIL_LENGTH
 					],
 					[

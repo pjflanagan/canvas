@@ -1,41 +1,24 @@
 
 
-import { Geometry, Random, type Point, type Point3D } from "$lib/util";
+import { Canvas } from "$lib/canvas";
+import { Geometry, Random, type Point } from "$lib/util";
 import { Visual } from "$lib/visual";
 import { Bug } from "./Bug";
+import { Mountain } from "./Mountains";
+// import { Tree } from "./Tree";
 
 export const FIREFLY_VISUAL = {
 	BUGS_PER_LAYER: 200,
+	TREES_PER_LAYER: 3,
 	LAYER_COUNT: 10,
 	CLOSE_TO_POINT_DISTANCE: 20,
 	NEXT_POINT_DISTANCE: 100,
-	COLOR: [
-		"#000000BB",
-		"#0F001aBB",
-		"#11011FBB",
-		"#02092eBB",
-		"#032130BB",
-		"#000000"
-  ],
-  COLOR_INIT_LOCATIONS: [
-    0,
-    .1,
-    .2,
-    .3,
-    .5,
-    .5
-  ],
-  HILLS: [
-    { x: .5, y: -.1, xr: .3, yr: .15, color: "#000B" },
-    { x: .2, y: 0, xr: .3, yr: .1, color: "#000" },
-    { x: .8, y: 0, xr: .35, yr: .1, color: "#000" }
-  ]
 }
 
 export class FireflyVisual extends Visual {
   static visualName = 'Fire Files';
   static visualLink = 'fireflies';
-  layers: Bug[];
+  layers: (Bug | Mountain)[];
   Wp100: number;
   Hp100: number;
   HALF_H: number;
@@ -43,6 +26,7 @@ export class FireflyVisual extends Visual {
   grd!: CanvasGradient;
   color!: number[];
   toColor!: number[];
+	gradient: CanvasGradient;
 
 	constructor(ctx: CanvasRenderingContext2D) {
     super(ctx);
@@ -55,10 +39,21 @@ export class FireflyVisual extends Visual {
       { x: this.W, y: this.H },
       { x: 0, y: 0 }
     );
+
+		this.gradient = Canvas.createLinearGradient(this.ctx, {
+			size: [0, 0, 0, this.H],
+			colorStops: [
+				[0, '#070114'],
+				[0.5, '#060a28'],
+				[1, '#011429'],
+				// [0, '#272134'],
+				// [0.5, '#262a48'],
+				// [1, '#213449'],
+			]
+		})
 	}
 
   setup() {
-		this.initBackground();
     this.initLayers();
   }
 
@@ -67,58 +62,36 @@ export class FireflyVisual extends Visual {
 		this.drawLayers();
   }
 
-	// helpers
-
-	initBackground() {
-		this.color = FIREFLY_VISUAL.COLOR_INIT_LOCATIONS;
-		this.toColor = [];
-		for (let i = 1; i < this.color.length - 2; ++i) {
-			this.toColor[i - 1] = this.color[i];
-		}
-		this.setGradient();
-	}
-
-	setGradient() {
-		this.grd = this.ctx.createLinearGradient(0, 0, 0, this.H);
-		for (let i = 0; i < this.color.length; ++i) {
-			this.grd.addColorStop(this.color[i], FIREFLY_VISUAL.COLOR[i]);
-		}
-	}
+	// setup
 
 	initLayers() {
-    // TODO: push some layers of trees
+		for(let i = 0; i < 8; i++) {
+			this.layers.push(new Mountain(this));
+		}
 		for (let i = 0; i < FIREFLY_VISUAL.LAYER_COUNT; i++) {
-			for(let j = 0; j < FIREFLY_VISUAL.BUGS_PER_LAYER; j++) {
+			for (let j = 0; j < FIREFLY_VISUAL.BUGS_PER_LAYER; j++) {
 				this.layers.push(new Bug(this, i));
 			}
+			// for (let j = 0; j < FIREFLY_VISUAL.TREES_PER_LAYER; j++) {
+			// 	this.layers.push(new Tree(this));
+			// }
 		}
 	}
 
+	// draw
+
 	drawBackground() {
-    // TODO: make this better than just some hills
-    // make it like a mountain or something
-		this.ctx.rect(0, 0, this.W, this.H);
-		this.ctx.fillStyle = this.grd;
-    this.ctx.fill();
-    
-    for(let i = 0; i < FIREFLY_VISUAL.HILLS.length; ++i) {
-      const { x, y, xr, yr, color } = FIREFLY_VISUAL.HILLS[i]
-      this.ctx.beginPath();
-      this.ctx.moveTo(100, this.HALF_H);
-      this.ctx.ellipse(
-        this.W * x,
-        this.HALF_H - this.HALF_H * y,
-        this.W * xr,
-        this.H * yr,
-        0,
-        0,
-        Math.PI * 2,
-        false
-      );
-      this.ctx.fillStyle = color;
-      this.ctx.fill();
-      this.ctx.closePath();
-    }
+		Canvas.draw(this.ctx, {
+			layers: [
+				{
+					id: 'background',
+					strokes: [
+						['rect', 0, 0, this.W, this.H]
+					],
+					fillStyle: this.gradient
+				}
+			]
+		})
 	}
 
 	drawLayers() {
@@ -127,6 +100,8 @@ export class FireflyVisual extends Visual {
 			l.move(Date.now());
 		});
 	}
+
+	// helpers
 
 	getRandomCoords() {
 		return {
