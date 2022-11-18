@@ -124,8 +124,8 @@ export class Pointer extends Member {
 export function makePointer(visual: SwarmVisual): Pointer {
 	const properties = {
 		color: Color.getRandomColor(),
-		rotationalSpeed: Random.prop(POINTER_ROTATIONAL_SPEED),
-		speed: Random.prop(POINTER_SPEED),
+		rotationalSpeed: Random.propFloat(POINTER_ROTATIONAL_SPEED),
+		speed: Random.propFloat(POINTER_SPEED),
 		length: POINTER.LENGTH
 	};
 	return new Pointer(visual, properties);

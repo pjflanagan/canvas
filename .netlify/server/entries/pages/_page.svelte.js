@@ -571,8 +571,8 @@ class Fish extends Member {
 function makeFish(visual) {
   const properties = {
     color: Color.hexToColor(Random.arrayItem(FISH_COLORS)),
-    rotationalSpeed: Random.prop(FISH_ROTATIONAL_SPEED),
-    speed: Random.prop(FISH_SPEED),
+    rotationalSpeed: Random.propFloat(FISH_ROTATIONAL_SPEED),
+    speed: Random.propFloat(FISH_SPEED),
     length: FISH.LENGTH
   };
   return new Fish(visual, properties);

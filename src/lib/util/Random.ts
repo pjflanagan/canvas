@@ -7,7 +7,11 @@ export class Random {
 		return Math.floor(Math.random() * (max - min)) + min;
 	}
 
-	static prop({ min, max }: RangeProperty, comp = 1): number {
+	static propNumber({ min, max }: RangeProperty, comp = 1): number {
+		return Math.floor(Random.propFloat({ min, max }));
+	}
+
+	static propFloat({ min, max }: RangeProperty, comp = 1): number {
 		return Random.float(min, max) * comp;
 	}
 

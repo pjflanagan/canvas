@@ -24,7 +24,7 @@ export class Moon extends Body {
 		const toColor = Color.getRandomColor(0.9);
 
 		// unchanging props
-		const radius = Random.prop(MOON.RADIUS, shorterSideLength);
+		const radius = Random.propFloat(MOON.RADIUS, shorterSideLength);
 		const minX = this.layer > 5 ? SHIP.CENTER.x * H + radius * 3 : MOON.CENTER.x.min * W;
 		this.prop = {
 			center: {

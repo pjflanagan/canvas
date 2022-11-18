@@ -38,7 +38,7 @@ export class Planet extends Body {
 		// unchanging props
 		this.prop = {
 			center: { x: W / 2, y: H / 2 }, // planet is in the center
-			radius: Random.prop(PLANET.RADIUS, H),
+			radius: Random.propFloat(PLANET.RADIUS, H),
 			colorSpectrum: Color.makeSpectrum(color, toColor, PLANET.COLORS),
 			offsetRadiusMax: PLANET.OFFSET.MAX_RADIUS,
 			offsetSpeed: PLANET.OFFSET.SPEED,
@@ -50,9 +50,9 @@ export class Planet extends Body {
 	}
 
 	setupRing() {
-		this.prop.ringAngleCenter = Random.prop(PLANET.RING.START_ANGLE);
+		this.prop.ringAngleCenter = Random.propFloat(PLANET.RING.START_ANGLE);
 		this.prop.rings = [] as Ring[];
-		const ringCount = Random.prop(PLANET.RING.COUNT);
+		const ringCount = Random.propFloat(PLANET.RING.COUNT);
 		const color = Color.getRandomColor();
 		const toColor = Color.getRandomColor();
 		const ringSpectrum = Color.makeSpectrum(color, toColor, ringCount);

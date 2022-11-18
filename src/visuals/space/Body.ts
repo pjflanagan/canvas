@@ -75,13 +75,13 @@ export class Body {
 	setupColors() {
 		const dir = Random.boolean() ? 1 : -1;
 		this.prop.colorProp = {
-			angularVelocity: dir * Random.prop(BODY.COLOR.ANGULAR_VELOCITY),
-			resizeFrequency: Random.prop(BODY.COLOR.RESIZE_FREQUENCY)
+			angularVelocity: dir * Random.propFloat(BODY.COLOR.ANGULAR_VELOCITY),
+			resizeFrequency: Random.propFloat(BODY.COLOR.RESIZE_FREQUENCY)
 		};
 		// color is relative to the actual center
 		this.state.colorPos = {
 			angle: Random.float(-Math.PI, Math.PI),
-			distanceFromCenter: Random.prop(BODY.COLOR.DISTANCE_FROM_CENTER, this.prop.radius)
+			distanceFromCenter: Random.propFloat(BODY.COLOR.DISTANCE_FROM_CENTER, this.prop.radius)
 		};
 	}
 

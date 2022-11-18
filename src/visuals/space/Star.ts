@@ -21,10 +21,10 @@ export class Star extends Body {
 		// unchanging props
 		this.prop = {
 			center: {
-				x: Random.prop(STAR.CENTER.x, W),
-				y: Random.prop(STAR.CENTER.y, H)
+				x: Random.propFloat(STAR.CENTER.x, W),
+				y: Random.propFloat(STAR.CENTER.y, H)
 			}, // planet is in the center
-			radius: Random.prop(STAR.RADIUS, H),
+			radius: Random.propFloat(STAR.RADIUS, H),
 			color: Color.getRandomColor(),
 			offsetRadiusMax: STAR.OFFSET.MAX_RADIUS,
 			offsetSpeed: STAR.OFFSET.SPEED,
