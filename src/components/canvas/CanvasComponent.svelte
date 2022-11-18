@@ -34,10 +34,7 @@
 	});
 </script>
 
-<svelte:window
-	bind:scrollY={y}
-	on:scroll={() => handleScoll(y)}
-/>
+<svelte:window bind:scrollY={y} on:scroll={() => handleScoll(y)} />
 <HeaderComponent
 	title={visual.visualName}
 	toggleStopStart={v?.toggleStopStart}
@@ -45,11 +42,7 @@
 />
 <ControlsComponent />
 <ScrollerComponent height={v?.maxScrollHeight} />
-<canvas
-	bind:this={canvasElement}
-	on:mousemove={handleMouseMove}
-	on:mousedown={handleMouseDown}
-/>
+<canvas bind:this={canvasElement} on:mousemove={handleMouseMove} on:mousedown={handleMouseDown} />
 
 <style lang="scss">
 	canvas {

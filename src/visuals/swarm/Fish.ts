@@ -45,7 +45,7 @@ function getFishDrawingInstructions(
 	color: IColor
 ): DrawingInstructions {
 	const darkerColorString = Color.toString(Color.getDarkerColor(color, 28));
-	const colorString = Color.toString(color)
+	const colorString = Color.toString(color);
 	const sinRotation = Math.sin(rotation);
 	const cosRotation = Math.cos(rotation);
 	return {
@@ -74,17 +74,13 @@ function getFishDrawingInstructions(
 					['moveTo', sinRotation * FISH.TAIL_START, cosRotation * FISH.TAIL_START],
 					[
 						'lineTo',
-						sinRotation * FISH.TAIL_START +
-							Math.sin(rotation - FISH.TAIL_ANGLE) * FISH.TAIL_LENGTH, // TODO: move rotation to draw, draw this without math in Math.sin()
-						cosRotation * FISH.TAIL_START +
-							Math.cos(rotation - FISH.TAIL_ANGLE) * FISH.TAIL_LENGTH
+						sinRotation * FISH.TAIL_START + Math.sin(rotation - FISH.TAIL_ANGLE) * FISH.TAIL_LENGTH, // TODO: move rotation to draw, draw this without math in Math.sin()
+						cosRotation * FISH.TAIL_START + Math.cos(rotation - FISH.TAIL_ANGLE) * FISH.TAIL_LENGTH
 					],
 					[
 						'lineTo',
-						sinRotation * FISH.TAIL_START +
-							Math.sin(rotation + FISH.TAIL_ANGLE) * FISH.TAIL_LENGTH,
-						cosRotation * FISH.TAIL_START +
-							Math.cos(rotation + FISH.TAIL_ANGLE) * FISH.TAIL_LENGTH
+						sinRotation * FISH.TAIL_START + Math.sin(rotation + FISH.TAIL_ANGLE) * FISH.TAIL_LENGTH,
+						cosRotation * FISH.TAIL_START + Math.cos(rotation + FISH.TAIL_ANGLE) * FISH.TAIL_LENGTH
 					]
 				],
 				fillStyle: darkerColorString
@@ -116,7 +112,7 @@ function getFishDrawingInstructions(
 					]
 				],
 				fillStyle: colorString
-			},
+			}
 		]
 	};
 }

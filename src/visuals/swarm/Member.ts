@@ -122,6 +122,6 @@ export class Member {
 
 	isOutOfBounds(): boolean {
 		const { W, H } = this.visual.getSize();
-    return Motion.isOutOfBounds(this.position, { x: W, y: H });
+		return Motion.isOutOfBounds(this.position, { x: W, y: H });
 	}
 }

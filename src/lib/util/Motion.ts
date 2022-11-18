@@ -7,9 +7,11 @@ export class Motion {
 
 	static isInBounds(pos: Point, upperBounds: Point, lowerBounds: Point = ZERO_POINT): boolean {
 		return (
-			pos.x > lowerBounds.x && pos.x < upperBounds.x
-			&& pos.y > lowerBounds.y && pos.y < upperBounds.y
-		)
+			pos.x > lowerBounds.x &&
+			pos.x < upperBounds.x &&
+			pos.y > lowerBounds.y &&
+			pos.y < upperBounds.y
+		);
 	}
 
 	static isOutOfBounds(pos: Point, upperBounds: Point, lowerBounds: Point = ZERO_POINT): boolean {
@@ -41,14 +43,13 @@ export class Motion {
 		};
 	}
 
-		// returns a new position in the direction of an angle
-		static moveInDirectionOfAngle(pos: Point, angle: number, speed: number): Point {
-			return {
-				x: pos.x + Math.sin(angle) * -speed,
-				y: pos.y + Math.cos(angle) * -speed
-			};
-		}
-	
+	// returns a new position in the direction of an angle
+	static moveInDirectionOfAngle(pos: Point, angle: number, speed: number): Point {
+		return {
+			x: pos.x + Math.sin(angle) * -speed,
+			y: pos.y + Math.cos(angle) * -speed
+		};
+	}
 
 	// returns the new angle source should be rotated at
 	// if the delta is less than the rotation speed, it does not change the angle

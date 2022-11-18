@@ -8,7 +8,7 @@ const SWARM = {
 	MEMBER_COUNT: 180
 };
 export class SwarmVisual extends Visual {
-	static visualName = 'Koy Pond';
+	static visualName = 'Koi Pond';
 	layers: (Member | boolean)[]; // TODO: a layer should also be Water
 	members: Member[];
 	// waterColors: IColor[];
@@ -52,7 +52,14 @@ export class SwarmVisual extends Visual {
 	}
 
 	drawLayer() {
-		const grd = this.ctx.createRadialGradient(this.W / 2, this.H / 2, 0, this.W / 2, this.H / 2, this.diagonalLength / 2);
+		const grd = this.ctx.createRadialGradient(
+			this.W / 2,
+			this.H / 2,
+			0,
+			this.W / 2,
+			this.H / 2,
+			this.diagonalLength / 2
+		);
 		grd.addColorStop(0, '#51a6d618');
 		grd.addColorStop(1, '#1c4da326');
 		Canvas.draw(this.ctx, {
@@ -60,7 +67,7 @@ export class SwarmVisual extends Visual {
 				{
 					id: 'background',
 					strokes: [['rect', 0, 0, this.W, this.H]],
-					fillStyle: grd,
+					fillStyle: grd
 				}
 			]
 		});
