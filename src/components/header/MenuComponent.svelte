@@ -1,21 +1,19 @@
 <script lang="ts">
+	import { VISUAL_LIST } from '../../visuals';
 	import { fade } from 'svelte/transition';
 	// import Icon from 'svelte-icons-pack/Icon.svelte';
 	// import TiArrowShuffle from 'svelte-icons-pack/ti/TiArrowShuffle';
 </script>
 
 <div id="menu" transition:fade={{ duration: 200 }}>
-	<div class="link">
-		<a href="/the-grand-tour">The Grand Tour</a>
-	</div>
-	<div class="link">
-		<a href="/koi-pond">Koi Pond</a>
-	</div>
-	<div class="link">
-		<a href="/orbits">Orbits</a>
-	</div>
+	{#each VISUAL_LIST as visual}
+		<div class="link">
+			<a href={visual.visualLink}>{visual.visualName}</a>
+		</div>
+	{/each}
 	<div class="link">
 		<a href="/">Random</a>
+		<!-- TODO: make this random -->
 		<!-- <Icon src={TiArrowShuffle} color="#fff" size="16px" /> -->
 	</div>
 </div>

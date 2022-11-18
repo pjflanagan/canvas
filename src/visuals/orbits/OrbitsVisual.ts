@@ -98,6 +98,7 @@ export function getModeProperties(mode: Mode): ModeProperties {
 
 export class OrbitsVisual extends Visual {
 	static visualName = 'Orbit';
+  static visualLink = 'orbits';
 	planets: Planet[];
 	mode: Mode;
 	speed: number;

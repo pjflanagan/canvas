@@ -16,6 +16,7 @@ const CANVAS = {
 
 export class SpaceVisual extends Visual {
 	static visualName = 'The Grand Tour';
+  static visualLink = 'the-grand-tour';
 	bodies: Body[];
 	angle: number;
 	strength: number;

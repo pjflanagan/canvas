@@ -4,6 +4,7 @@ import { type Point, Geometry } from '$lib/util';
 
 export class Visual {
 	static visualName: string;
+	static visualLink: string;
 	protected ctx: CanvasRenderingContext2D;
 	protected W: number;
 	protected H: number;

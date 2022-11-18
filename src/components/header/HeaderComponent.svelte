@@ -18,7 +18,7 @@
 	<div class="icon menu" on:click={toggleMenuOpen} on:keypress={toggleMenuOpen}>
 		<Icon src={TiThMenu} color="#fff" size="14px" />
 	</div>
-	<div class="title">
+	<div class="title" on:click={toggleMenuOpen} on:keypress={toggleMenuOpen}>
 		{title}
 	</div>
 	<div class="icon toggle" on:click={toggleStopStart} on:keypress={toggleStopStart}>
@@ -52,6 +52,7 @@
 			margin: 0 8px;
 			padding: 4px 0 0 0;
 			color: #fff;
+			cursor: pointer;
 		}
 
 		div.icon {

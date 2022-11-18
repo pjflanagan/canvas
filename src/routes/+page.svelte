@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { SwarmVisual } from '../visuals/swarm';
-	import CanvasComponent from '../components/canvas/CanvasComponent.svelte';
+	import { onMount } from 'svelte';
+	import { getRandomVisual } from '../visuals';
 
-	// Pick a random visual and use that
+	onMount(() => {
+		window.location.href = `/${getRandomVisual().visualLink}`;
+	})
 </script>
-
-<CanvasComponent visual={SwarmVisual} />

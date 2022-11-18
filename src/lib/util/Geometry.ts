@@ -3,6 +3,10 @@ export type Point = {
 	y: number;
 };
 
+export type Point3D = Point & {
+	z: number;
+}
+
 export const ZERO_POINT = { x: 0, y: 0 };
 
 type CircleIntersectionParams = {
@@ -19,6 +23,14 @@ type CircleIntersectionPoint = Point & {
 export class Geometry {
 	static distance(a: Point, b: Point) {
 		return Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
+	}
+
+	static distance3D(a: Point3D, b: Point3D) {
+		return Math.sqrt(
+			Math.pow(a.x - b.x, 2) +
+			Math.pow(a.y - b.y, 2) +
+			Math.pow(a.z - b.z, 2)
+		);
 	}
 
 	// Get's the 4 intersection points of a concentric ellipse and circle

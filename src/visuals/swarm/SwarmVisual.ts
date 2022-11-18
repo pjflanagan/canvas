@@ -9,6 +9,7 @@ const SWARM = {
 };
 export class SwarmVisual extends Visual {
 	static visualName = 'Koi Pond';
+  static visualLink = 'koi-pond';
 	layers: (Member | boolean)[]; // TODO: a layer should also be Water
 	members: Member[];
 	// waterColors: IColor[];
