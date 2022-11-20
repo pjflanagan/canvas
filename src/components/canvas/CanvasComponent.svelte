@@ -1,60 +1,28 @@
 <script lang="ts">
 	import type { Visual } from '$lib/visual';
-	import type { VisualControls } from '$lib/visual/Controls';
-	import { onDestroy, onMount } from 'svelte';
-	import ControlsComponent from '../controls/ControlsComponent.svelte';
-	import HeaderComponent from '../header/HeaderComponent.svelte';
+	import { onDestroy } from 'svelte';
 	import ScrollerComponent from './ScrollerComponent.svelte';
 
-	export let visual: typeof Visual;
+	export let canvasElement: HTMLCanvasElement;
+	export let visual: Visual;
 
-	let canvasElement: HTMLCanvasElement;
-	let handleMouseMove: (e: MouseEvent) => void;
-	let handleScoll: (scrollY: number) => void;
-	let handleMouseDown: (e: MouseEvent) => void;
-	let v: Visual;
-	let y: number;
-
-	onMount(() => {
-		if (!v) {
-			const context = canvasElement.getContext('2d');
-			canvasElement.width = window.innerWidth;
-			canvasElement.height = window.innerHeight;
-
-			if (!context) {
-				throw 'Unable to get canvas context';
-			}
-
-			v = new visual(context);
-			handleMouseMove = v.handleMouseMove;
-			handleScoll = v.handleScroll;
-			handleMouseDown = v.handleMouseDown;
-			v.setup();
-			v.start();
-		}
-	});
+	let scrollY: number;
 
 	onDestroy(() => {
-		if (v) {
-			v.stop();
-		}
-	})
-
-	let controls: VisualControls | undefined;
-	$: controls = v?.getControls();
+		visual?.stop();
+	});
 </script>
 
-<svelte:window bind:scrollY={y} on:scroll={() => handleScoll(y)} />
-<HeaderComponent
-	title={visual.visualName}
-	toggleStopStart={v?.toggleStopStart}
-	isRunning={v?.isRunning}
+<svelte:window
+	bind:scrollY={scrollY}
+	on:scroll={() => visual.handleScroll(scrollY)}
 />
-{#if controls}
-	<ControlsComponent visualControls={controls} />
-{/if}
-<ScrollerComponent height={v?.maxScrollHeight} />
-<canvas bind:this={canvasElement} on:mousemove={handleMouseMove} on:mousedown={handleMouseDown} />
+<ScrollerComponent height={visual?.maxScrollHeight} />
+<canvas
+	bind:this={canvasElement}
+	on:mousemove={visual.handleMouseMove}
+	on:mousedown={visual.handleMouseDown}
+/>
 
 <style lang="scss">
 	canvas {

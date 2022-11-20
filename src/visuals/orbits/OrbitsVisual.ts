@@ -1,6 +1,5 @@
 import { Random } from '$lib/util';
 import { Visual } from '$lib/visual';
-import { ControlType } from '$lib/visual/Controls';
 import { Planet } from './Planet';
 
 const WORLD = {
@@ -14,7 +13,7 @@ export enum LineMode {
 	OFF
 }
 
-enum Mode {
+export enum Mode {
 	Planet = 'Planet',
 	Atom = 'Atom',
 	Lines = 'Lines',
@@ -22,7 +21,7 @@ enum Mode {
 	Triangle = 'Triangle'
 }
 
-const MODE_LIST: Mode[] = [
+export const MODE_LIST: Mode[] = [
 	Mode.Planet,
 	Mode.Atom,
 	Mode.Lines,
@@ -112,37 +111,9 @@ export class OrbitsVisual extends Visual {
 		this.planets = [];
 		this.speed = 1;
 		this.planetTracker = 0;
-		
-		this.controls = [
-			{
-				title: 'Playback',
-				controls: [
-					{
-						type: ControlType.BUTTON,
-						label: 'Clear',
-						disabled: false,
-						action: this.clearCanvas.bind(this)
-					},
-					{
-						type: ControlType.BUTTON,
-						label: 'Random',
-						disabled: false,
-						action: this.random.bind(this)
-					}
-				]
-			},
-			{
-				title: 'Visual',
-				controls: [
-					{
-						type: ControlType.RADIO,
-						selected: this.mode,
-						options: MODE_LIST,
-						select: this.setMode.bind(this)
-					}
-				]
-			}
-		]
+
+		this.clearCanvas = this.clearCanvas.bind(this);
+		this.randomize = this.randomize.bind(this);
 	}
 
 	setup() {
@@ -192,8 +163,8 @@ export class OrbitsVisual extends Visual {
 		this.mode = getRandomMode();
 	}
 
-	setMode(newMode: string) {
-		this.mode = Mode[newMode as keyof typeof Mode];
+	setMode(newMode: Mode) {
+		this.mode = newMode;
 	}
 
 	changeSpeed(speed: number) {
@@ -228,7 +199,7 @@ export class OrbitsVisual extends Visual {
 		this.ctx.fill();
 	}
 
-	random() {
+	randomize() {
 		this.stop();
 		this.clearCanvas();
 		this.planets = [];

@@ -7,5 +7,9 @@
 </script>
 
 {#each options as option}
-  <ButtonControlComponent label={option} action={() => select(option)} />
+  <ButtonControlComponent
+    label={option}
+    action={() => select(option)}
+    disabled={selected === option}
+  />
 {/each}
