@@ -121,7 +121,7 @@ export class Bug {
   }
 
   chooseNewPoint() {
-    // TODO: make this get random coords at the layer of the trees
+    // v2: make this get random coords at the layer of the trees
     // with maybe a few that escape to the top
     this.to = this.visual.getRandomCoords();
     this.aXY = Geometry.getAngleTo(this.pos, this.to);

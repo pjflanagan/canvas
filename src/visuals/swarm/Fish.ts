@@ -74,7 +74,7 @@ function getFishDrawingInstructions(
           ['moveTo', sinRotation * FISH.TAIL_START, cosRotation * FISH.TAIL_START],
           [
             'lineTo',
-            sinRotation * FISH.TAIL_START + Math.sin(rotation - FISH.TAIL_ANGLE) * FISH.TAIL_LENGTH, // TODO: move rotation to draw, draw this without math inside Math.sin()
+            sinRotation * FISH.TAIL_START + Math.sin(rotation - FISH.TAIL_ANGLE) * FISH.TAIL_LENGTH, // v2: move rotation to draw, draw this without math inside Math.sin()
             cosRotation * FISH.TAIL_START + Math.cos(rotation - FISH.TAIL_ANGLE) * FISH.TAIL_LENGTH,
           ],
           [
