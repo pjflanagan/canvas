@@ -9,7 +9,9 @@ export class Visual {
 	protected W: number;
 	protected H: number;
 	protected shorterSideLength: number;
+	protected longerSideLength: number;
 	protected diagonalLength: number;
+	protected frameIndex: number;
 	protected animationReq?: number;
 	protected mousePos: Point;
 	protected scrollY: number;
@@ -21,12 +23,14 @@ export class Visual {
 	constructor(context: CanvasRenderingContext2D) {
 		this.ctx = context;
 		this.isRunning = false;
+		this.frameIndex = 0;
 
 		// properties
 		this.W = window.innerWidth;
 		this.H = window.innerHeight;
 
 		this.shorterSideLength = Math.min(this.W, this.H);
+		this.longerSideLength = Math.max(this.W, this.H);
 		this.diagonalLength = Geometry.distance({ x: 0, y: 0 }, { x: this.W, y: this.H });
 
 		// user input
@@ -96,6 +100,7 @@ export class Visual {
 	}
 
 	animate() {
+		this.frameIndex = 0;
 		this.drawFrame();
 		this.animationReq = window.requestAnimationFrame(this.animate.bind(this));
 	}

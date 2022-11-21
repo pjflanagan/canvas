@@ -83,4 +83,12 @@ export class Color {
 		}
 		return colors;
 	}
+
+	static getHueColorString(hueRatio: number): string {
+  	const hue = Math.floor(360 * hueRatio);
+		const sat = 100;
+  	const lum = 50;
+		return "hsl(" + hue + "," + sat + "%," + lum + "%)";
+
+	}
 }

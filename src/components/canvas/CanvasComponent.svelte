@@ -1,6 +1,6 @@
 <script lang="ts">
-	import type { Visual } from '$lib/visual';
 	import { onDestroy } from 'svelte';
+	import type { Visual } from '$lib/visual';
 	import ScrollerComponent from './ScrollerComponent.svelte';
 
 	export let canvasElement: HTMLCanvasElement;
