@@ -3,14 +3,14 @@ import adapter from '@sveltejs/adapter-netlify';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
-	// Consult https://github.com/sveltejs/svelte-preprocess
-	// for more information about preprocessors
-	preprocess: preprocess(),
+  // Consult https://github.com/sveltejs/svelte-preprocess
+  // for more information about preprocessors
+  preprocess: preprocess(),
 
-	kit: {
-		// https://docs.netlify.com/integrations/frameworks/sveltekit/
-		adapter: adapter()
-	}
+  kit: {
+    // https://docs.netlify.com/integrations/frameworks/sveltekit/
+    adapter: adapter(),
+  },
 };
 
 export default config;

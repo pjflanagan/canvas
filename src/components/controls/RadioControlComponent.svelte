@@ -1,9 +1,9 @@
 <script lang="ts">
-	import ButtonControlComponent from "./ButtonControlComponent.svelte";
+  import ButtonControlComponent from './ButtonControlComponent.svelte';
 
   export let selected: string;
   export let options: string[];
-	export let select: (selection: string) => void;
+  export let select: (selection: string) => void;
 </script>
 
 {#each options as option}

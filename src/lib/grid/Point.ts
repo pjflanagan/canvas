@@ -4,100 +4,100 @@ import type { IShape } from './shape';
 import { arePositionsEqual } from './position';
 
 export class GridPoint<T> {
-	protected props: PointProps;
-	protected value: any;
+  protected props: PointProps;
+  protected value: any;
 
-	constructor(props: PointProps) {
-		this.props = props;
-	}
+  constructor(props: PointProps) {
+    this.props = props;
+  }
 
-	// Value
+  // Value
 
-	setValue(value: T): void {
-		this.value = value;
-	}
+  setValue(value: T): void {
+    this.value = value;
+  }
 
-	hasValue(): boolean {
-		return !!this.value;
-	}
+  hasValue(): boolean {
+    return !!this.value;
+  }
 
-	getValue(): T {
-		return this.value;
-	}
+  getValue(): T {
+    return this.value;
+  }
 
-	clearValue(): void {
-		this.value = null;
-	}
+  clearValue(): void {
+    this.value = null;
+  }
 
-	// Properties
+  // Properties
 
-	getPosition(): Position {
-		return this.props.position;
-	}
+  getPosition(): Position {
+    return this.props.position;
+  }
 
-	getType(): PointType {
-		return this.props.type;
-	}
+  getType(): PointType {
+    return this.props.type;
+  }
 }
 
 export class VertexPoint<T> extends GridPoint<T> {
-	private shapes: IShape<T>[];
+  private shapes: IShape<T>[];
 
-	constructor(position: Position) {
-		super({
-			type: PointType.VERTEX,
-			position
-		});
-		this.shapes = [];
-	}
+  constructor(position: Position) {
+    super({
+      type: PointType.VERTEX,
+      position,
+    });
+    this.shapes = [];
+  }
 
-	addShape(shape: IShape<T>) {
-		this.shapes.push(shape);
-	}
+  addShape(shape: IShape<T>) {
+    this.shapes.push(shape);
+  }
 
-	// Points
+  // Points
 
-	isSame(point: GridPoint<T>): boolean {
-		return arePositionsEqual(this.props.position, point.getPosition());
-	}
+  isSame(point: GridPoint<T>): boolean {
+    return arePositionsEqual(this.props.position, point.getPosition());
+  }
 
-	// Neighbors
+  // Neighbors
 
-	getNeighboringShapes(): IShape<T>[] {
-		return this.shapes;
-	}
+  getNeighboringShapes(): IShape<T>[] {
+    return this.shapes;
+  }
 
-	getNeighboringPoints(): VertexPoint<T>[] {
-		// get neighboring shapes and get vertices that are one away then remove duplicates
-		return [];
-	}
+  getNeighboringPoints(): VertexPoint<T>[] {
+    // get neighboring shapes and get vertices that are one away then remove duplicates
+    return [];
+  }
 
-	getClockwisePoint(shape: IShape<T>): VertexPoint<T> | undefined {
-		// find this point on the shape, then get the next index
-		// return shape.getVertices().find();
-		return undefined;
-	}
+  getClockwisePoint(shape: IShape<T>): VertexPoint<T> | undefined {
+    // find this point on the shape, then get the next index
+    // return shape.getVertices().find();
+    return undefined;
+  }
 
-	getCounterclockwisePoint(shape: IShape<T>): VertexPoint<T> | undefined {
-		// find this point on the shape, then get the next index
-		// if () // if this shape is not in shapes, then throw an error
-		// return shape.getVertices().find();
-		return undefined;
-	}
+  getCounterclockwisePoint(shape: IShape<T>): VertexPoint<T> | undefined {
+    // find this point on the shape, then get the next index
+    // if () // if this shape is not in shapes, then throw an error
+    // return shape.getVertices().find();
+    return undefined;
+  }
 }
 
 export class CenterPoint<T> extends GridPoint<T> {
-	private shape: IShape<T>;
+  private shape: IShape<T>;
 
-	constructor(shape: IShape<T>, position: Position) {
-		super({
-			type: PointType.CENTER,
-			position
-		});
-		this.shape = shape;
-	}
+  constructor(shape: IShape<T>, position: Position) {
+    super({
+      type: PointType.CENTER,
+      position,
+    });
+    this.shape = shape;
+  }
 
-	getShape(): IShape<T> {
-		return this.shape;
-	}
+  getShape(): IShape<T> {
+    return this.shape;
+  }
 }

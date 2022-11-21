@@ -2,7 +2,10 @@ import { Visual } from './Visual';
 
 export { Visual };
 
-export function createVisualOnMount(VisualClass: typeof Visual, canvasElement: HTMLCanvasElement): Visual {
+export function createVisualOnMount(
+  VisualClass: typeof Visual,
+  canvasElement: HTMLCanvasElement,
+): Visual {
   const context = canvasElement.getContext('2d');
   canvasElement.width = window.innerWidth;
   canvasElement.height = window.innerHeight;

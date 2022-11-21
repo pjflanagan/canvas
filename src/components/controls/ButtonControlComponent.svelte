@@ -1,5 +1,5 @@
 <script lang="ts">
-	export let action: () => void;
+  export let action: () => void;
   export let label: string;
   export let disabled: boolean;
 
@@ -19,7 +19,7 @@
 </div>
 
 <style lang="scss">
-	.control-button {
+  .control-button {
     font-size: 12px;
     padding: 4px 0;
     cursor: pointer;

@@ -11,57 +11,57 @@ type RectStroke = ['rect', Coordinate, Coordinate, Coordinate, Coordinate];
 type QuadraticCurveToStroke = ['quadraticCurveTo', Coordinate, Coordinate, Coordinate, Coordinate];
 type ArcStroke = ['arc', Coordinate, Coordinate, Radius, Angle, Angle, CounterClockwise];
 type EllipseStroke = [
-	'ellipse',
-	Coordinate,
-	Coordinate,
-	Radius,
-	Radius,
-	Angle,
-	Angle,
-	Angle,
-	CounterClockwise
+  'ellipse',
+  Coordinate,
+  Coordinate,
+  Radius,
+  Radius,
+  Angle,
+  Angle,
+  Angle,
+  CounterClockwise,
 ];
 
 export type StrokeInstruction =
-	| MoveToStroke
-	| LineToStroke
-	| RectStroke
-	| QuadraticCurveToStroke
-	| ArcStroke
-	| EllipseStroke;
+  | MoveToStroke
+  | LineToStroke
+  | RectStroke
+  | QuadraticCurveToStroke
+  | ArcStroke
+  | EllipseStroke;
 
 export type GradientInstructions = {
-	size: [number, number, number, number];
-	colorStops: [number, IColor | string][];
+  size: [number, number, number, number];
+  colorStops: [number, IColor | string][];
 };
 
 type FillStyle = string | CanvasGradient;
 
 type LayerProperties = {
-	fillStyle?: FillStyle;
-	strokeStyle?: string;
-	lineWidth?: number;
-	rotation?: number;
+  fillStyle?: FillStyle;
+  strokeStyle?: string;
+  lineWidth?: number;
+  rotation?: number;
 };
 
 export type LayerInstruction = LayerProperties & {
-	id: string;
-	strokes: StrokeInstruction[];
+  id: string;
+  strokes: StrokeInstruction[];
 };
 
 type DrawingProperties = {
-	position?: Point;
-	rotation?: number;
+  position?: Point;
+  rotation?: number;
 };
 
 export type DrawingInstructions = DrawingProperties & {
-	layers: LayerInstruction[];
+  layers: LayerInstruction[];
 };
 
 export type LayerModifiers = LayerProperties & {
-	id: string;
+  id: string;
 };
 
 export type DrawingModifiers = DrawingProperties & {
-	layerModifiers?: LayerModifiers[];
+  layerModifiers?: LayerModifiers[];
 };
