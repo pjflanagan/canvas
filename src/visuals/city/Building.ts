@@ -39,7 +39,6 @@ function makeBuildingFromInstructions(buildingInstructions: BuildingInstructions
     buildingInstructions.buildingPattern.forEach(segment => {
       buildingSegments.push(segment);
       buildingHeight += segment.segmentHeight;
-      console.log(buildingHeight);
     });
   }
   if (buildingInstructions.top) {

@@ -1,7 +1,5 @@
-import { Random } from "$lib/util";
 import { Visual } from "$lib/visual";
 import { Building } from "./Building";
-import { BUILDING_PERSPECTIVE_WIDTH, BUILDING_WIDTH } from "./const";
 
 export class CityVisual extends Visual {
   static visualName = 'Night City';

@@ -1,105 +1,135 @@
-import { Color, type IColor } from "$lib/util";
-import { HALF_BUILDING_PERSPECTIVE_WIDTH, HALF_BUILDING_WIDTH, type Segment } from ".";
-import { BUILDING_PERSPECTIVE_WIDTH } from "../const";
+import type Color from 'color';
+import { Cardinality, EAST_SHADING, getBuildingCorner, WEST_SHADING, type Segment } from ".";
+import { BUILDING_WIDTH } from "../const";
 
-// 80 looks good
-export function makeTaipei101Segment(height: number, color: IColor): Segment {
-  const segmentHeight = height - HALF_BUILDING_PERSPECTIVE_WIDTH + 4;
-  if (segmentHeight < 0) {
-    throw 'Cannot make negative height segment';
-  }
+export function makeTaipei101Segment(height: number, color: Color): Segment {
   return {
-    segmentHeight: segmentHeight,
+    segmentHeight: height,
     drawingInstructions: {
       layers: [
         {
-          id: 'building-side-left',
+          id: 'segment-west',
           strokes: [
-            ['moveTo', -HALF_BUILDING_WIDTH, HALF_BUILDING_PERSPECTIVE_WIDTH],
-            ['lineTo', -HALF_BUILDING_WIDTH + 8, height],
-            ['lineTo', 0, height + HALF_BUILDING_PERSPECTIVE_WIDTH],
-            ['lineTo', 0, HALF_BUILDING_PERSPECTIVE_WIDTH],
+            ['moveTo', ...getBuildingCorner(Cardinality.WEST, BUILDING_WIDTH)],
+            ['lineTo', ...getBuildingCorner(Cardinality.SOUTH, BUILDING_WIDTH)],
+            ['lineTo', ...getBuildingCorner(Cardinality.SOUTH, BUILDING_WIDTH - 10, height)],
+            ['lineTo', ...getBuildingCorner(Cardinality.WEST, BUILDING_WIDTH - 10, height)],
           ],
-          fillStyle: Color.toString(color)
+          fillStyle: color.darken(WEST_SHADING).string()
         },
         {
-          id: 'building-side-right',
+          id: 'segment-east',
           strokes: [
-            ['moveTo', HALF_BUILDING_WIDTH, HALF_BUILDING_PERSPECTIVE_WIDTH],
-            ['lineTo', HALF_BUILDING_WIDTH - 8, height],
-            ['lineTo', 0, height + HALF_BUILDING_PERSPECTIVE_WIDTH],
-            ['lineTo', 0, HALF_BUILDING_PERSPECTIVE_WIDTH],
+            ['moveTo', ...getBuildingCorner(Cardinality.EAST, BUILDING_WIDTH)],
+            ['lineTo', ...getBuildingCorner(Cardinality.SOUTH, BUILDING_WIDTH)],
+            ['lineTo', ...getBuildingCorner(Cardinality.SOUTH, BUILDING_WIDTH - 10, height)],
+            ['lineTo', ...getBuildingCorner(Cardinality.EAST, BUILDING_WIDTH - 10, height)],
           ],
-          fillStyle: Color.toString(color)
+          fillStyle: color.darken(EAST_SHADING).string()
         },
         {
-          id: 'building-top',
+          id: 'segment-top',
           strokes: [
-            ['moveTo', 0, 0],
-            ['lineTo', -HALF_BUILDING_WIDTH, HALF_BUILDING_PERSPECTIVE_WIDTH],
-            ['lineTo', 0, BUILDING_PERSPECTIVE_WIDTH],
-            ['lineTo', HALF_BUILDING_WIDTH, HALF_BUILDING_PERSPECTIVE_WIDTH],
+            ['moveTo', ...getBuildingCorner(Cardinality.NORTH, BUILDING_WIDTH)],
+            ['lineTo', ...getBuildingCorner(Cardinality.WEST, BUILDING_WIDTH)],
+            ['lineTo', ...getBuildingCorner(Cardinality.SOUTH, BUILDING_WIDTH)],
+            ['lineTo', ...getBuildingCorner(Cardinality.EAST, BUILDING_WIDTH)],
           ],
-          fillStyle: Color.toString(color)
+          fillStyle: color.string()
         },
       ]
     }
   }
 }
 
-// export function makeTaipei101Base(color: IColor): Segment {
-
-// }
-
-export function makeTaipei101Spire(color: IColor): Segment {
-  const spireLength = 80;
-  const spireBaseLength = 20;
-  const spireHeight = spireLength + spireBaseLength;
-
+export function makeTaipei101Base(height: number, color: Color): Segment {
   return {
-    segmentHeight: spireHeight,
+    segmentHeight: height,
     drawingInstructions: {
       layers: [
         {
-          id: 'spire-base-left',
+          id: 'base-west',
           strokes: [
-            ['moveTo', -16, spireLength + 4],
-            ['lineTo', -2, spireHeight + 4],
-            ['lineTo', 0, spireHeight + 8],
-            ['lineTo', 0, spireLength + 8],
+            ['moveTo', ...getBuildingCorner(Cardinality.WEST, BUILDING_WIDTH- 10)],
+            ['lineTo', ...getBuildingCorner(Cardinality.SOUTH, BUILDING_WIDTH- 10)],
+            ['lineTo', ...getBuildingCorner(Cardinality.SOUTH, BUILDING_WIDTH, height)],
+            ['lineTo', ...getBuildingCorner(Cardinality.WEST, BUILDING_WIDTH, height)],
           ],
-          fillStyle: Color.toString(color)
+          fillStyle: color.darken(WEST_SHADING).string()
         },
         {
-          id: 'spire-base-right',
+          id: 'base-east',
           strokes: [
-            ['moveTo', 16, spireLength + 4],
-            ['lineTo', 2, spireHeight + 4],
-            ['lineTo', 0, spireHeight + 8],
-            ['lineTo', 0, spireLength + 8],
+            ['moveTo', ...getBuildingCorner(Cardinality.EAST, BUILDING_WIDTH- 10)],
+            ['lineTo', ...getBuildingCorner(Cardinality.SOUTH, BUILDING_WIDTH- 10)],
+            ['lineTo', ...getBuildingCorner(Cardinality.SOUTH, BUILDING_WIDTH, height)],
+            ['lineTo', ...getBuildingCorner(Cardinality.EAST, BUILDING_WIDTH, height)],
           ],
-          fillStyle: Color.toString(color)
+          fillStyle: color.darken(EAST_SHADING).string()
         },
         {
-          id: 'spire-base-top',
+          id: 'base-top',
           strokes: [
-            ['moveTo', 0, spireLength],
-            ['lineTo', -16, spireLength + 4],
-            ['lineTo', 0, spireLength + 8],
-            ['lineTo', 16, spireLength + 4],
+            ['moveTo', ...getBuildingCorner(Cardinality.NORTH, BUILDING_WIDTH - 10)],
+            ['lineTo', ...getBuildingCorner(Cardinality.WEST, BUILDING_WIDTH - 10)],
+            ['lineTo', ...getBuildingCorner(Cardinality.SOUTH, BUILDING_WIDTH - 10)],
+            ['lineTo', ...getBuildingCorner(Cardinality.EAST, BUILDING_WIDTH - 10)],
           ],
-          fillStyle: Color.toString(color)
+          fillStyle: color.string()
         },
-        // {
-        //   id: 'needle',
-        //   strokes: [
-        //     ['moveTo', 0, 0],
-        //     ['lineTo', -HALF_BUILDING_WIDTH, HALF_BUILDING_PERSPECTIVE_WIDTH],
-        //     ['lineTo', 0, BUILDING_PERSPECTIVE_WIDTH],
-        //     ['lineTo', HALF_BUILDING_WIDTH, HALF_BUILDING_PERSPECTIVE_WIDTH],
-        //   ],
-        //   fillStyle: Color.toString(color)
-        // },
+      ]
+    }
+  }
+}
+
+export function makeTaipei101Spire(color: Color): Segment {
+  const spireBaseStart = 80;
+  const spireBaseEnd = spireBaseStart + 40;
+
+  return {
+    segmentHeight: spireBaseEnd,
+    drawingInstructions: {
+      layers: [
+        {
+          id: 'spire-west',
+          strokes: [
+            ['moveTo', ...getBuildingCorner(Cardinality.WEST, 16, spireBaseStart)],
+            ['lineTo', ...getBuildingCorner(Cardinality.SOUTH, 16, spireBaseStart)],
+            ['lineTo', ...getBuildingCorner(Cardinality.SOUTH, 8, spireBaseEnd)],
+            ['lineTo', ...getBuildingCorner(Cardinality.WEST, 8, spireBaseEnd)],
+          ],
+          fillStyle: color.darken(WEST_SHADING).string()
+        },
+        {
+          id: 'spire-east',
+          strokes: [
+            ['moveTo', ...getBuildingCorner(Cardinality.EAST, 16, spireBaseStart)],
+            ['lineTo', ...getBuildingCorner(Cardinality.SOUTH, 16, spireBaseStart)],
+            ['lineTo', ...getBuildingCorner(Cardinality.SOUTH, 8, spireBaseEnd)],
+            ['lineTo', ...getBuildingCorner(Cardinality.EAST, 8, spireBaseEnd)],
+          ],
+          fillStyle: color.darken(EAST_SHADING).string()
+        },
+        {
+          id: 'spire-top',
+          strokes: [
+            ['moveTo', ...getBuildingCorner(Cardinality.NORTH, 16, spireBaseStart)],
+            ['lineTo', ...getBuildingCorner(Cardinality.WEST, 16, spireBaseStart)],
+            ['lineTo', ...getBuildingCorner(Cardinality.SOUTH, 16, spireBaseStart)],
+            ['lineTo', ...getBuildingCorner(Cardinality.EAST, 16, spireBaseStart)],
+          ],
+          fillStyle: color.string()
+        },
+        {
+          id: 'needle',
+          strokes: [
+            ['moveTo', ...getBuildingCorner(Cardinality.NORTH, 4)],
+            ['lineTo', ...getBuildingCorner(Cardinality.WEST, 4, spireBaseStart)],
+            ['lineTo', ...getBuildingCorner(Cardinality.SOUTH, 4, spireBaseStart)],
+            ['lineTo', ...getBuildingCorner(Cardinality.EAST, 4, spireBaseStart)],
+          ],
+          fillStyle: color.string()
+        },
       ]
     }
   }
