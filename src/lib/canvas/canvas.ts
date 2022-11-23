@@ -1,4 +1,4 @@
-import { Color, type Point } from '$lib/util';
+import { ColorMixer, type Point } from '$lib/util';
 import type {
   DrawingInstructions,
   DrawingModifiers,
@@ -97,7 +97,7 @@ export class Canvas {
     const { size, colorStops } = instructions;
     const grd = ctx.createLinearGradient(size[0], size[1], size[2], size[3]);
     colorStops.forEach(([percent, color]) => {
-      grd.addColorStop(percent, typeof color === 'string' ? color : Color.toString(color));
+      grd.addColorStop(percent, typeof color === 'string' ? color : ColorMixer.toString(color));
     });
     return grd;
   }

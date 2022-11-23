@@ -1,6 +1,7 @@
 import type { DrawingInstructions } from "$lib/canvas";
-import type Color from "color";
-import { BUILDING_WIDTH, PERSPECTIVE } from "./const";
+import { Random } from "$lib/util";
+import Color from "color";
+import { BUILDING_WIDTH, COLOR_PALLET, PERSPECTIVE } from "./const";
 
 // segments are drawn from bottom to top
 // [0, 0] for a segment is the top center
@@ -16,6 +17,33 @@ export type SegmentProperties = {
   secondaryColor?: Color;
   rotation?: number;
   stripeCount?: number;
+}
+
+export function getRandomBaseSegmentProperties(): SegmentProperties {
+  return {
+    height: Random.float(20, 130),
+    color: Color(Random.arrayItem(COLOR_PALLET)),
+    secondaryColor: Color(Random.arrayItem(COLOR_PALLET)),
+    stripeCount: Random.number(0, 16),
+  };
+}
+
+export function getRandomSegmentProperties(): SegmentProperties {
+  return {
+    height: Random.float(80, 130),
+    color: Color(Random.arrayItem(COLOR_PALLET)),
+    secondaryColor: Color(Random.arrayItem(COLOR_PALLET)),
+    stripeCount: Random.number(0, 16),
+  };
+}
+
+export function getRandomSpireSegmentProperties(): SegmentProperties {
+  return {
+    height: Random.float(28, 64),
+    color: Color(Random.arrayItem(COLOR_PALLET)),
+    secondaryColor: Color(Random.arrayItem(COLOR_PALLET)),
+    stripeCount: Random.number(0, 16),
+  };
 }
 
 // Directions for building corners

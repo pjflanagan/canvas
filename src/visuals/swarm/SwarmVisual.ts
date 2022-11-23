@@ -12,14 +12,14 @@ export class SwarmVisual extends Visual {
   static visualLink = 'koi-pond';
   layers: (Member | boolean)[];
   members: Member[];
-  // v2: waterColors: IColor[];
+  // v2: waterColors: IColorLegacy[];
 
   constructor(context: CanvasRenderingContext2D) {
     super(context);
 
     this.layers = [];
     this.members = [];
-    // this.waterColors = Color.makeSpectrum(
+    // this.waterColors = ColorMixer.makeSpectrum(
     // 	Color.hexToColor('#1c4da3')!,
     // 	Color.hexToColor('#51a6d6')!,
     // 	SWARM.MEMBER_COUNT / 14

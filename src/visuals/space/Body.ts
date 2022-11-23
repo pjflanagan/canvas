@@ -1,4 +1,4 @@
-import { Random, type Point, ZERO_POINT, Color, Motion } from '$lib/util';
+import { Random, type Point, ZERO_POINT, ColorMixer, Motion } from '$lib/util';
 import type { SpaceVisual } from './SpaceVisual';
 
 const BODY = {
@@ -173,7 +173,7 @@ export class Body {
         2 * Math.PI,
         false,
       );
-      this.ctx.fillStyle = Color.toString(colorSpectrum[i]); //A(1-(.05*i));
+      this.ctx.fillStyle = ColorMixer.toString(colorSpectrum[i]); //A(1-(.05*i));
       this.ctx.fill();
     }
 
@@ -188,11 +188,11 @@ export class Body {
     );
     grd.addColorStop(
       0,
-      Color.toString(colorSpectrum[colorSpectrum.length - 1], BODY.COLOR.OVERLAY_OPACITY_INSIDE),
+      ColorMixer.toString(colorSpectrum[colorSpectrum.length - 1], BODY.COLOR.OVERLAY_OPACITY_INSIDE),
     );
     grd.addColorStop(
       1,
-      Color.toString(colorSpectrum[colorSpectrum.length - 1], BODY.COLOR.OVERLAY_OPACITY_OUTSIDE),
+      ColorMixer.toString(colorSpectrum[colorSpectrum.length - 1], BODY.COLOR.OVERLAY_OPACITY_OUTSIDE),
     );
     this.ctx.beginPath();
     this.ctx.arc(pos.x, pos.y, radius, 0, 2 * Math.PI, false);
@@ -205,16 +205,16 @@ export class Body {
     const { radius, colorSpectrum } = this.prop;
     const { x, y } = this.state.pos;
     const grd = this.ctx.createLinearGradient(x, y - radius, x, y + radius);
-    grd.addColorStop(0, Color.toString(colorSpectrum[0], BODY.TRAIL.OPACITY_OUTSIDE));
+    grd.addColorStop(0, ColorMixer.toString(colorSpectrum[0], BODY.TRAIL.OPACITY_OUTSIDE));
     grd.addColorStop(
       BODY.TRAIL.COLOR_STOP,
-      Color.toString(colorSpectrum[0], BODY.TRAIL.OPACITY_INSIDE),
+      ColorMixer.toString(colorSpectrum[0], BODY.TRAIL.OPACITY_INSIDE),
     );
     grd.addColorStop(
       1 - BODY.TRAIL.COLOR_STOP,
-      Color.toString(colorSpectrum[0], BODY.TRAIL.OPACITY_INSIDE),
+      ColorMixer.toString(colorSpectrum[0], BODY.TRAIL.OPACITY_INSIDE),
     );
-    grd.addColorStop(1, Color.toString(colorSpectrum[0], BODY.TRAIL.OPACITY_OUTSIDE));
+    grd.addColorStop(1, ColorMixer.toString(colorSpectrum[0], BODY.TRAIL.OPACITY_OUTSIDE));
     this.ctx.beginPath();
     this.ctx.rect(x, y - radius, W * 2, 2 * radius);
     this.ctx.fillStyle = grd;

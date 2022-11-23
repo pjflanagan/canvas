@@ -2,8 +2,8 @@
 
 import { Random } from "$lib/util";
 import Color from "color";
-import { BUILDING_HEIGHT } from "./const";
-import type { Segment } from "./segmentUtils";
+import { BUILDING_HEIGHT, COLOR_PALLET } from "./const";
+import { getRandomBaseSegmentProperties, getRandomSegmentProperties, getRandomSpireSegmentProperties, type Segment } from "./segmentUtils";
 import { makeBasicSegment } from "./segments/basic";
 import { makeFreedomTowerSegment, makeFreedomTowerSpire } from "./segments/freedomTower";
 import { makeTaipei101Base, makeTaipei101Segment, makeTaipei101Spire } from "./segments/taipei101";
@@ -39,32 +39,43 @@ export const BASES = [
 // or maybe
 // some type of patterning system where we pick two and pair them
 export function makeRandomBuildingSegments(): Segment[] {
+
+  const color = Color(Random.arrayItem(COLOR_PALLET));
+  const secondaryColor = Color(Random.arrayItem(COLOR_PALLET));
+
   const buildingSegments: Segment[] = [];
 
   // push a bunch of base segment
   // if (Random.boolean()) {
-  buildingSegments.push(Random.arrayItem(BASES)!({
-    height: Random.float(80, 130),
-    stripeCount: Random.number(0, 16),
-    // secondaryColor: 
-  }));
+  buildingSegments.push(
+    Random.arrayItem(BASES)!({
+      ...getRandomBaseSegmentProperties(),
+      color,
+      secondaryColor,
+    })
+  );
   // }
 
   let buildingHeight = buildingSegments.length > 0 ? buildingSegments[0].segmentHeight : 0;
   while (buildingHeight < BUILDING_HEIGHT) {
-    const segment = (Random.arrayItem(SEGMENTS)!)({
-      height: Random.float(28, 64),
-      stripeCount: Random.number(0, 16),
-    });
+    const segment = (
+      Random.arrayItem(SEGMENTS)!)({
+        ...getRandomSegmentProperties(),
+        color,
+        secondaryColor,
+      });
     buildingSegments.push(segment);
     buildingHeight += segment.segmentHeight;
   }
 
   // then push a top segment
-  if (Random.boolean()) {
-    buildingSegments.push(Random.arrayItem(SPIRES)!({
-      height: Random.float(28, 64),
-    }));
+  if (Random.odds(0.3)) {
+    buildingSegments.push(
+      Random.arrayItem(SPIRES)!({
+        ...getRandomSpireSegmentProperties(),
+        color,
+        secondaryColor,
+      }));
   }
 
   return buildingSegments;

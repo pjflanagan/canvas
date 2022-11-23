@@ -1,4 +1,4 @@
-import { Color, Geometry, Motion, Random, type Point } from '$lib/util';
+import { ColorMixer, Geometry, Motion, Random, type Point } from '$lib/util';
 import { Visual } from '$lib/visual';
 
 const DRAW_TICK_INTERVAL = 10;
@@ -123,7 +123,7 @@ export class RandomWalkVisual extends Visual {
   getColorForColorMode(): string {
     switch (this.walkProperties.colorMode) {
       case ColorMode.Random:
-        return Color.toString(Color.getRandomColor());
+        return ColorMixer.toString(ColorMixer.getRandomColor());
       case ColorMode.Linear:
         return this.getLinearColor();
       case ColorMode.Rainbow:
@@ -140,11 +140,11 @@ export class RandomWalkVisual extends Visual {
 
   getRainbowColor() {
     const ratio = this.distanceFromOrgin(this.currentPoint) / (this.longerSideLength / 2);
-    return Color.getHueColorString(ratio);
+    return ColorMixer.getHueColorString(ratio);
   }
 
   getLinearColor() {
-    return Color.getHueColorString(this.stepCount / 360);
+    return ColorMixer.getHueColorString(this.stepCount / 360);
   }
 
   restartCurrentWalk(blackOutBackground = true) {

@@ -1,6 +1,6 @@
 import { Random } from './Random';
 
-export type IColor = {
+export type IColorLegacy = {
   r: number;
   g: number;
   b: number;
@@ -9,8 +9,8 @@ export type IColor = {
 
 // TODO: GET RID OF THIS IN FAVOR OF THE COLOR CLASS
 
-export class Color {
-  static hexToColor(hex: string): IColor | undefined {
+export class ColorMixer {
+  static hexToColor(hex: string): IColorLegacy | undefined {
     const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
     return result
       ? {
@@ -22,7 +22,7 @@ export class Color {
       : undefined;
   }
 
-  static getRandomColor(a = 1): IColor {
+  static getRandomColor(a = 1): IColorLegacy {
     return {
       r: Random.number(0, 255),
       g: Random.number(0, 255),
@@ -31,7 +31,7 @@ export class Color {
     };
   }
 
-  static getRandomSimilarColor(originalColor: IColor, distance: number): IColor {
+  static getRandomSimilarColor(originalColor: IColorLegacy, distance: number): IColorLegacy {
     const d1 = Random.float(-1, 1) * distance;
     const d2 = Random.float(-1, 1) * (distance - d1);
     const d3 = distance - (d1 + d2);
@@ -45,7 +45,7 @@ export class Color {
     };
   }
 
-  static getDarkerColor(color: IColor, darkness: number): IColor {
+  static getDarkerColor(color: IColorLegacy, darkness: number): IColorLegacy {
     return {
       r: color.r - darkness,
       g: color.g - darkness,
@@ -54,11 +54,11 @@ export class Color {
     };
   }
 
-  static toString(color: IColor, opacity?: number): string {
+  static toString(color: IColorLegacy, opacity?: number): string {
     return `rgba(${color.r}, ${color.g}, ${color.b}, ${opacity ? opacity : color.a})`;
   }
 
-  static getAverageColor(c1: IColor, c2: IColor) {
+  static getAverageColor(c1: IColorLegacy, c2: IColorLegacy) {
     return {
       r: (c1.r + c2.r) / 2,
       g: (c1.g + c2.g) / 2,
@@ -67,8 +67,8 @@ export class Color {
     };
   }
 
-  static makeSpectrum(c1: IColor, c2: IColor, colorCount: number): IColor[] {
-    const colors: IColor[] = [c1];
+  static makeSpectrum(c1: IColorLegacy, c2: IColorLegacy, colorCount: number): IColorLegacy[] {
+    const colors: IColorLegacy[] = [c1];
     const delta = {
       r: c2.r - c1.r,
       g: c2.g - c1.g,
