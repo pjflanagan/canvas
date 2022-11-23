@@ -1,5 +1,7 @@
 import type { IColor, Point } from '$lib/util';
 
+type Width = number;
+type Height = number;
 type Coordinate = number;
 type Radius = number;
 type Angle = number;
@@ -7,7 +9,7 @@ type CounterClockwise = boolean;
 
 type MoveToStroke = ['moveTo', Coordinate, Coordinate];
 type LineToStroke = ['lineTo', Coordinate, Coordinate];
-type RectStroke = ['rect', Coordinate, Coordinate, Coordinate, Coordinate];
+type RectStroke = ['rect', Coordinate, Coordinate, Width, Height];
 type QuadraticCurveToStroke = ['quadraticCurveTo', Coordinate, Coordinate, Coordinate, Coordinate];
 type ArcStroke = ['arc', Coordinate, Coordinate, Radius, Angle, Angle, CounterClockwise];
 type EllipseStroke = [
@@ -31,11 +33,13 @@ export type StrokeInstruction =
   | EllipseStroke;
 
 export type GradientInstructions = {
-  size: [number, number, number, number];
+  type: 'LINEAR' | 'RADIAL' | 'PREDEFINED';
+  size: number[]; // min length depends on gradient type
   colorStops: [number, IColor | string][];
+  gradient?: CanvasGradient;
 };
 
-type FillStyle = string | CanvasGradient;
+type FillStyle = string | GradientInstructions;
 
 type LayerProperties = {
   fillStyle?: FillStyle;

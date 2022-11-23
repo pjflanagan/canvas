@@ -1,5 +1,6 @@
 import type { DrawingInstructions } from "$lib/canvas";
 import type Color from "color";
+import { BUILDING_WIDTH, PERSPECTIVE } from "./const";
 
 // segments are drawn from bottom to top
 // [0, 0] for a segment is the top center
@@ -12,7 +13,12 @@ export type Segment = {
 export type SegmentProperties = {
   height?: number;
   color?: Color;
+  secondaryColor?: Color;
+  rotation?: number;
+  stripeCount?: number;
 }
+
+// Directions for building corners
 
 export enum Cardinality {
   NORTH,
@@ -28,9 +34,9 @@ export enum Cardinality {
 export function getBuildingCornerByCardinality(cardinality: Cardinality, distanceFromCenter: number, distanceFromTop = 0): [number, number] {
   switch(cardinality) {
     case Cardinality.NORTH:
-      return [0, (-distanceFromCenter / 3) + distanceFromTop];
+      return [0, (-distanceFromCenter * PERSPECTIVE) + distanceFromTop];
     case Cardinality.SOUTH:
-      return [0, (distanceFromCenter / 3) + distanceFromTop];
+      return [0, (distanceFromCenter * PERSPECTIVE) + distanceFromTop];
     case Cardinality.EAST:
       return [distanceFromCenter, distanceFromTop];
     case Cardinality.WEST:
@@ -46,13 +52,21 @@ export function getBuildingCornerByCardinality(cardinality: Cardinality, distanc
   }
 };
 
-function getBuildingCornerByAngle(degrees: number, distanceFromCenter: number, distanceFromTop = 0): [number, number] {
+export function getBuildingCornerByAngle(degrees: number, distanceFromCenter: number, distanceFromTop = 0): [number, number] {
   const radians = degrees / 180 * Math.PI;
   return [
     Math.cos(radians) * distanceFromCenter + distanceFromTop,
-    Math.sin(radians) * distanceFromCenter / 3 + distanceFromTop
+    Math.sin(radians) * distanceFromCenter * PERSPECTIVE + distanceFromTop
   ];
 }
+
+export function getPointAlongEdge(cardinality: Cardinality, percentAlong: number, distanceFromTop = 0): [number, number] {
+  const sign = (cardinality === Cardinality.EAST) ? -1 : 1;
+  const [x, y] = getBuildingCornerByCardinality(cardinality, BUILDING_WIDTH);
+  return [x + sign * percentAlong * BUILDING_WIDTH, distanceFromTop + y + BUILDING_WIDTH * percentAlong * PERSPECTIVE];
+}
+
+// Colors
 
 export const EAST_SHADING = 0.2;
 export const FRONT_SHADING = 0.3;

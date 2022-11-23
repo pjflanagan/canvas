@@ -29,7 +29,7 @@ function drawStroke(
       ctx.arc(x + step[1], y + step[2], step[3], step[4], step[5], step[6]);
       break;
     case 'rect':
-      ctx.rect(x + step[1], y + step[2], x + step[3], y + step[4]);
+      ctx.rect(x + step[1], y + step[2], step[3], step[4]);
       break;
     case 'ellipse':
       ctx.ellipse(x + step[1], y + step[2], step[3], step[4], step[5], step[6], step[7], step[8]);
@@ -55,7 +55,16 @@ function drawLayer(
 
   const fillStyle = modifiers?.fillStyle || layer.fillStyle;
   if (fillStyle) {
-    ctx.fillStyle = fillStyle;
+    if (typeof fillStyle === 'string') {
+      ctx.fillStyle = fillStyle;
+    } else {
+      if (fillStyle.type === 'PREDEFINED') {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        ctx.fillStyle = fillStyle.gradient!;
+      } else {
+        ctx.fillStyle = Canvas.createLinearGradient(ctx, fillStyle);
+      }
+    }
     ctx.fill();
   }
   if (layer.strokeStyle) {

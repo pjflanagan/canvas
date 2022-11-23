@@ -1,6 +1,7 @@
 // import { Random } from "$lib/util";
 import { Visual } from "$lib/visual";
 import { Building } from "./Building";
+import { FREEDOM_TOWER, TAIPEI_101 } from "./buildings";
 
 // const BUILDING_SPACING_Y = 50;
 // const BUILDING_SPACING_X = 80;
@@ -27,9 +28,19 @@ export class CityVisual extends Visual {
     // }
 
     this.buildings.push(new Building(this, {
+      x: this.W / 3,
+      y: this.H / 2
+    }, FREEDOM_TOWER));
+
+    this.buildings.push(new Building(this, {
       x: this.W / 2,
       y: this.H / 2
     }));
+
+    this.buildings.push(new Building(this, {
+      x: 2 * this.W / 3,
+      y: this.H / 2
+    }, TAIPEI_101));
     return;
   }
 

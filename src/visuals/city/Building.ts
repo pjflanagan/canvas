@@ -1,12 +1,12 @@
 import { Canvas } from "$lib/canvas";
 import { Random, type Point } from "$lib/util";
-import { FREEDOM_TOWER, makeBuildingFromInstructions } from "./buildings"; // makeRandomBuildingSegments
+import { makeBuildingFromInstructions, makeRandomBuildingSegments, type BuildingInstructions } from "./buildings"; // makeRandomBuildingSegments
 import type { CityVisual } from "./CityVisual";
 import { BUILDING_HEIGHT } from "./const";
-import type { Segment } from "./segments";
+import type { Segment } from "./segmentUtils";
 
 function chooseRandomDeltaY(): number {
-  return Random.number(-40, 40);
+  return Random.number(-18, 18);
 }
 
 export class Building {
@@ -17,13 +17,13 @@ export class Building {
   speed: number;
   segments: Segment[];
 
-  constructor(visual: CityVisual, buildingTopPosition: Point) {
+  constructor(visual: CityVisual, buildingTopPosition: Point, instructions?: BuildingInstructions) {
     this.visual = visual;
     this.buildingTopPosition = buildingTopPosition;
     this.currentDeltaY = chooseRandomDeltaY();
     this.toDeltaY = chooseRandomDeltaY();
     this.speed = Random.float(0.2, 0.8);
-    this.segments = makeBuildingFromInstructions(FREEDOM_TOWER); // makeRandomBuildingSegments(); // 
+    this.segments = instructions ? makeBuildingFromInstructions(instructions) : makeRandomBuildingSegments();
   }
 
   move() {

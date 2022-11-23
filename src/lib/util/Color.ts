@@ -7,6 +7,8 @@ export type IColor = {
   a: number;
 };
 
+// TODO: GET RID OF THIS IN FAVOR OF THE COLOR CLASS
+
 export class Color {
   static hexToColor(hex: string): IColor | undefined {
     const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);

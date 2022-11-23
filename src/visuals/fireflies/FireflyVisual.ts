@@ -1,4 +1,4 @@
-import { Canvas } from '$lib/canvas';
+import { Canvas, type GradientInstructions } from '$lib/canvas';
 import { Geometry, Random, type Point } from '$lib/util';
 import { Visual } from '$lib/visual';
 import { Bug } from './Bug';
@@ -21,10 +21,9 @@ export class FireflyVisual extends Visual {
   Hp100: number;
   HALF_H: number;
   max: number;
-  grd!: CanvasGradient;
   color!: number[];
   toColor!: number[];
-  gradient: CanvasGradient;
+  gradient: GradientInstructions;
 
   constructor(ctx: CanvasRenderingContext2D) {
     super(ctx);
@@ -35,7 +34,8 @@ export class FireflyVisual extends Visual {
     this.layers = [];
     this.max = Geometry.distance({ x: this.W, y: this.H }, { x: 0, y: 0 });
 
-    this.gradient = Canvas.createLinearGradient(this.ctx, {
+    this.gradient = {
+      type: 'LINEAR',
       size: [0, 0, 0, this.H],
       colorStops: [
         [0, '#070114'],
@@ -45,7 +45,7 @@ export class FireflyVisual extends Visual {
         // [0.5, '#262a48'],
         // [1, '#213449'],
       ],
-    });
+    };
   }
 
   setup() {

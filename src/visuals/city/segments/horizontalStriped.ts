@@ -1,8 +1,9 @@
 import Color from "color";
-import { Cardinality, EAST_SHADING, getBuildingCornerByCardinality, WEST_SHADING, type Segment, type SegmentProperties } from ".";
+import { Cardinality, EAST_SHADING, getBuildingCornerByCardinality, WEST_SHADING, type Segment, type SegmentProperties } from "../segmentUtils";
 import { BUILDING_WIDTH } from "../const";
+import type { LayerInstruction } from "$lib/canvas";
 
-export function makeBasicSegment({ height = 30, color = Color('#70b0b3') }: SegmentProperties): Segment {
+export function makeHorizontalStripedSegment({ height = 30, color = Color('#70b0b3'), secondaryColor = Color('#000'), stripeCount = 10 }: SegmentProperties): Segment {
   return {
     segmentHeight: height,
     drawingInstructions: {
@@ -27,6 +28,17 @@ export function makeBasicSegment({ height = 30, color = Color('#70b0b3') }: Segm
           ],
           fillStyle: color.darken(EAST_SHADING).string()
         },
+        ...([...Array(stripeCount).keys()].map((i: number): LayerInstruction => {
+          return {
+            id: `bar-${i}`,
+            strokes: [
+              ['moveTo', ...getBuildingCornerByCardinality(Cardinality.EAST, BUILDING_WIDTH, i / stripeCount * height)],
+              ['lineTo', ...getBuildingCornerByCardinality(Cardinality.SOUTH, BUILDING_WIDTH, i / stripeCount * height)],
+              ['lineTo', ...getBuildingCornerByCardinality(Cardinality.WEST, BUILDING_WIDTH, i / stripeCount * height)],
+            ],
+            strokeStyle: secondaryColor.string()
+          };
+        })),
         {
           id: 'building-top',
           strokes: [
@@ -35,7 +47,7 @@ export function makeBasicSegment({ height = 30, color = Color('#70b0b3') }: Segm
             ['lineTo', ...getBuildingCornerByCardinality(Cardinality.SOUTH, BUILDING_WIDTH)],
             ['lineTo', ...getBuildingCornerByCardinality(Cardinality.EAST, BUILDING_WIDTH)],
           ],
-          fillStyle: color.string()
+          fillStyle: color.toString()
         },
       ]
     }

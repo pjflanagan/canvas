@@ -153,6 +153,7 @@ export class Ship extends Body {
     // const quadraticPointWidth = (scrollPercent > 0.6) ? (H / 2) * (scrollPercent - 0.6) + width : width;
 
     const grd = Canvas.createLinearGradient(this.ctx, {
+      type: 'LINEAR',
       size: [0, 0, 0, H],
       colorStops: [
         [0, SHIP.COLORS.EXHAUST_EDGE],

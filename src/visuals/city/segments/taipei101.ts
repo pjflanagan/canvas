@@ -1,5 +1,5 @@
 import Color from "color";
-import { Cardinality, EAST_SHADING, getBuildingCornerByCardinality, WEST_SHADING, type Segment, type SegmentProperties } from ".";
+import { Cardinality, EAST_SHADING, getBuildingCornerByCardinality, WEST_SHADING, type Segment, type SegmentProperties } from "../segmentUtils";
 import { BUILDING_WIDTH } from "../const";
 
 export function makeTaipei101Segment({ height = 80, color = Color('#24e9e2') }: SegmentProperties): Segment {

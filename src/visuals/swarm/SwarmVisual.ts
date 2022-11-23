@@ -68,7 +68,12 @@ export class SwarmVisual extends Visual {
         {
           id: 'background',
           strokes: [['rect', 0, 0, this.W, this.H]],
-          fillStyle: grd,
+          fillStyle: {
+            type: 'PREDEFINED',
+            colorStops: [],
+            size: [],
+            gradient: grd
+          },
         },
       ],
     });
