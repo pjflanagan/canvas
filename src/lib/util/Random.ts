@@ -1,4 +1,5 @@
-import { Color, type IColor } from './Color';
+import type Color from 'color';
+import { ColorMixer } from './ColorMixer';
 
 type RangeProperty = { min: number; max: number };
 export class Random {
@@ -27,8 +28,8 @@ export class Random {
     return Math.random() < likelihood;
   }
 
-  static color(a = 1): IColor {
-    return Color.getRandomColor(a);
+  static color(a = 1): Color {
+    return ColorMixer.getRandomColor(a);
   }
 
   static arrayItemWeighted<T>(arr: T[], weigths: number[]): T | undefined {

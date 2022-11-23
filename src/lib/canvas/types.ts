@@ -1,4 +1,5 @@
-import type { IColor, Point } from '$lib/util';
+import type { Point } from '$lib/util';
+import type Color from 'color';
 
 type Width = number;
 type Height = number;
@@ -35,7 +36,7 @@ export type StrokeInstruction =
 export type GradientInstructions = {
   type: 'LINEAR' | 'RADIAL' | 'PREDEFINED';
   size: number[]; // min length depends on gradient type
-  colorStops: [number, IColor | string][];
+  colorStops: [number, Color | string][];
   gradient?: CanvasGradient;
 };
 

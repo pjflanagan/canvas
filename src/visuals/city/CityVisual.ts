@@ -1,7 +1,9 @@
-// import { Random } from "$lib/util";
+
+import type Color from "color";
 import { Visual } from "$lib/visual";
 import { Building } from "./Building";
 import { FREEDOM_TOWER, TAIPEI_101 } from "./buildings";
+// import { COLOR_PALLET } from "./const";
 
 // const BUILDING_SPACING_Y = 50;
 // const BUILDING_SPACING_X = 80;
@@ -10,21 +12,26 @@ export class CityVisual extends Visual {
   static visualName = 'Night City';
   static visualLink = 'night-city';
   buildings: Building[];
+  layers: (Building | Color)[];
 
   constructor(context: CanvasRenderingContext2D) {
     super(context);
 
     this.buildings = [];
+    this.layers = [];
   }
 
   setup() {
     // for (let y = -BUILDING_SPACING_Y; y < this.H + BUILDING_SPACING_Y; y += 4 * BUILDING_SPACING_Y) {
     //   for (let x = -BUILDING_SPACING_X; x < this.W + BUILDING_SPACING_X; x += BUILDING_SPACING_X + 8) {
-    //     this.buildings.push(new Building(this, {
+    //     const newBuilding = new Building(this, {
     //       x: x + Random.number(-12, 28),
     //       y: y
-    //     }));
-    //   }
+    //     })
+    //     this.buildings.push(newBuilding);
+    //     this.layers.push(newBuilding);
+    //   },
+    //   this.layers.push(Color(Random.arrayItem(COLOR_PALLET)));
     // }
 
     this.buildings.push(new Building(this, {

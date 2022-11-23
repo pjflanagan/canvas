@@ -1,5 +1,6 @@
 import { Canvas, type DrawingInstructions } from '$lib/canvas';
-import { Color, Geometry, Random, type IColor, type Point } from '$lib/util';
+import { Geometry, Random, type Point } from '$lib/util';
+import Color from 'color';
 import { Member } from './Member';
 import type { SwarmVisual } from './SwarmVisual';
 
@@ -42,10 +43,10 @@ const FISH_COLORS = [
 function getFishDrawingInstructions(
   position: Point,
   rotation: number,
-  color: IColor,
+  color: Color,
 ): DrawingInstructions {
-  const darkerColorString = Color.toString(Color.getDarkerColor(color, 28));
-  const colorString = Color.toString(color);
+  const darkerColorString = color.darken(28 / 255).string();
+  const colorString = color.string();
   const sinRotation = Math.sin(rotation);
   const cosRotation = Math.cos(rotation);
   return {
@@ -129,7 +130,7 @@ class Fish extends Member {
 export function makeFish(visual: SwarmVisual): Fish {
   const properties = {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    color: Color.hexToColor(Random.arrayItem(FISH_COLORS)!)!,
+    color: Color(Random.arrayItem(FISH_COLORS)),
     rotationalSpeed: Random.propFloat(FISH_ROTATIONAL_SPEED),
     speed: Random.propFloat(FISH_SPEED),
     length: FISH.LENGTH,

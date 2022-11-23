@@ -1,10 +1,11 @@
-import { Geometry, Motion, Random, type IColor, type Point } from '$lib/util';
+import { Geometry, Motion, Random, type Point } from '$lib/util';
+import type Color from 'color';
 import type { SwarmVisual } from './SwarmVisual';
 
 export type MemberProperties = {
   rotationalSpeed: number;
   speed: number;
-  color: IColor;
+  color: Color;
   length: number;
 };
 
@@ -31,7 +32,7 @@ export class Member {
   };
   position: Point;
   rotation: number;
-  color: IColor;
+  color: Color;
   rotationalSpeed: number;
   speed: number;
   length: number;

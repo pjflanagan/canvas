@@ -1,5 +1,5 @@
 import { Canvas, type DrawingInstructions } from '$lib/canvas';
-import { Color, Geometry, Random, type Point } from '$lib/util';
+import { ColorMixer, Geometry, Random, type Point } from '$lib/util';
 import { Member, MovementType } from './Member';
 import type { SwarmVisual } from './SwarmVisual';
 
@@ -51,7 +51,7 @@ export class Pointer extends Member {
   draw() {
     Canvas.draw(
       this.visual.getContext(),
-      getArrowDrawingInstructions(this.position, this.rotation, Color.toString(this.color)),
+      getArrowDrawingInstructions(this.position, this.rotation, this.color.string()),
     );
   }
 
@@ -84,46 +84,22 @@ export class Pointer extends Member {
     }
   }
 
-  getMotionColor() {
+  getMotionColor(): string {
     switch (this.movement.movementType) {
       case MovementType.MOUSE_TO:
-        return Color.toString({
-          r: 0,
-          g: 0,
-          b: 0,
-          a:
-            1 -
-            Geometry.distance(this.position, this.visual.getUserPosition().mousePos) /
-              this.visual.getSize().diagonalLength,
-        });
+        return '#000';
       case MovementType.FOLLOWING:
-        return Color.toString({
-          r: 0,
-          g: 0,
-          b: 255,
-          a:
-            1 -
-            Geometry.distance(this.position, this.movement.following.getTailPoint()) /
-              this.visual.getSize().diagonalLength,
-        });
+        return '#00F';
       case MovementType.TO:
       default:
-        return Color.toString({
-          r: 255,
-          g: 0,
-          b: 0,
-          a:
-            1 -
-            Geometry.distance(this.position, this.movement.to) /
-              this.visual.getSize().diagonalLength,
-        });
+        return '#F00';
     }
   }
 }
 
 export function makePointer(visual: SwarmVisual): Pointer {
   const properties = {
-    color: Color.getRandomColor(),
+    color: ColorMixer.getRandomColor(),
     rotationalSpeed: Random.propFloat(POINTER_ROTATIONAL_SPEED),
     speed: Random.propFloat(POINTER_SPEED),
     length: POINTER.LENGTH,

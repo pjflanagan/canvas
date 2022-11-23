@@ -1,4 +1,5 @@
-import { Color, Geometry, Random, type IColor, type Point } from '$lib/util';
+import { ColorMixer, Geometry, Random, type Point } from '$lib/util';
+import type Color from 'color';
 import { getModeProperties, LineMode, type OrbitsVisual } from './OrbitsVisual';
 
 const PLANET = {
@@ -11,7 +12,7 @@ export class Planet {
   visual: OrbitsVisual;
   id: number;
   ctx: CanvasRenderingContext2D;
-  color: IColor;
+  color: Color;
   orbit: {
     radius: number;
     angularVelocity: number;
@@ -27,7 +28,7 @@ export class Planet {
     const { W, H } = this.visual.getSize();
     this.ctx = this.visual.getContext();
     this.id = id;
-    this.color = Color.getRandomColor();
+    this.color = ColorMixer.getRandomColor();
 
     const direction = Random.boolean() ? 1 : -1;
     const angularVelocity = direction * Random.propFloat(PLANET.ORBIT_SPEED);
@@ -74,7 +75,7 @@ export class Planet {
     if (modeProperties.PLANETS) {
       this.ctx.beginPath();
       this.ctx.arc(this.p.x, this.p.y, 6, 0, 2 * Math.PI, false);
-      this.ctx.fillStyle = Color.toString(this.color, 1);
+      this.ctx.fillStyle = this.color.string();
       this.ctx.fill();
     }
   }
@@ -92,8 +93,8 @@ export class Planet {
     // line (if line mode is ON || is TICKS and should draw this tick)
     if (this.shouldDrawLine(modeProperties.LINES)) {
       const grd = this.ctx.createLinearGradient(this.p.x, this.p.y, planet2.p.x, planet2.p.y);
-      grd.addColorStop(0, Color.toString(this.color, 0.1));
-      grd.addColorStop(1, Color.toString(planet2.color, 0.1));
+      grd.addColorStop(0, this.color.opaquer(0.1).string());
+      grd.addColorStop(1, planet2.color.opaquer(0.1).string());
       this.ctx.beginPath();
       this.ctx.moveTo(this.p.x, this.p.y);
       this.ctx.lineTo(planet2.p.x, planet2.p.y);
@@ -106,24 +107,24 @@ export class Planet {
       // midpoint
       const midX = (this.p.x + planet2.p.x) / 2;
       const midY = (this.p.y + planet2.p.y) / 2;
-      const aveColor = Color.getAverageColor(this.color, planet2.color);
+      const aveColor = ColorMixer.getAverageColor(this.color, planet2.color);
       this.ctx.beginPath();
       this.ctx.arc(midX, midY, 2, 0, 2 * Math.PI, false);
-      this.ctx.fillStyle = Color.toString(aveColor, 0.9);
+      this.ctx.fillStyle = aveColor.opaquer(0.9).string();
       this.ctx.fill();
 
       // far point
-      const aveColorFar = Color.getAverageColor(planet2.color, aveColor);
+      const aveColorFar = ColorMixer.getAverageColor(planet2.color, aveColor);
       this.ctx.beginPath();
       this.ctx.arc((midX + planet2.p.x) / 2, (midY + planet2.p.y) / 2, 1, 0, 2 * Math.PI, false);
-      this.ctx.fillStyle = Color.toString(aveColorFar, 0.8);
+      this.ctx.fillStyle = aveColorFar.opaquer(0.8).string();
       this.ctx.fill();
 
       // close point
-      const aveColorClose = Color.getAverageColor(this.color, aveColor);
+      const aveColorClose = ColorMixer.getAverageColor(this.color, aveColor);
       this.ctx.beginPath();
       this.ctx.arc((midX + this.p.x) / 2, (midY + this.p.y) / 2, 1, 0, 2 * Math.PI, false);
-      this.ctx.fillStyle = Color.toString(aveColorClose, 0.8);
+      this.ctx.fillStyle = aveColorClose.opaquer(0.8).string();
       this.ctx.fill();
     }
   }
@@ -137,12 +138,12 @@ export class Planet {
     const mid3Y = (this.p.y + planet3.p.y) / 2;
     const aveX = (mid2X + mid3X) / 2;
     const aveY = (mid2Y + mid3Y) / 2;
-    const aveColor = Color.getAverageColor(planet2.color, planet3.color);
+    const aveColor = ColorMixer.getAverageColor(planet2.color, planet3.color);
     const opacity =
       Geometry.distance(this.p, { x: aveX, y: aveY }) / this.visual.getSize().H + 0.05;
     const grd = this.ctx.createLinearGradient(this.p.x, this.p.y, aveX, aveY);
-    grd.addColorStop(0, Color.toString(this.color, opacity));
-    grd.addColorStop(1, Color.toString(aveColor, opacity));
+    grd.addColorStop(0, this.color.opaquer(opacity).string());
+    grd.addColorStop(1, aveColor.opaquer(opacity).string());
 
     this.ctx.beginPath();
     this.ctx.moveTo(mid2X, mid2Y);
@@ -155,10 +156,10 @@ export class Planet {
   drawTriangle(planet2: Planet, planet3: Planet) {
     const opMidX = (planet2.p.x + planet3.p.x) / 2;
     const opMidY = (planet2.p.y + planet3.p.y) / 2;
-    const opAveColor = Color.getAverageColor(planet2.color, planet3.color);
+    const opAveColor = ColorMixer.getAverageColor(planet2.color, planet3.color);
     const grd = this.ctx.createLinearGradient(this.p.x, this.p.y, opMidX, opMidY);
-    grd.addColorStop(0, Color.toString(this.color, 0.6));
-    grd.addColorStop(1, Color.toString(opAveColor, 0.6));
+    grd.addColorStop(0, this.color.opaquer(0.6).string());
+    grd.addColorStop(1, opAveColor.opaquer(0.6).string());
     this.ctx.beginPath();
     this.ctx.moveTo(this.p.x, this.p.y);
     this.ctx.lineTo(planet2.p.x, planet2.p.y);
