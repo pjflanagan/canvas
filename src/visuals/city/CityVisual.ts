@@ -1,5 +1,9 @@
+// import { Random } from "$lib/util";
 import { Visual } from "$lib/visual";
 import { Building } from "./Building";
+
+// const BUILDING_SPACING_Y = 50;
+// const BUILDING_SPACING_X = 80;
 
 export class CityVisual extends Visual {
   static visualName = 'Night City';
@@ -13,8 +17,8 @@ export class CityVisual extends Visual {
   }
 
   setup() {
-    // for (let y = -BUILDING_PERSPECTIVE_WIDTH; y < this.H + BUILDING_PERSPECTIVE_WIDTH; y += 4 * BUILDING_PERSPECTIVE_WIDTH) {
-    //   for (let x = -BUILDING_WIDTH; x < this.W + BUILDING_WIDTH; x += BUILDING_WIDTH  + 8) {
+    // for (let y = -BUILDING_SPACING_Y; y < this.H + BUILDING_SPACING_Y; y += 4 * BUILDING_SPACING_Y) {
+    //   for (let x = -BUILDING_SPACING_X; x < this.W + BUILDING_SPACING_X; x += BUILDING_SPACING_X + 8) {
     //     this.buildings.push(new Building(this, {
     //       x: x + Random.number(-12, 28),
     //       y: y
