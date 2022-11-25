@@ -52,4 +52,8 @@ export class Building {
       drawingY -= s.segmentHeight; // move to the top of the previously drawn segment
     })
   }
+
+  remakeBuildingFromInstructions(instructions: BuildingInstructions) {
+    this.segments = makeBuildingFromInstructions(instructions);
+  }
 }

@@ -68,6 +68,9 @@ function drawLayer(
     ctx.fill();
   }
   if (layer.strokeStyle) {
+    if (layer.lineDash) {
+      ctx.setLineDash(layer.lineDash);
+    }
     ctx.strokeStyle = layer.strokeStyle;
     ctx.lineWidth = layer.lineWidth || 1;
     ctx.stroke();

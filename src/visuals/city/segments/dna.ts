@@ -2,7 +2,8 @@ import Color from "color";
 import { Cardinality, EAST_SHADING, getBuildingCornerByCardinality, WEST_SHADING, type Segment, type SegmentProperties } from "../segmentUtils";
 import { BUILDING_WIDTH } from "../const";
 
-export function makeTaipei101Segment({ height = 80, color = Color('#24e9e2'), secondaryColor = Color('#2bd7f6') }: SegmentProperties): Segment {
+// TODO: make 2 of these
+export function makeClockwiseDNASegment({ height = 80, color = Color('#24e9e2') }: SegmentProperties): Segment {
   return {
     segmentHeight: height,
     drawingInstructions: {
@@ -14,10 +15,8 @@ export function makeTaipei101Segment({ height = 80, color = Color('#24e9e2'), se
             ['lineTo', ...getBuildingCornerByCardinality(Cardinality.SOUTH, BUILDING_WIDTH)],
             ['lineTo', ...getBuildingCornerByCardinality(Cardinality.SOUTH, BUILDING_WIDTH - 10, height)],
             ['lineTo', ...getBuildingCornerByCardinality(Cardinality.WEST, BUILDING_WIDTH - 10, height)],
-            ['lineTo', ...getBuildingCornerByCardinality(Cardinality.WEST, BUILDING_WIDTH)],
           ],
-          fillStyle: color.darken(WEST_SHADING).string(),
-          strokeStyle: secondaryColor.string()
+          fillStyle: color.darken(WEST_SHADING).string()
         },
         {
           id: 'segment-east',
@@ -26,10 +25,8 @@ export function makeTaipei101Segment({ height = 80, color = Color('#24e9e2'), se
             ['lineTo', ...getBuildingCornerByCardinality(Cardinality.SOUTH, BUILDING_WIDTH)],
             ['lineTo', ...getBuildingCornerByCardinality(Cardinality.SOUTH, BUILDING_WIDTH - 10, height)],
             ['lineTo', ...getBuildingCornerByCardinality(Cardinality.EAST, BUILDING_WIDTH - 10, height)],
-            ['lineTo', ...getBuildingCornerByCardinality(Cardinality.EAST, BUILDING_WIDTH)],
           ],
-          fillStyle: color.darken(EAST_SHADING).string(),
-          strokeStyle: secondaryColor.string()
+          fillStyle: color.darken(EAST_SHADING).string()
         },
         {
           id: 'segment-top',
@@ -38,10 +35,8 @@ export function makeTaipei101Segment({ height = 80, color = Color('#24e9e2'), se
             ['lineTo', ...getBuildingCornerByCardinality(Cardinality.WEST, BUILDING_WIDTH)],
             ['lineTo', ...getBuildingCornerByCardinality(Cardinality.SOUTH, BUILDING_WIDTH)],
             ['lineTo', ...getBuildingCornerByCardinality(Cardinality.EAST, BUILDING_WIDTH)],
-            ['lineTo', ...getBuildingCornerByCardinality(Cardinality.NORTH, BUILDING_WIDTH)],
           ],
-          fillStyle: color.string(),
-          strokeStyle: secondaryColor.string()
+          fillStyle: color.string()
         },
       ]
     }

@@ -2,7 +2,9 @@ import Color from "color";
 import { Cardinality, EAST_SHADING, FRONT_SHADING, getBuildingCornerByCardinality, WEST_SHADING, type Segment, type SegmentProperties } from "../segmentUtils";
 import { BUILDING_WIDTH } from "../const";
 
-export function makeFreedomTowerSegment({ height = 480, color = Color('#2ba5b5') }: SegmentProperties): Segment {
+// TODO: this needs accents
+
+export function makeFreedomTowerSegment({ height = 480, color = Color('#2ba5b5'), secondaryColor = Color('#2bd7f6') }: SegmentProperties): Segment {
   return {
     segmentHeight: height,
     drawingInstructions: {
@@ -13,8 +15,10 @@ export function makeFreedomTowerSegment({ height = 480, color = Color('#2ba5b5')
             ['moveTo', ...getBuildingCornerByCardinality(Cardinality.SOUTH_WEST, BUILDING_WIDTH)],
             ['lineTo', ...getBuildingCornerByCardinality(Cardinality.SOUTH, BUILDING_WIDTH, height)],
             ['lineTo', ...getBuildingCornerByCardinality(Cardinality.WEST, BUILDING_WIDTH, height)],
+            ['lineTo', ...getBuildingCornerByCardinality(Cardinality.SOUTH_WEST, BUILDING_WIDTH)],
           ],
-          fillStyle: color.darken(WEST_SHADING).string()
+          fillStyle: color.darken(WEST_SHADING).string(),
+          strokeStyle: secondaryColor.string()
         },
         {
           id: 'segment-front',
@@ -22,8 +26,10 @@ export function makeFreedomTowerSegment({ height = 480, color = Color('#2ba5b5')
             ['moveTo', ...getBuildingCornerByCardinality(Cardinality.SOUTH_WEST, BUILDING_WIDTH)],
             ['lineTo', ...getBuildingCornerByCardinality(Cardinality.SOUTH, BUILDING_WIDTH, height)],
             ['lineTo', ...getBuildingCornerByCardinality(Cardinality.SOUTH_EAST, BUILDING_WIDTH)],
+            ['lineTo', ...getBuildingCornerByCardinality(Cardinality.SOUTH_WEST, BUILDING_WIDTH)],
           ],
-          fillStyle: color.darken(FRONT_SHADING).string()
+          fillStyle: color.darken(FRONT_SHADING).string(),
+          strokeStyle: secondaryColor.string()
         },
         {
           id: 'segment-right',
@@ -31,8 +37,10 @@ export function makeFreedomTowerSegment({ height = 480, color = Color('#2ba5b5')
             ['moveTo', ...getBuildingCornerByCardinality(Cardinality.SOUTH_EAST, BUILDING_WIDTH)],
             ['lineTo', ...getBuildingCornerByCardinality(Cardinality.SOUTH, BUILDING_WIDTH, height)],
             ['lineTo', ...getBuildingCornerByCardinality(Cardinality.EAST, BUILDING_WIDTH, height)],
+            ['lineTo', ...getBuildingCornerByCardinality(Cardinality.SOUTH_EAST, BUILDING_WIDTH)],
           ],
-          fillStyle: color.darken(EAST_SHADING).string()
+          fillStyle: color.darken(EAST_SHADING).string(),
+          strokeStyle: secondaryColor.string()
         },
         {
           id: 'segment-top',
@@ -41,8 +49,10 @@ export function makeFreedomTowerSegment({ height = 480, color = Color('#2ba5b5')
             ['lineTo', ...getBuildingCornerByCardinality(Cardinality.SOUTH_EAST, BUILDING_WIDTH)],
             ['lineTo', ...getBuildingCornerByCardinality(Cardinality.NORTH_EAST, BUILDING_WIDTH)],
             ['lineTo', ...getBuildingCornerByCardinality(Cardinality.NORTH_WEST, BUILDING_WIDTH)],
+            ['lineTo', ...getBuildingCornerByCardinality(Cardinality.SOUTH_WEST, BUILDING_WIDTH)],
           ],
-          fillStyle: color.string()
+          fillStyle: color.string(),
+          strokeStyle: secondaryColor.string()
         },
       ]
     }

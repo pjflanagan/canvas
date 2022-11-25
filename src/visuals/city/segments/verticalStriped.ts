@@ -46,7 +46,7 @@ export function makeVerticalStripedSection({
           })
         ),
         ...(
-          [...Array(stripeCount).keys()].map((i: number): LayerInstruction => {
+          [...Array(stripeCount + 1).keys()].map((i: number): LayerInstruction => {
             return {
               id: `bar-west-${i}`,
               strokes: [

@@ -1,7 +1,7 @@
 import type { DrawingInstructions } from "$lib/canvas";
 import { Random } from "$lib/util";
 import Color from "color";
-import { BUILDING_WIDTH, COLOR_PALLET, PERSPECTIVE } from "./const";
+import { ACCENT_COLORS, BUILDING_WIDTH, PERSPECTIVE, PRIMARY_COLORS } from "./const";
 
 // segments are drawn from bottom to top
 // [0, 0] for a segment is the top center
@@ -22,8 +22,8 @@ export type SegmentProperties = {
 export function getRandomBaseSegmentProperties(): SegmentProperties {
   return {
     height: Random.float(20, 130),
-    color: Color(Random.arrayItem(COLOR_PALLET)),
-    secondaryColor: Color(Random.arrayItem(COLOR_PALLET)),
+    color: Color(Random.arrayItem(PRIMARY_COLORS)),
+    secondaryColor: Color(Random.arrayItem(ACCENT_COLORS)),
     stripeCount: Random.number(0, 16),
   };
 }
@@ -31,8 +31,8 @@ export function getRandomBaseSegmentProperties(): SegmentProperties {
 export function getRandomSegmentProperties(): SegmentProperties {
   return {
     height: Random.float(80, 130),
-    color: Color(Random.arrayItem(COLOR_PALLET)),
-    secondaryColor: Color(Random.arrayItem(COLOR_PALLET)),
+    color: Color(Random.arrayItem(PRIMARY_COLORS)),
+    secondaryColor: Color(Random.arrayItem(ACCENT_COLORS)),
     stripeCount: Random.number(0, 16),
   };
 }
@@ -40,8 +40,8 @@ export function getRandomSegmentProperties(): SegmentProperties {
 export function getRandomSpireSegmentProperties(): SegmentProperties {
   return {
     height: Random.float(28, 64),
-    color: Color(Random.arrayItem(COLOR_PALLET)),
-    secondaryColor: Color(Random.arrayItem(COLOR_PALLET)),
+    color: Color(Random.arrayItem(PRIMARY_COLORS)),
+    secondaryColor: Color(Random.arrayItem(ACCENT_COLORS)),
     stripeCount: Random.number(0, 16),
   };
 }

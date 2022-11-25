@@ -2,13 +2,14 @@
 
 import { Random } from "$lib/util";
 import Color from "color";
-import { BUILDING_HEIGHT, COLOR_PALLET } from "./const";
+import { ACCENT_COLORS, BUILDING_HEIGHT, PRIMARY_COLORS } from "./const";
 import { getRandomBaseSegmentProperties, getRandomSegmentProperties, getRandomSpireSegmentProperties, type Segment } from "./segmentUtils";
 import { makeBasicSegment } from "./segments/basic";
 import { makeFreedomTowerSegment, makeFreedomTowerSpire } from "./segments/freedomTower";
 import { makeTaipei101Base, makeTaipei101Segment, makeTaipei101Spire } from "./segments/taipei101";
 import { makeHorizontalStripedSegment } from "./segments/horizontalStriped";
 import { makeVerticalStripedSection } from "./segments/verticalStriped";
+import { makePyramidSpire } from "./segments/pyramid";
 
 // Random building
 
@@ -17,12 +18,17 @@ export const SEGMENTS = [
   makeVerticalStripedSection,
   makeHorizontalStripedSegment,
   makeTaipei101Segment,
-  makeFreedomTowerSegment
+];
+
+export const FINAL_SEGMENT = [
+  ...SEGMENTS,
+  makeFreedomTowerSegment,
 ];
 
 export const SPIRES = [
   makeTaipei101Spire,
-  makeFreedomTowerSpire
+  makeFreedomTowerSpire,
+  makePyramidSpire,
 ];
 
 export const BASES = [
@@ -40,8 +46,8 @@ export const BASES = [
 // some type of patterning system where we pick two and pair them
 export function makeRandomBuildingSegments(): Segment[] {
 
-  const color = Color(Random.arrayItem(COLOR_PALLET));
-  const secondaryColor = Color(Random.arrayItem(COLOR_PALLET));
+  const color = Color(Random.arrayItem(PRIMARY_COLORS));
+  const secondaryColor = Color(Random.arrayItem(ACCENT_COLORS));
 
   const buildingSegments: Segment[] = [];
 
@@ -58,9 +64,11 @@ export function makeRandomBuildingSegments(): Segment[] {
 
   let buildingHeight = buildingSegments.length > 0 ? buildingSegments[0].segmentHeight : 0;
   while (buildingHeight < BUILDING_HEIGHT) {
+    const segmentProperties = getRandomSegmentProperties();
+    const isFinalSegment = segmentProperties.height! + buildingHeight > BUILDING_HEIGHT;
     const segment = (
-      Random.arrayItem(SEGMENTS)!)({
-        ...getRandomSegmentProperties(),
+      Random.arrayItem(isFinalSegment ? FINAL_SEGMENT : SEGMENTS)!)({
+        ...segmentProperties,
         color,
         secondaryColor,
       });
@@ -73,7 +81,7 @@ export function makeRandomBuildingSegments(): Segment[] {
     buildingSegments.push(
       Random.arrayItem(SPIRES)!({
         ...getRandomSpireSegmentProperties(),
-        color,
+        color: secondaryColor,
         secondaryColor,
       }));
   }
