@@ -5,15 +5,18 @@ export const PERSPECTIVE = 2 / 5;
 
 export const PRIMARY_COLORS = [
   // blues
-  '#2e63bf',
-  '#3259a8',
+  '#0b2b63',
+  '#0f1f40',
   // purples
-  '#7b64f7',
-  '#4e3f8f',
+  '#251a63',
+  '#271c57',
   '#342b52'
 ];
 
 export const ACCENT_COLORS = [
+  // blue
+  '#2e63bf',
+  '#3259a8',
   // 5 x cyans
   '#94edf8',
   '#6deaf9',
@@ -21,6 +24,8 @@ export const ACCENT_COLORS = [
   '#3eb2f2',
   '#00b8ff',
   '#3da6e9',
+  // purple
+  '#7b64f7',
   // 4 x yellows
   // 4 x pinks
   '#eee9f8',

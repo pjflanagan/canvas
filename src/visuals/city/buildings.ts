@@ -51,7 +51,7 @@ export function makeRandomBuildingSegments(): Segment[] {
 
   const buildingSegments: Segment[] = [];
 
-  // push a bunch of base segment
+  // push a base segment
   // if (Random.boolean()) {
   buildingSegments.push(
     Random.arrayItem(BASES)!({

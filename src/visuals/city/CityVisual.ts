@@ -8,23 +8,15 @@ import { BUILDING_HEIGHT, BUILDING_WIDTH, GLOW_COLORS, PERSPECTIVE } from "./con
 const BUILDING_SPACING_X = BUILDING_WIDTH * 1.8;
 const BUILDING_SPACING_Y = 5 * PERSPECTIVE * BUILDING_WIDTH;
 
-type Layer = {
-  glowColor?: Color;
-  glowDistanceFromTopLeft?: number;
-  building?: Building;
-}
-
 export class CityVisual extends Visual {
   static visualName = 'Night City';
   static visualLink = 'night-city';
   buildings: Building[];
-  layers: Layer[];
 
   constructor(context: CanvasRenderingContext2D) {
     super(context);
 
     this.buildings = [];
-    this.layers = [];
   }
 
   setup() {
@@ -43,31 +35,19 @@ export class CityVisual extends Visual {
               y: drawY
             });
             this.buildings.push(newBuilding);
-            this.layers.push({
-              building: newBuilding
-            });
           }
         }
       }
       buildingX = row * BUILDING_SPACING_X;
       buildingY = row * BUILDING_SPACING_Y;
-      this.layers.push({
-        glowDistanceFromTopLeft: Geometry.distance(
-          { x: 0, y: 0, },
-          { x: buildingX, y: buildingY }
-        ),
-        glowColor: Color(Random.arrayItem(GLOW_COLORS))
-      });
       row += 1;
     }
 
     // TODO: there are more buildings than we need to display
     console.log('BUILDING COUNT', this.buildings.length);
-    console.log(this.W, this.H, this.layers.filter(l => l.glowColor));
 
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     Random.arrayItem(this.buildings)!.remakeBuildingFromInstructions(FREEDOM_TOWER);
-  
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     Random.arrayItem(this.buildings)!.remakeBuildingFromInstructions(TAIPEI_101);
 
@@ -90,32 +70,10 @@ export class CityVisual extends Visual {
 
   drawFrame() {
     this.drawBackground();
-    this.layers.forEach(layer => {
-      if (layer.building) {
-        // layer.building.move();
-        layer.building.draw();
-      } else if (layer.glowColor && layer.glowDistanceFromTopLeft) {
-        this.drawGlowLayer(layer.glowColor, layer.glowDistanceFromTopLeft);
-      }
+    this.buildings.forEach(building => {
+        building.move();
+        building.draw();
     });
-  }
-
-  // TODO: this doesn't seem to work, why is it only one?
-  drawGlowLayer(color: Color, glowDistanceFromTopLeft: number) {
-    const glowDistanceFromTopLeftRatio = glowDistanceFromTopLeft / this.diagonalLength / 2;
-    const glowDistanceFromTopLeftRatioBottom = (glowDistanceFromTopLeft + BUILDING_HEIGHT) / this.diagonalLength / 2; 
-    if (glowDistanceFromTopLeft < 1) {
-      // console.log('DRAW GLOW', glowDistanceFromTopLeftRatio);
-      const grd = this.ctx.createLinearGradient(0, 0, this.diagonalLength * PERSPECTIVE, this.diagonalLength);
-      grd.addColorStop(0, color.fade(1).string());
-      grd.addColorStop(glowDistanceFromTopLeftRatio, color.fade(1).string());
-      grd.addColorStop(glowDistanceFromTopLeftRatioBottom > 1 ? 1 : glowDistanceFromTopLeftRatioBottom, color.string());
-      grd.addColorStop(1, color.string());
-      this.ctx.beginPath();
-      this.ctx.rect(0, 0, this.W, this.H);
-      this.ctx.fillStyle = grd;
-      this.ctx.fill();
-    }
   }
 
   drawBackground() {
