@@ -15,7 +15,7 @@ export const VISUAL_LIST = [
   RandomWalkVisual,
   OrbitsVisual,
   FireflyVisual,
-  // CityVisual,
+  CityVisual,
 ];
 
 export function getRandomVisual(): typeof Visual {

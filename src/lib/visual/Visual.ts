@@ -1,6 +1,6 @@
 // this is a class that can be extended to make different visuals
 
-import { type Point, Geometry } from '$lib/util';
+import { type Point, Geometry, Motion } from '$lib/util';
 
 export class Visual {
   static visualName: string;
@@ -118,5 +118,9 @@ export class Visual {
     } else {
       this.start();
     }
+  }
+
+  isPointInBounds(point: Point) {
+    return Motion.isInBounds(point, { x: this.W, y: this.H }, { x: 0, y: 0 });
   }
 }

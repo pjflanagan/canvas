@@ -24,12 +24,12 @@ export class CityVisual extends Visual {
     let row = 0;
     let buildingX = 0;
     let buildingY = 0;
-    while (row < 8) { // (buildingX < this.W + BUILDING_SPACING_X || buildingY < this.H) {
+    while (buildingX < this.W + BUILDING_SPACING_X || buildingY < this.H) {
       for (let y = 0; y <= row; y++) {
         for (let x = row; x >= 0; x--) {
           const drawX = x * BUILDING_SPACING_X + Random.number(-4, 4);
           const drawY = y * BUILDING_SPACING_Y;
-          if (drawX < this.W + BUILDING_SPACING_X && drawY < this.H + BUILDING_SPACING_Y) {
+          if (this.isPointInBounds({ x: drawX, y: drawY })) {
             const newBuilding = new Building(this, {
               x: drawX,
               y: drawY
@@ -43,7 +43,7 @@ export class CityVisual extends Visual {
       row += 1;
     }
 
-    // TODO: there are more buildings than we need to display
+    // TODO: there are too many buildings on the top
     console.log('BUILDING COUNT', this.buildings.length);
 
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
