@@ -188,11 +188,17 @@ export class Body {
     );
     grd.addColorStop(
       0,
-      ColorMixer.toString(colorSpectrum[colorSpectrum.length - 1], BODY.COLOR.OVERLAY_OPACITY_INSIDE),
+      ColorMixer.toString(
+        colorSpectrum[colorSpectrum.length - 1],
+        BODY.COLOR.OVERLAY_OPACITY_INSIDE,
+      ),
     );
     grd.addColorStop(
       1,
-      ColorMixer.toString(colorSpectrum[colorSpectrum.length - 1], BODY.COLOR.OVERLAY_OPACITY_OUTSIDE),
+      ColorMixer.toString(
+        colorSpectrum[colorSpectrum.length - 1],
+        BODY.COLOR.OVERLAY_OPACITY_OUTSIDE,
+      ),
     );
     this.ctx.beginPath();
     this.ctx.arc(pos.x, pos.y, radius, 0, 2 * Math.PI, false);

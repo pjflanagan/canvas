@@ -1,15 +1,20 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 
-import { Random } from "$lib/util";
-import Color from "color";
-import { ACCENT_COLORS, BUILDING_HEIGHT, PRIMARY_COLORS } from "./const";
-import { getRandomBaseSegmentProperties, getRandomSegmentProperties, getRandomSpireSegmentProperties, type Segment } from "./segmentUtils";
-import { makeBasicSegment } from "./segments/basic";
-import { makeFreedomTowerSegment, makeFreedomTowerSpire } from "./segments/freedomTower";
-import { makeTaipei101Base, makeTaipei101Segment, makeTaipei101Spire } from "./segments/taipei101";
-import { makeHorizontalStripedSegment } from "./segments/horizontalStriped";
-import { makeVerticalStripedSection } from "./segments/verticalStriped";
-import { makePyramidSpire } from "./segments/pyramid";
+import { Random } from '$lib/util';
+import Color from 'color';
+import { ACCENT_COLORS, BUILDING_HEIGHT, PRIMARY_COLORS } from './const';
+import {
+  getRandomBaseSegmentProperties,
+  getRandomSegmentProperties,
+  getRandomSpireSegmentProperties,
+  type Segment,
+} from './segmentUtils';
+import { makeBasicSegment } from './segments/basic';
+import { makeFreedomTowerSegment, makeFreedomTowerSpire } from './segments/freedomTower';
+import { makeTaipei101Base, makeTaipei101Segment, makeTaipei101Spire } from './segments/taipei101';
+import { makeHorizontalStripedSegment } from './segments/horizontalStriped';
+import { makeVerticalStripedSection } from './segments/verticalStriped';
+import { makePyramidSpire } from './segments/pyramid';
 
 // Random building
 
@@ -20,22 +25,15 @@ export const SEGMENTS = [
   makeTaipei101Segment,
 ];
 
-export const FINAL_SEGMENT = [
-  ...SEGMENTS,
-  makeFreedomTowerSegment,
-];
+export const FINAL_SEGMENT = [...SEGMENTS, makeFreedomTowerSegment];
 
-export const SPIRES = [
-  makeTaipei101Spire,
-  makeFreedomTowerSpire,
-  makePyramidSpire,
-];
+export const SPIRES = [makeTaipei101Spire, makeFreedomTowerSpire, makePyramidSpire];
 
 export const BASES = [
   makeBasicSegment,
   makeVerticalStripedSection,
   makeHorizontalStripedSegment,
-  makeTaipei101Base
+  makeTaipei101Base,
 ];
 
 // TODO: this needs some work to make them pretty
@@ -45,7 +43,6 @@ export const BASES = [
 // or maybe
 // some type of patterning system where we pick two and pair them
 export function makeRandomBuildingSegments(): Segment[] {
-
   const color = Color(Random.arrayItem(PRIMARY_COLORS));
   const secondaryColor = Color(Random.arrayItem(ACCENT_COLORS));
 
@@ -58,7 +55,7 @@ export function makeRandomBuildingSegments(): Segment[] {
       ...getRandomBaseSegmentProperties(),
       color,
       secondaryColor,
-    })
+    }),
   );
   // }
 
@@ -66,24 +63,27 @@ export function makeRandomBuildingSegments(): Segment[] {
   while (buildingHeight < BUILDING_HEIGHT) {
     const segmentProperties = getRandomSegmentProperties();
     const isFinalSegment = segmentProperties.height! + buildingHeight > BUILDING_HEIGHT;
-    const segment = (
-      Random.arrayItem(isFinalSegment ? FINAL_SEGMENT : SEGMENTS)!)({
-        ...segmentProperties,
-        color,
-        secondaryColor,
-      });
+    const segment = Random.arrayItem(isFinalSegment ? FINAL_SEGMENT : SEGMENTS)!({
+      ...segmentProperties,
+      color,
+      secondaryColor,
+    });
     buildingSegments.push(segment);
     buildingHeight += segment.segmentHeight;
   }
 
   // then push a top segment
   if (Random.odds(0.3)) {
-    buildingSegments.push(
-      Random.arrayItem(SPIRES)!({
-        ...getRandomSpireSegmentProperties(),
-        color: secondaryColor,
-        secondaryColor,
-      }));
+    const spire = Random.arrayItem(SPIRES)!({
+      ...getRandomSpireSegmentProperties(),
+      color: secondaryColor,
+      secondaryColor,
+    });
+    const disallowedNextSegments =
+      buildingSegments[buildingSegments.length - 1].disallowedNextSegments;
+    if (!disallowedNextSegments || !disallowedNextSegments.includes(spire.name)) {
+      buildingSegments.push(spire);
+    }
   }
 
   return buildingSegments;
@@ -95,12 +95,14 @@ export type BuildingInstructions = {
   base?: Segment;
   top?: Segment;
   buildingPattern: Segment[];
-}
+};
 
-export function makeBuildingFromInstructions(buildingInstructions: BuildingInstructions): Segment[] {
+export function makeBuildingFromInstructions(
+  buildingInstructions: BuildingInstructions,
+): Segment[] {
   const buildingSegments: Segment[] = [];
   let buildingHeight = 0;
-  
+
   if (buildingInstructions.base) {
     buildingSegments.push(buildingInstructions.base);
   }
@@ -124,17 +126,15 @@ export const TAIPEI_101: BuildingInstructions = {
     makeTaipei101Segment({}),
     makeBasicSegment({ height: 4, color: Color('#083060') }),
   ],
-}
+};
 
 export const FREEDOM_TOWER: BuildingInstructions = {
   top: makeFreedomTowerSpire({}),
   base: makeVerticalStripedSection({
-      height: 80,
-      color: Color('#94afb0'),
-      secondaryColor: Color('#94afb0').darken(0.4),
-      stripeCount: 16,
+    height: 80,
+    color: Color('#94afb0'),
+    secondaryColor: Color('#94afb0').darken(0.4),
+    stripeCount: 16,
   }),
-  buildingPattern: [
-    makeFreedomTowerSegment({}),
-  ],
-}
+  buildingPattern: [makeFreedomTowerSegment({})],
+};

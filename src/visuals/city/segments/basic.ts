@@ -1,9 +1,20 @@
-import Color from "color";
-import { Cardinality, EAST_SHADING, getBuildingCornerByCardinality, WEST_SHADING, type Segment, type SegmentProperties } from "../segmentUtils";
-import { BUILDING_WIDTH } from "../const";
+import Color from 'color';
+import {
+  Cardinality,
+  EAST_SHADING,
+  getBuildingCornerByCardinality,
+  WEST_SHADING,
+  type Segment,
+  type SegmentProperties,
+} from '../segmentUtils';
+import { BUILDING_WIDTH } from '../const';
 
-export function makeBasicSegment({ height = 30, color = Color('#70b0b3') }: SegmentProperties): Segment {
+export function makeBasicSegment({
+  height = 30,
+  color = Color('#70b0b3'),
+}: SegmentProperties): Segment {
   return {
+    name: 'basicSegment',
     segmentHeight: height,
     drawingInstructions: {
       layers: [
@@ -12,20 +23,26 @@ export function makeBasicSegment({ height = 30, color = Color('#70b0b3') }: Segm
           strokes: [
             ['moveTo', ...getBuildingCornerByCardinality(Cardinality.WEST, BUILDING_WIDTH)],
             ['lineTo', ...getBuildingCornerByCardinality(Cardinality.WEST, BUILDING_WIDTH, height)],
-            ['lineTo', ...getBuildingCornerByCardinality(Cardinality.SOUTH, BUILDING_WIDTH, height)],
+            [
+              'lineTo',
+              ...getBuildingCornerByCardinality(Cardinality.SOUTH, BUILDING_WIDTH, height),
+            ],
             ['lineTo', ...getBuildingCornerByCardinality(Cardinality.SOUTH, BUILDING_WIDTH)],
           ],
-          fillStyle: color.darken(WEST_SHADING).string()
+          fillStyle: color.darken(WEST_SHADING).string(),
         },
         {
           id: 'building-side-east',
           strokes: [
             ['moveTo', ...getBuildingCornerByCardinality(Cardinality.EAST, BUILDING_WIDTH)],
             ['lineTo', ...getBuildingCornerByCardinality(Cardinality.EAST, BUILDING_WIDTH, height)],
-            ['lineTo', ...getBuildingCornerByCardinality(Cardinality.SOUTH, BUILDING_WIDTH, height)],
+            [
+              'lineTo',
+              ...getBuildingCornerByCardinality(Cardinality.SOUTH, BUILDING_WIDTH, height),
+            ],
             ['lineTo', ...getBuildingCornerByCardinality(Cardinality.SOUTH, BUILDING_WIDTH)],
           ],
-          fillStyle: color.darken(EAST_SHADING).string()
+          fillStyle: color.darken(EAST_SHADING).string(),
         },
         {
           id: 'building-top',
@@ -35,9 +52,9 @@ export function makeBasicSegment({ height = 30, color = Color('#70b0b3') }: Segm
             ['lineTo', ...getBuildingCornerByCardinality(Cardinality.SOUTH, BUILDING_WIDTH)],
             ['lineTo', ...getBuildingCornerByCardinality(Cardinality.EAST, BUILDING_WIDTH)],
           ],
-          fillStyle: color.toString()
+          fillStyle: color.toString(),
         },
-      ]
-    }
-  }
+      ],
+    },
+  };
 }

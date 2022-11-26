@@ -1,9 +1,9 @@
-import Color from "color";
-import { Geometry, Random } from "$lib/util";
-import { Visual } from "$lib/visual";
-import { Building } from "./Building";
-import { FREEDOM_TOWER, TAIPEI_101 } from "./buildings";
-import { BUILDING_HEIGHT, BUILDING_WIDTH, GLOW_COLORS, PERSPECTIVE } from "./const";
+import Color from 'color';
+import { Geometry, Motion, Random } from '$lib/util';
+import { Visual } from '$lib/visual';
+import { Building } from './Building';
+import { FREEDOM_TOWER, TAIPEI_101 } from './buildings';
+import { BUILDING_HEIGHT, BUILDING_WIDTH, GLOW_COLORS, PERSPECTIVE } from './const';
 
 const BUILDING_SPACING_X = BUILDING_WIDTH * 1.8;
 const BUILDING_SPACING_Y = 5 * PERSPECTIVE * BUILDING_WIDTH;
@@ -21,6 +21,7 @@ export class CityVisual extends Visual {
 
   setup() {
     // start in the top left and work our way down to the right
+    // TODO: we are making too many buildings
     let row = 0;
     let buildingX = 0;
     let buildingY = 0;
@@ -29,10 +30,16 @@ export class CityVisual extends Visual {
         for (let x = row; x >= 0; x--) {
           const drawX = x * BUILDING_SPACING_X + Random.number(-4, 4);
           const drawY = y * BUILDING_SPACING_Y;
-          if (this.isPointInBounds({ x: drawX, y: drawY })) {
+          if (
+            Motion.isInBounds(
+              { x: drawX, y: drawY },
+              { x: this.W + 8, y: this.H + 8 },
+              { x: -8, y: -8 },
+            )
+          ) {
             const newBuilding = new Building(this, {
               x: drawX,
-              y: drawY
+              y: drawY,
             });
             this.buildings.push(newBuilding);
           }
@@ -40,7 +47,7 @@ export class CityVisual extends Visual {
       }
       buildingX = row * BUILDING_SPACING_X;
       buildingY = row * BUILDING_SPACING_Y;
-      row += 1;
+      row += BUILDING_WIDTH; // TODO: this makes less buildings, but they aren't placed properly
     }
 
     // TODO: there are too many buildings on the top
@@ -70,16 +77,16 @@ export class CityVisual extends Visual {
 
   drawFrame() {
     this.drawBackground();
-    this.buildings.forEach(building => {
-        building.move();
-        building.draw();
+    this.buildings.forEach((building) => {
+      building.move();
+      building.draw();
     });
   }
 
   drawBackground() {
     this.ctx.beginPath();
     this.ctx.rect(0, 0, this.W, this.H);
-    this.ctx.fillStyle = "#1c1c1c";
+    this.ctx.fillStyle = '#1c1c1c';
     this.ctx.fill();
   }
 

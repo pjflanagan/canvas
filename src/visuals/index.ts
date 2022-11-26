@@ -1,4 +1,3 @@
-
 import type { Visual } from '$lib/visual';
 import { Random } from '$lib/util';
 
@@ -23,11 +22,4 @@ export function getRandomVisual(): typeof Visual {
   return Random.arrayItem(VISUAL_LIST)!;
 }
 
-export {
-  OrbitsVisual,
-  SpaceVisual,
-  SwarmVisual, 
-  FireflyVisual,
-  RandomWalkVisual,
-  CityVisual,
-};
+export { OrbitsVisual, SpaceVisual, SwarmVisual, FireflyVisual, RandomWalkVisual, CityVisual };

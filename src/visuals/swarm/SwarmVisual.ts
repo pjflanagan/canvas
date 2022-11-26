@@ -72,7 +72,7 @@ export class SwarmVisual extends Visual {
             type: 'PREDEFINED',
             colorStops: [],
             size: [],
-            gradient: grd
+            gradient: grd,
           },
         },
       ],

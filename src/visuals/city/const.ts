@@ -1,4 +1,3 @@
-
 export const BUILDING_HEIGHT = 400;
 export const BUILDING_WIDTH = 60;
 export const PERSPECTIVE = 2 / 5;
@@ -10,7 +9,7 @@ export const PRIMARY_COLORS = [
   // purples
   '#251a63',
   '#271c57',
-  '#342b52'
+  '#342b52',
 ];
 
 export const ACCENT_COLORS = [
@@ -44,5 +43,5 @@ export const ACCENT_COLORS = [
 export const GLOW_COLORS = [
   // yellows
   // cyans
-  '#c2f0f9'
+  '#c2f0f9',
 ];

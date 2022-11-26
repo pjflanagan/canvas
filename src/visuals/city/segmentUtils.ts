@@ -1,15 +1,17 @@
-import type { DrawingInstructions } from "$lib/canvas";
-import { Random } from "$lib/util";
-import Color from "color";
-import { ACCENT_COLORS, BUILDING_WIDTH, PERSPECTIVE, PRIMARY_COLORS } from "./const";
+import type { DrawingInstructions } from '$lib/canvas';
+import { Random } from '$lib/util';
+import Color from 'color';
+import { ACCENT_COLORS, BUILDING_WIDTH, PERSPECTIVE, PRIMARY_COLORS } from './const';
 
 // segments are drawn from bottom to top
 // [0, 0] for a segment is the top center
 // each segment should be drawn below the starting point (positive)
 export type Segment = {
+  name: string;
   drawingInstructions: DrawingInstructions;
   segmentHeight: number;
-}
+  disallowedNextSegments?: string[];
+};
 
 export type SegmentProperties = {
   height?: number;
@@ -17,7 +19,7 @@ export type SegmentProperties = {
   secondaryColor?: Color;
   rotation?: number;
   stripeCount?: number;
-}
+};
 
 export function getRandomBaseSegmentProperties(): SegmentProperties {
   return {
@@ -57,14 +59,18 @@ export enum Cardinality {
   SOUTH_WEST,
   EAST,
   WEST,
-};
+}
 
-export function getBuildingCornerByCardinality(cardinality: Cardinality, distanceFromCenter: number, distanceFromTop = 0): [number, number] {
-  switch(cardinality) {
+export function getBuildingCornerByCardinality(
+  cardinality: Cardinality,
+  distanceFromCenter: number,
+  distanceFromTop = 0,
+): [number, number] {
+  switch (cardinality) {
     case Cardinality.NORTH:
-      return [0, (-distanceFromCenter * PERSPECTIVE) + distanceFromTop];
+      return [0, -distanceFromCenter * PERSPECTIVE + distanceFromTop];
     case Cardinality.SOUTH:
-      return [0, (distanceFromCenter * PERSPECTIVE) + distanceFromTop];
+      return [0, distanceFromCenter * PERSPECTIVE + distanceFromTop];
     case Cardinality.EAST:
       return [distanceFromCenter, distanceFromTop];
     case Cardinality.WEST:
@@ -78,20 +84,31 @@ export function getBuildingCornerByCardinality(cardinality: Cardinality, distanc
     case Cardinality.NORTH_WEST:
       return getBuildingCornerByAngle(225, distanceFromCenter, distanceFromTop);
   }
-};
+}
 
-export function getBuildingCornerByAngle(degrees: number, distanceFromCenter: number, distanceFromTop = 0): [number, number] {
-  const radians = degrees / 180 * Math.PI;
+export function getBuildingCornerByAngle(
+  degrees: number,
+  distanceFromCenter: number,
+  distanceFromTop = 0,
+): [number, number] {
+  const radians = (degrees / 180) * Math.PI;
   return [
     Math.cos(radians) * distanceFromCenter + distanceFromTop,
-    Math.sin(radians) * distanceFromCenter * PERSPECTIVE + distanceFromTop
+    Math.sin(radians) * distanceFromCenter * PERSPECTIVE + distanceFromTop,
   ];
 }
 
-export function getPointAlongEdge(cardinality: Cardinality, percentAlong: number, distanceFromTop = 0): [number, number] {
-  const sign = (cardinality === Cardinality.EAST) ? -1 : 1;
+export function getPointAlongEdge(
+  cardinality: Cardinality,
+  percentAlong: number,
+  distanceFromTop = 0,
+): [number, number] {
+  const sign = cardinality === Cardinality.EAST ? -1 : 1;
   const [x, y] = getBuildingCornerByCardinality(cardinality, BUILDING_WIDTH);
-  return [x + sign * percentAlong * BUILDING_WIDTH, distanceFromTop + y + BUILDING_WIDTH * percentAlong * PERSPECTIVE];
+  return [
+    x + sign * percentAlong * BUILDING_WIDTH,
+    distanceFromTop + y + BUILDING_WIDTH * percentAlong * PERSPECTIVE,
+  ];
 }
 
 // Colors
