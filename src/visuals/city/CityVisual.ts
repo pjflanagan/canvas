@@ -77,7 +77,7 @@ export class CityVisual extends Visual {
     this.drawBackground();
     this.layers.forEach(({ building, glowColor, glowDistance }) => {
       if (building) {
-        // TODO: set offset based on distance from mouse
+        building.setOffset(this.mousePos);
         building.move();
         building.draw();
       } else if (glowColor && glowDistance) {

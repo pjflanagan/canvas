@@ -1,5 +1,5 @@
 import { Canvas } from '$lib/canvas';
-import { Random, type Point } from '$lib/util';
+import { Geometry, Random, type Point } from '$lib/util';
 import type Color from 'color';
 import {
   makeBuildingFromInstructions,
@@ -62,9 +62,8 @@ export class Building {
     this.segments = makeBuildingFromInstructions(instructions);
   }
 
-  // v2: set offsetY based on mouse position
-  // only let the buildings below respond to the mouse
   setOffset(mousePosition: Point) {
-    // this.offsetY
+    const distanceToMouse = Geometry.distance(mousePosition, this.buildingTopPosition);
+    this.offsetY = -10 * distanceToMouse / BUILDING_HEIGHT;
   }
 }
