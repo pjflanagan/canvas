@@ -1,5 +1,6 @@
 import { Canvas } from '$lib/canvas';
 import { Random, type Point } from '$lib/util';
+import type Color from 'color';
 import {
   makeBuildingFromInstructions,
   makeRandomBuildingSegments,
@@ -26,7 +27,7 @@ export class Building {
     this.buildingTopPosition = buildingTopPosition;
     this.currentDeltaY = chooseRandomDeltaY();
     this.toDeltaY = chooseRandomDeltaY();
-    this.speed = Random.float(0.2, 0.8);
+    this.speed = Random.float(0.08, 0.4);
     this.segments = instructions
       ? makeBuildingFromInstructions(instructions)
       : makeRandomBuildingSegments();

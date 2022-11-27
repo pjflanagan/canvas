@@ -9,12 +9,12 @@ import {
   getRandomSpireSegmentProperties,
   type Segment,
 } from './segmentUtils';
-import { makeBasicSegment } from './segments/basic';
-import { makeFreedomTowerSegment, makeFreedomTowerSpire } from './segments/freedomTower';
-import { makeTaipei101Base, makeTaipei101Segment, makeTaipei101Spire } from './segments/taipei101';
-import { makeHorizontalStripedSegment } from './segments/horizontalStriped';
-import { makeVerticalStripedSection } from './segments/verticalStriped';
-import { makePyramidSpire } from './segments/pyramid';
+import { makeBasicSegment } from './segments/segment-basic';
+import { makeFreedomTowerSegment, makeFreedomTowerSpire } from './segments/building-freedomTower';
+import { makeTaipei101Base, makeTaipei101Segment, makeTaipei101Spire } from './segments/building-taipei101';
+import { makeHorizontalStripedSegment } from './segments/segment-horizontalStripe';
+import { makeVerticalStripedSection } from './segments/segment-verticalStripe';
+import { makePyramidSpire } from './segments/spire-pyramid';
 
 // Random building
 
@@ -49,7 +49,6 @@ export function makeRandomBuildingSegments(): Segment[] {
   const buildingSegments: Segment[] = [];
 
   // push a base segment
-  // if (Random.boolean()) {
   buildingSegments.push(
     Random.arrayItem(BASES)!({
       ...getRandomBaseSegmentProperties(),
@@ -57,13 +56,17 @@ export function makeRandomBuildingSegments(): Segment[] {
       secondaryColor,
     }),
   );
-  // }
 
   let buildingHeight = buildingSegments.length > 0 ? buildingSegments[0].segmentHeight : 0;
   while (buildingHeight < BUILDING_HEIGHT) {
     const segmentProperties = getRandomSegmentProperties();
     const isFinalSegment = segmentProperties.height! + buildingHeight > BUILDING_HEIGHT;
-    const segment = Random.arrayItem(isFinalSegment ? FINAL_SEGMENT : SEGMENTS)!({
+    const segmentOptions = isFinalSegment ? FINAL_SEGMENT : SEGMENTS;
+    const disallowedNextSegments = buildingSegments[buildingSegments.length - 1].disallowedNextSegments;
+    const allowedNextSegments = !disallowedNextSegments
+      ? segmentOptions
+      : segmentOptions.filter(s => !disallowedNextSegments.includes(s.name));
+    const segment = Random.arrayItem(allowedNextSegments)!({
       ...segmentProperties,
       color,
       secondaryColor,
@@ -72,15 +75,19 @@ export function makeRandomBuildingSegments(): Segment[] {
     buildingHeight += segment.segmentHeight;
   }
 
-  // then push a top segment
+  // then push a spire
   if (Random.odds(0.3)) {
-    const spire = Random.arrayItem(SPIRES)!({
+    const previousSegment = buildingSegments[buildingSegments.length - 1];
+    const disallowedNextSegments = previousSegment.disallowedNextSegments;
+    const allowedSpires = !disallowedNextSegments
+      ? SPIRES
+      : SPIRES.filter(s => !disallowedNextSegments.includes(s.name));
+    const spire = Random.arrayItem(allowedSpires)!({
       ...getRandomSpireSegmentProperties(),
       color: secondaryColor,
       secondaryColor,
+      bottomWidth: previousSegment.topWidth
     });
-    const disallowedNextSegments =
-      buildingSegments[buildingSegments.length - 1].disallowedNextSegments;
     if (!disallowedNextSegments || !disallowedNextSegments.includes(spire.name)) {
       buildingSegments.push(spire);
     }
@@ -118,6 +125,8 @@ export function makeBuildingFromInstructions(
 
   return buildingSegments;
 }
+
+// Specific buildings
 
 export const TAIPEI_101: BuildingInstructions = {
   top: makeTaipei101Spire({}),

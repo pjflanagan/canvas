@@ -10,6 +10,7 @@ export type Segment = {
   name: string;
   drawingInstructions: DrawingInstructions;
   segmentHeight: number;
+  topWidth?: number;
   disallowedNextSegments?: string[];
 };
 
@@ -19,6 +20,9 @@ export type SegmentProperties = {
   secondaryColor?: Color;
   rotation?: number;
   stripeCount?: number;
+  specialCardinality?: Cardinality;
+  topWidth?: number;
+  bottomWidth?: number;
 };
 
 export function getRandomBaseSegmentProperties(): SegmentProperties {
@@ -27,6 +31,8 @@ export function getRandomBaseSegmentProperties(): SegmentProperties {
     color: Color(Random.arrayItem(PRIMARY_COLORS)),
     secondaryColor: Color(Random.arrayItem(ACCENT_COLORS)),
     stripeCount: Random.number(0, 16),
+    topWidth: Random.float(2 * BUILDING_WIDTH / 3, BUILDING_WIDTH),
+    bottomWidth: Random.float(2 * BUILDING_WIDTH / 3, BUILDING_WIDTH),
   };
 }
 
@@ -36,6 +42,8 @@ export function getRandomSegmentProperties(): SegmentProperties {
     color: Color(Random.arrayItem(PRIMARY_COLORS)),
     secondaryColor: Color(Random.arrayItem(ACCENT_COLORS)),
     stripeCount: Random.number(0, 16),
+    topWidth: Random.float(2 * BUILDING_WIDTH / 3, BUILDING_WIDTH),
+    bottomWidth: Random.float(2 * BUILDING_WIDTH / 3, BUILDING_WIDTH),
   };
 }
 
@@ -101,13 +109,14 @@ export function getBuildingCornerByAngle(
 export function getPointAlongEdge(
   cardinality: Cardinality,
   percentAlong: number,
+  buildingWidth: number,
   distanceFromTop = 0,
 ): [number, number] {
   const sign = cardinality === Cardinality.EAST ? -1 : 1;
-  const [x, y] = getBuildingCornerByCardinality(cardinality, BUILDING_WIDTH);
+  const [x, y] = getBuildingCornerByCardinality(cardinality, buildingWidth);
   return [
-    x + sign * percentAlong * BUILDING_WIDTH,
-    distanceFromTop + y + BUILDING_WIDTH * percentAlong * PERSPECTIVE,
+    x + sign * percentAlong * buildingWidth,
+    distanceFromTop + y + buildingWidth * percentAlong * PERSPECTIVE,
   ];
 }
 

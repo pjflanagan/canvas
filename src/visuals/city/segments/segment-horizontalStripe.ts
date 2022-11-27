@@ -8,13 +8,18 @@ import {
   type SegmentProperties,
 } from '../segmentUtils';
 import { BUILDING_WIDTH } from '../const';
+import type { LayerInstruction } from '$lib/canvas';
 
-export function makeBasicSegment({
+export function makeHorizontalStripedSegment({
   height = 30,
   color = Color('#70b0b3'),
+  secondaryColor = Color('#000'),
+  stripeCount = 10,
+  // topWidth = BUILDING_WIDTH,
+  // bottomWidth = BUILDING_WIDTH
 }: SegmentProperties): Segment {
   return {
-    name: 'basicSegment',
+    name: 'horizontalStripedSegment',
     segmentHeight: height,
     drawingInstructions: {
       layers: [
@@ -44,6 +49,38 @@ export function makeBasicSegment({
           ],
           fillStyle: color.darken(EAST_SHADING).string(),
         },
+        ...[...Array(stripeCount).keys()].map((i: number): LayerInstruction => {
+          return {
+            id: `bar-${i}`,
+            strokes: [
+              [
+                'moveTo',
+                ...getBuildingCornerByCardinality(
+                  Cardinality.EAST,
+                  BUILDING_WIDTH,
+                  (i / stripeCount) * height,
+                ),
+              ],
+              [
+                'lineTo',
+                ...getBuildingCornerByCardinality(
+                  Cardinality.SOUTH,
+                  BUILDING_WIDTH,
+                  (i / stripeCount) * height,
+                ),
+              ],
+              [
+                'lineTo',
+                ...getBuildingCornerByCardinality(
+                  Cardinality.WEST,
+                  BUILDING_WIDTH,
+                  (i / stripeCount) * height,
+                ),
+              ],
+            ],
+            strokeStyle: secondaryColor.string(),
+          };
+        }),
         {
           id: 'building-top',
           strokes: [

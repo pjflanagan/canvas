@@ -2,24 +2,25 @@ import Color from 'color';
 import {
   Cardinality,
   EAST_SHADING,
-  getBuildingCornerByAngle,
   getBuildingCornerByCardinality,
-  getPointAlongEdge,
   WEST_SHADING,
   type Segment,
   type SegmentProperties,
 } from '../segmentUtils';
-import { BUILDING_WIDTH, PERSPECTIVE } from '../const';
-import type { LayerInstruction } from '$lib/canvas';
+import { BUILDING_WIDTH } from '../const';
 
-export function makeVerticalStripedSection({
+export function makeBasicSegment({
   height = 30,
   color = Color('#70b0b3'),
-  secondaryColor = Color('#000'),
-  stripeCount = 10,
+  secondaryColor,
+  specialCardinality = Cardinality.WEST,
+  bottomWidth = BUILDING_WIDTH,
 }: SegmentProperties): Segment {
   return {
-    name: 'verticalStripedSection',
+    name: 'triangleSegment',
+    disallowedNextSegments: [
+      'taipei101Segment'
+    ],
     segmentHeight: height,
     drawingInstructions: {
       layers: [
@@ -49,26 +50,6 @@ export function makeVerticalStripedSection({
           ],
           fillStyle: color.darken(EAST_SHADING).string(),
         },
-        ...[...Array(stripeCount).keys()].map((i: number): LayerInstruction => {
-          return {
-            id: `bar-east-${i}`,
-            strokes: [
-              ['moveTo', ...getPointAlongEdge(Cardinality.EAST, i / stripeCount)],
-              ['lineTo', ...getPointAlongEdge(Cardinality.EAST, i / stripeCount, height)],
-            ],
-            strokeStyle: secondaryColor.string(),
-          };
-        }),
-        ...[...Array(stripeCount + 1).keys()].map((i: number): LayerInstruction => {
-          return {
-            id: `bar-west-${i}`,
-            strokes: [
-              ['moveTo', ...getPointAlongEdge(Cardinality.WEST, i / stripeCount)],
-              ['lineTo', ...getPointAlongEdge(Cardinality.WEST, i / stripeCount, height)],
-            ],
-            strokeStyle: secondaryColor.darken(WEST_SHADING).string(),
-          };
-        }),
         {
           id: 'building-top',
           strokes: [

@@ -9,6 +9,8 @@ import {
 } from '../segmentUtils';
 import { BUILDING_WIDTH } from '../const';
 
+// TODO: make these take even more properties
+// TODO: this can be made with a vertical stripe one
 export function makeTaipei101Segment({
   height = 80,
   color = Color('#24e9e2'),
@@ -17,6 +19,7 @@ export function makeTaipei101Segment({
   return {
     name: 'taipei101Segment',
     segmentHeight: height,
+    topWidth: BUILDING_WIDTH,
     drawingInstructions: {
       layers: [
         {
@@ -72,6 +75,7 @@ export function makeTaipei101Segment({
   };
 }
 
+// TODO: this can be made with a vertical stripe one
 export function makeTaipei101Base({
   height = 120,
   color = Color('#70b0b3'),
@@ -79,6 +83,7 @@ export function makeTaipei101Base({
   return {
     name: 'taipei101Base',
     segmentHeight: height,
+    topWidth: BUILDING_WIDTH - 10,
     drawingInstructions: {
       layers: [
         {

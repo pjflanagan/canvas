@@ -1,12 +1,11 @@
-import Color from 'color';
-import { Geometry, Motion, Random } from '$lib/util';
+import { Motion, Random } from '$lib/util';
 import { Visual } from '$lib/visual';
 import { Building } from './Building';
 import { FREEDOM_TOWER, TAIPEI_101 } from './buildings';
-import { BUILDING_HEIGHT, BUILDING_WIDTH, GLOW_COLORS, PERSPECTIVE } from './const';
+import { BUILDING_HEIGHT, BUILDING_WIDTH, PERSPECTIVE } from './const';
 
 const BUILDING_SPACING_X = BUILDING_WIDTH * 1.8;
-const BUILDING_SPACING_Y = 5 * PERSPECTIVE * BUILDING_WIDTH;
+const BUILDING_SPACING_Y = 3 * PERSPECTIVE * BUILDING_SPACING_X;
 
 export class CityVisual extends Visual {
   static visualName = 'Night City';
@@ -20,12 +19,14 @@ export class CityVisual extends Visual {
   }
 
   setup() {
+    const maxX = this.W + BUILDING_SPACING_X
+    const maxY = this.H - BUILDING_HEIGHT / 2;
     // start in the top left and work our way down to the right
     // TODO: we are making too many buildings
     let row = 0;
     let buildingX = 0;
     let buildingY = 0;
-    while (buildingX < this.W + BUILDING_SPACING_X || buildingY < this.H) {
+    while (buildingX < maxX || buildingY < maxY) {
       for (let y = 0; y <= row; y++) {
         for (let x = row; x >= 0; x--) {
           const drawX = x * BUILDING_SPACING_X + Random.number(-4, 4);
@@ -33,7 +34,7 @@ export class CityVisual extends Visual {
           if (
             Motion.isInBounds(
               { x: drawX, y: drawY },
-              { x: this.W + 8, y: this.H + 8 },
+              { x: this.W + 8, y: maxY },
               { x: -8, y: -8 },
             )
           ) {
