@@ -74,6 +74,7 @@ function drawLayer(
     ctx.strokeStyle = layer.strokeStyle;
     ctx.lineWidth = layer.lineWidth || 1;
     ctx.stroke();
+    ctx.setLineDash([]);
   }
 }
 

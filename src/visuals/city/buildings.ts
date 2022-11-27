@@ -36,12 +36,6 @@ export const BASES = [
   makeTaipei101Base,
 ];
 
-// TODO: this needs some work to make them pretty
-// some segments don't look good with others
-// maybe some buildings should be all one thing
-// with a random base and a random top
-// or maybe
-// some type of patterning system where we pick two and pair them
 export function makeRandomBuildingSegments(): Segment[] {
   const color = Color(Random.arrayItem(PRIMARY_COLORS));
   const secondaryColor = Color(Random.arrayItem(ACCENT_COLORS));

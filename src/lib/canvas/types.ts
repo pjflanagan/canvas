@@ -46,7 +46,7 @@ type LayerProperties = {
   strokeStyle?: string;
   lineWidth?: number;
   rotation?: number;
-  lineDash?: number[]; // TODO: use this in buildings for windows
+  lineDash?: number[];
 };
 
 export type LayerInstruction = LayerProperties & {

@@ -2,23 +2,24 @@ import Color from 'color';
 import {
   Cardinality,
   EAST_SHADING,
-  getBuildingCornerByAngle,
   getBuildingCornerByCardinality,
   getPointAlongEdge,
   WEST_SHADING,
   type Segment,
   type SegmentProperties,
 } from '../segmentUtils';
-import { BUILDING_WIDTH, PERSPECTIVE } from '../const';
+import { BUILDING_WIDTH } from '../const';
 import type { LayerInstruction } from '$lib/canvas';
 
+// v2: make bottom width take one side or another or both
 export function makeVerticalStripedSection({
   height = 30,
   color = Color('#70b0b3'),
   secondaryColor = Color('#000'),
   stripeCount = 10,
   topWidth = BUILDING_WIDTH,
-  bottomWidth = BUILDING_WIDTH
+  bottomWidth = BUILDING_WIDTH,
+  stripePattern = []
 }: SegmentProperties): Segment {
   return {
     name: 'verticalStripedSection',
@@ -60,6 +61,7 @@ export function makeVerticalStripedSection({
               ['lineTo', ...getPointAlongEdge(Cardinality.EAST, i / stripeCount, bottomWidth, height)],
             ],
             strokeStyle: secondaryColor.string(),
+            lineDash: stripePattern,
           };
         }),
         ...[...Array(stripeCount + 1).keys()].map((i: number): LayerInstruction => {
@@ -70,6 +72,7 @@ export function makeVerticalStripedSection({
               ['lineTo', ...getPointAlongEdge(Cardinality.WEST, i / stripeCount, bottomWidth, height)],
             ],
             strokeStyle: secondaryColor.darken(WEST_SHADING).string(),
+            lineDash: stripePattern
           };
         }),
         {

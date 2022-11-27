@@ -42,6 +42,10 @@ export const ACCENT_COLORS = [
 
 export const GLOW_COLORS = [
   // yellows
+  '#e8f9c2',
+  '#d6e3c5',
   // cyans
   '#c2f0f9',
+  // red
+  '#e0cad2',
 ];

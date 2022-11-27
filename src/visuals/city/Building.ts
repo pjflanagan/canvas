@@ -19,6 +19,7 @@ export class Building {
   buildingTopPosition: Point;
   currentDeltaY: number;
   toDeltaY: number;
+  offsetY: number;
   speed: number;
   segments: Segment[];
 
@@ -27,6 +28,7 @@ export class Building {
     this.buildingTopPosition = buildingTopPosition;
     this.currentDeltaY = chooseRandomDeltaY();
     this.toDeltaY = chooseRandomDeltaY();
+    this.offsetY = 0;
     this.speed = Random.float(0.08, 0.4);
     this.segments = instructions
       ? makeBuildingFromInstructions(instructions)
@@ -42,7 +44,7 @@ export class Building {
 
   draw() {
     // initialize where we are drawing to the bottom of the building
-    let drawingY = this.buildingTopPosition.y + this.currentDeltaY + BUILDING_HEIGHT;
+    let drawingY = this.buildingTopPosition.y + this.currentDeltaY + BUILDING_HEIGHT + this.offsetY;
     // draw each segment from bottom to top
     this.segments.forEach((s) => {
       Canvas.draw(this.visual.getContext(), s.drawingInstructions, {
@@ -58,5 +60,11 @@ export class Building {
 
   remakeBuildingFromInstructions(instructions: BuildingInstructions) {
     this.segments = makeBuildingFromInstructions(instructions);
+  }
+
+  // v2: set offsetY based on mouse position
+  // only let the buildings below respond to the mouse
+  setOffset(mousePosition: Point) {
+    // this.offsetY
   }
 }

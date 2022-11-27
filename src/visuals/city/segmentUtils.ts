@@ -23,6 +23,7 @@ export type SegmentProperties = {
   specialCardinality?: Cardinality;
   topWidth?: number;
   bottomWidth?: number;
+  stripePattern?: number[];
 };
 
 export function getRandomBaseSegmentProperties(): SegmentProperties {
@@ -44,6 +45,7 @@ export function getRandomSegmentProperties(): SegmentProperties {
     stripeCount: Random.number(0, 16),
     topWidth: Random.float(2 * BUILDING_WIDTH / 3, BUILDING_WIDTH),
     bottomWidth: Random.float(2 * BUILDING_WIDTH / 3, BUILDING_WIDTH),
+    stripePattern: Random.odds(0.8) ? [Random.number(1, 10), Random.number(1, 10)] : [],
   };
 }
 
@@ -122,6 +124,6 @@ export function getPointAlongEdge(
 
 // Colors
 
-export const EAST_SHADING = 0.2;
-export const FRONT_SHADING = 0.3;
-export const WEST_SHADING = 0.4;
+export const EAST_SHADING = 0.34;
+export const FRONT_SHADING = 0.48;
+export const WEST_SHADING = 0.62;

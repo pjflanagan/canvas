@@ -9,7 +9,7 @@ import {
 } from '../segmentUtils';
 import { BUILDING_WIDTH } from '../const';
 
-// TODO: make 2 of these
+// v2: make 2 of these
 export function makeClockwiseDNASegment({
   height = 80,
   color = Color('#24e9e2'),

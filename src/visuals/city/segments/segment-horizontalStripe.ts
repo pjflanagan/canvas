@@ -15,6 +15,7 @@ export function makeHorizontalStripedSegment({
   color = Color('#70b0b3'),
   secondaryColor = Color('#000'),
   stripeCount = 10,
+  stripePattern = [],
   // topWidth = BUILDING_WIDTH,
   // bottomWidth = BUILDING_WIDTH
 }: SegmentProperties): Segment {
@@ -79,6 +80,7 @@ export function makeHorizontalStripedSegment({
               ],
             ],
             strokeStyle: secondaryColor.string(),
+            lineDash: stripePattern,
           };
         }),
         {

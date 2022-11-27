@@ -9,8 +9,7 @@ import {
 } from '../segmentUtils';
 import { BUILDING_WIDTH } from '../const';
 
-// TODO: make these take even more properties
-// TODO: this can be made with a vertical stripe one
+// v2: this can be made with a vertical stripe one (only difference is the outline)
 export function makeTaipei101Segment({
   height = 80,
   color = Color('#24e9e2'),
@@ -75,7 +74,7 @@ export function makeTaipei101Segment({
   };
 }
 
-// TODO: this can be made with a vertical stripe one
+// v2: this can be made with a vertical stripe one (just remove this when it's done)
 export function makeTaipei101Base({
   height = 120,
   color = Color('#70b0b3'),

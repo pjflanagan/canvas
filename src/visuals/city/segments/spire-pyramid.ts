@@ -2,7 +2,6 @@ import Color from 'color';
 import {
   Cardinality,
   EAST_SHADING,
-  FRONT_SHADING,
   getBuildingCornerByCardinality,
   WEST_SHADING,
   type Segment,
@@ -10,7 +9,7 @@ import {
 } from '../segmentUtils';
 import { BUILDING_WIDTH } from '../const';
 
-// TODO: this needs accents along the length of the pyramid
+// v2: this needs accents along the length of the pyramid
 // maybe a pyramid on top that's lit up makeGlowPryramidSpire
 export function makePyramidSpire({
   color = Color('#d3ebe5'),
