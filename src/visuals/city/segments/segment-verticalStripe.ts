@@ -71,7 +71,7 @@ export function makeVerticalStripedSection({
               ['moveTo', ...getPointAlongEdge(Cardinality.WEST, i / stripeCount, topWidth)],
               ['lineTo', ...getPointAlongEdge(Cardinality.WEST, i / stripeCount, bottomWidth, height)],
             ],
-            strokeStyle: secondaryColor.darken(WEST_SHADING).string(),
+            strokeStyle: secondaryColor.string(),
             lineDash: stripePattern
           };
         }),
