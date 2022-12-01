@@ -13,9 +13,12 @@ import { BUILDING_WIDTH } from '../const';
 // maybe a pyramid on top that's lit up makeGlowPryramidSpire
 export function makePyramidSpire({
   color = Color('#d3ebe5'),
+  secondaryColor = Color('#d3ebe5'),
   height = BUILDING_WIDTH,
+  accentHeight = 10,
   bottomWidth = BUILDING_WIDTH,
 }: SegmentProperties): Segment {
+  const accentPyramidBottomWidth = bottomWidth * (accentHeight / height);
   return {
     name: 'pyramidSpire',
     segmentHeight: height,
@@ -34,7 +37,7 @@ export function makePyramidSpire({
           fillStyle: color.darken(WEST_SHADING / 2).string(),
         },
         {
-          id: 'pyramid-west',
+          id: 'pyramid-east',
           strokes: [
             ['moveTo', 0, 0],
             ['lineTo', ...getBuildingCornerByCardinality(Cardinality.EAST, bottomWidth, height)],
@@ -44,6 +47,30 @@ export function makePyramidSpire({
             ],
           ],
           fillStyle: color.darken(EAST_SHADING / 2).string(),
+        },
+        {
+          id: 'pyramid-top-west',
+          strokes: [
+            ['moveTo', 0, 0],
+            ['lineTo', ...getBuildingCornerByCardinality(Cardinality.WEST, accentPyramidBottomWidth, accentHeight)],
+            [
+              'lineTo',
+              ...getBuildingCornerByCardinality(Cardinality.SOUTH, accentPyramidBottomWidth, accentHeight),
+            ],
+          ],
+          fillStyle: secondaryColor.string(),
+        },
+        {
+          id: 'pyramid-top-east',
+          strokes: [
+            ['moveTo', 0, 0],
+            ['lineTo', ...getBuildingCornerByCardinality(Cardinality.EAST, accentPyramidBottomWidth, accentHeight)],
+            [
+              'lineTo',
+              ...getBuildingCornerByCardinality(Cardinality.SOUTH, accentPyramidBottomWidth, accentHeight),
+            ],
+          ],
+          fillStyle: secondaryColor.string(),
         },
       ],
     },

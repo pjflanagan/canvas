@@ -126,7 +126,7 @@ export function makeTaipei101Base({
   };
 }
 
-export function makeTaipei101Spire({ color = Color('#3ff4fb') }: SegmentProperties): Segment {
+export function makeTaipei101Spire({ color = Color('#3ff4fb'), secondaryColor = Color('#3ff4fb') }: SegmentProperties): Segment {
   const spireBaseStart = 80;
   const spireBaseEnd = spireBaseStart + 40;
 
@@ -173,7 +173,7 @@ export function makeTaipei101Spire({ color = Color('#3ff4fb') }: SegmentProperti
             ['lineTo', ...getBuildingCornerByCardinality(Cardinality.SOUTH, 4, spireBaseStart)],
             ['lineTo', ...getBuildingCornerByCardinality(Cardinality.EAST, 4, spireBaseStart)],
           ],
-          fillStyle: color.string(),
+          fillStyle: secondaryColor.string(),
         },
       ],
     },

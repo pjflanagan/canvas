@@ -16,8 +16,8 @@ export function makeHorizontalStripedSegment({
   secondaryColor = Color('#000'),
   stripeCount = 10,
   stripePattern = [],
-  // topWidth = BUILDING_WIDTH,
-  // bottomWidth = BUILDING_WIDTH
+  topWidth = BUILDING_WIDTH,
+  bottomWidth = BUILDING_WIDTH
 }: SegmentProperties): Segment {
   return {
     name: 'horizontalStripedSegment',
@@ -27,30 +27,33 @@ export function makeHorizontalStripedSegment({
         {
           id: 'building-side-west',
           strokes: [
-            ['moveTo', ...getBuildingCornerByCardinality(Cardinality.WEST, BUILDING_WIDTH)],
-            ['lineTo', ...getBuildingCornerByCardinality(Cardinality.WEST, BUILDING_WIDTH, height)],
+            ['moveTo', ...getBuildingCornerByCardinality(Cardinality.WEST, topWidth)],
+            ['lineTo', ...getBuildingCornerByCardinality(Cardinality.WEST, bottomWidth, height)],
             [
               'lineTo',
-              ...getBuildingCornerByCardinality(Cardinality.SOUTH, BUILDING_WIDTH, height),
+              ...getBuildingCornerByCardinality(Cardinality.SOUTH, bottomWidth, height),
             ],
-            ['lineTo', ...getBuildingCornerByCardinality(Cardinality.SOUTH, BUILDING_WIDTH)],
+            ['lineTo', ...getBuildingCornerByCardinality(Cardinality.SOUTH, topWidth)],
           ],
           fillStyle: color.darken(WEST_SHADING).string(),
         },
         {
           id: 'building-side-east',
           strokes: [
-            ['moveTo', ...getBuildingCornerByCardinality(Cardinality.EAST, BUILDING_WIDTH)],
-            ['lineTo', ...getBuildingCornerByCardinality(Cardinality.EAST, BUILDING_WIDTH, height)],
+            ['moveTo', ...getBuildingCornerByCardinality(Cardinality.EAST, topWidth)],
+            ['lineTo', ...getBuildingCornerByCardinality(Cardinality.EAST, bottomWidth, height)],
             [
               'lineTo',
-              ...getBuildingCornerByCardinality(Cardinality.SOUTH, BUILDING_WIDTH, height),
+              ...getBuildingCornerByCardinality(Cardinality.SOUTH, bottomWidth, height),
             ],
-            ['lineTo', ...getBuildingCornerByCardinality(Cardinality.SOUTH, BUILDING_WIDTH)],
+            ['lineTo', ...getBuildingCornerByCardinality(Cardinality.SOUTH, topWidth)],
           ],
           fillStyle: color.darken(EAST_SHADING).string(),
         },
         ...[...Array(stripeCount).keys()].map((i: number): LayerInstruction => {
+          const stripeHeight = (i / stripeCount) * height;
+          const rate = bottomWidth - topWidth;
+          const stripeWidth = topWidth + rate * (i / stripeCount);
           return {
             id: `bar-${i}`,
             strokes: [
@@ -58,24 +61,24 @@ export function makeHorizontalStripedSegment({
                 'moveTo',
                 ...getBuildingCornerByCardinality(
                   Cardinality.EAST,
-                  BUILDING_WIDTH,
-                  (i / stripeCount) * height,
+                  stripeWidth,
+                  stripeHeight,
                 ),
               ],
               [
                 'lineTo',
                 ...getBuildingCornerByCardinality(
                   Cardinality.SOUTH,
-                  BUILDING_WIDTH,
-                  (i / stripeCount) * height,
+                  stripeWidth,
+                  stripeHeight,
                 ),
               ],
               [
                 'lineTo',
                 ...getBuildingCornerByCardinality(
                   Cardinality.WEST,
-                  BUILDING_WIDTH,
-                  (i / stripeCount) * height,
+                  stripeWidth,
+                  stripeHeight,
                 ),
               ],
             ],
@@ -86,10 +89,10 @@ export function makeHorizontalStripedSegment({
         {
           id: 'building-top',
           strokes: [
-            ['moveTo', ...getBuildingCornerByCardinality(Cardinality.NORTH, BUILDING_WIDTH)],
-            ['lineTo', ...getBuildingCornerByCardinality(Cardinality.WEST, BUILDING_WIDTH)],
-            ['lineTo', ...getBuildingCornerByCardinality(Cardinality.SOUTH, BUILDING_WIDTH)],
-            ['lineTo', ...getBuildingCornerByCardinality(Cardinality.EAST, BUILDING_WIDTH)],
+            ['moveTo', ...getBuildingCornerByCardinality(Cardinality.NORTH, topWidth)],
+            ['lineTo', ...getBuildingCornerByCardinality(Cardinality.WEST, topWidth)],
+            ['lineTo', ...getBuildingCornerByCardinality(Cardinality.SOUTH, topWidth)],
+            ['lineTo', ...getBuildingCornerByCardinality(Cardinality.EAST, topWidth)],
           ],
           fillStyle: color.toString(),
         },

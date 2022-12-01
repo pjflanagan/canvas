@@ -15,17 +15,23 @@ import { makeTaipei101Base, makeTaipei101Segment, makeTaipei101Spire } from './s
 import { makeHorizontalStripedSegment } from './segments/segment-horizontalStripe';
 import { makeVerticalStripedSection } from './segments/segment-verticalStripe';
 import { makePyramidSpire } from './segments/spire-pyramid';
+import { makeRecessedBottomSegment, makeRecessedTopSegment } from './segments/segment-recessed';
 
 // Random building
 
 export const SEGMENTS = [
-  makeBasicSegment,
+  // makeBasicSegment,
   makeVerticalStripedSection,
   makeHorizontalStripedSegment,
   makeTaipei101Segment,
+  // makeRecessedBottomSegment,
 ];
 
-export const FINAL_SEGMENT = [...SEGMENTS, makeFreedomTowerSegment];
+export const FINAL_SEGMENT = [
+  ...SEGMENTS,
+  makeFreedomTowerSegment,
+  // makeRecessedTopSegment,
+];
 
 export const SPIRES = [makeTaipei101Spire, makeFreedomTowerSpire, makePyramidSpire];
 
@@ -37,8 +43,7 @@ export const BASES = [
 ];
 
 export function makeRandomBuildingSegments(): Segment[] {
-  const color = Color(Random.arrayItem(PRIMARY_COLORS));
-  const secondaryColor = Color(Random.arrayItem(ACCENT_COLORS));
+  const { color, secondaryColor, stripePattern, stripeCount } = getRandomSegmentProperties();
 
   const buildingSegments: Segment[] = [];
 
@@ -53,32 +58,50 @@ export function makeRandomBuildingSegments(): Segment[] {
 
   let buildingHeight = buildingSegments.length > 0 ? buildingSegments[0].segmentHeight : 0;
   while (buildingHeight < BUILDING_HEIGHT) {
+    // recall the previous segment
+    const { disallowedNextSegments, topWidth: previousSegmentTopWidth } = buildingSegments[buildingSegments.length - 1];
+
+    // get random segment properties
     const segmentProperties = getRandomSegmentProperties();
     const isFinalSegment = segmentProperties.height! + buildingHeight > BUILDING_HEIGHT;
+
+    // chose a different segment type if this is the last segment
     const segmentOptions = isFinalSegment ? FINAL_SEGMENT : SEGMENTS;
-    const disallowedNextSegments = buildingSegments[buildingSegments.length - 1].disallowedNextSegments;
+    // remove any segment that cannot follow the previous segment
     const allowedNextSegments = !disallowedNextSegments
       ? segmentOptions
       : segmentOptions.filter(s => !disallowedNextSegments.includes(s.name));
+
+    // randomly make the bottom width the same as the previous segment's top width
+    // maybe sometimes force it if the bottom is bigger (segmentProperties.bottomWidth! > previousSegmentTopWidth!)
+    if (Random.odds(0.3)) {
+      segmentProperties.bottomWidth = previousSegmentTopWidth;
+    }
+
+    // get a random segment with these properties
     const segment = Random.arrayItem(allowedNextSegments)!({
       ...segmentProperties,
       color,
       secondaryColor,
+      stripePattern,
+      stripeCount,
     });
+
+    // add it to the building segments and record the building height
     buildingSegments.push(segment);
     buildingHeight += segment.segmentHeight;
   }
 
-  // then push a spire
-  if (Random.odds(0.3)) {
-    const previousSegment = buildingSegments[buildingSegments.length - 1];
+  // then push a spire if that's allowed
+  const previousSegment = buildingSegments[buildingSegments.length - 1];
+  if (!previousSegment.disallowSpire && Random.odds(0.3)) {
     const disallowedNextSegments = previousSegment.disallowedNextSegments;
     const allowedSpires = !disallowedNextSegments
       ? SPIRES
       : SPIRES.filter(s => !disallowedNextSegments.includes(s.name));
     const spire = Random.arrayItem(allowedSpires)!({
       ...getRandomSpireSegmentProperties(),
-      color: secondaryColor,
+      color,
       secondaryColor,
       bottomWidth: previousSegment.topWidth
     });

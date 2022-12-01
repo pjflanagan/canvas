@@ -16,7 +16,7 @@ export const ACCENT_COLORS = [
   // blue
   '#2e63bf',
   '#3259a8',
-  // 5 x cyans
+  // cyans
   '#94edf8',
   '#6deaf9',
   '#4bddf7',
@@ -25,18 +25,24 @@ export const ACCENT_COLORS = [
   '#3da6e9',
   // purple
   '#7b64f7',
-  // 4 x yellows
-  // 4 x pinks
+  // yellows
+  '#e5eb7c',
+  '#dbed66',
+  '#e3f0c0',
+  // pinks
   '#eee9f8',
-  '#a784f4',
-  '#c04cf0',
+  // '#a784f4',
+  // '#c04cf0',
   '#aa4acd',
-  // 1 x reds
+  // reds
   '#e64b79',
-  '#b94f7e',
-  '#bb2650',
-  // 1 x orange
-  // 1 x grey
+  // '#b94f7e',
+  // '#bb2650',
+  // green
+  '#beebc6',
+  // orange
+  '#edcca6',
+  // grey
   '#919ec3',
 ];
 

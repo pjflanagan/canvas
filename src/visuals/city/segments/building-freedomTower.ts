@@ -80,7 +80,7 @@ export function makeFreedomTowerSegment({
   };
 }
 
-export function makeFreedomTowerSpire({ color = Color('#d3ebe5') }: SegmentProperties): Segment {
+export function makeFreedomTowerSpire({ color = Color('#d3ebe5'), secondaryColor = Color('#d3ebe5') }: SegmentProperties): Segment {
   const spireBaseStart = 120;
   const spireBaseEnd = spireBaseStart + 10;
 
@@ -112,7 +112,7 @@ export function makeFreedomTowerSpire({ color = Color('#d3ebe5') }: SegmentPrope
             ['lineTo', ...getBuildingCornerByCardinality(Cardinality.SOUTH, 4, spireBaseStart)],
             ['lineTo', ...getBuildingCornerByCardinality(Cardinality.EAST, 4, spireBaseStart)],
           ],
-          fillStyle: color.string(),
+          fillStyle: secondaryColor.string(),
         },
       ],
     },

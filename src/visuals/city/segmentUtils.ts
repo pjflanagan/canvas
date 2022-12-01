@@ -12,6 +12,7 @@ export type Segment = {
   segmentHeight: number;
   topWidth?: number;
   disallowedNextSegments?: string[];
+  disallowSpire?: boolean;
 };
 
 export type SegmentProperties = {
@@ -24,6 +25,10 @@ export type SegmentProperties = {
   topWidth?: number;
   bottomWidth?: number;
   stripePattern?: number[];
+  accentHeight?: number;
+  accentWidth?: number;
+  forceBox?: boolean;
+  accentSide?: Cardinality.SOUTH_EAST | Cardinality.SOUTH_WEST | Cardinality.NORTH_EAST | Cardinality.NORTH_WEST;
 };
 
 export function getRandomBaseSegmentProperties(): SegmentProperties {
@@ -46,15 +51,18 @@ export function getRandomSegmentProperties(): SegmentProperties {
     topWidth: Random.float(2 * BUILDING_WIDTH / 3, BUILDING_WIDTH),
     bottomWidth: Random.float(2 * BUILDING_WIDTH / 3, BUILDING_WIDTH),
     stripePattern: Random.odds(0.8) ? [Random.number(1, 10), Random.number(1, 10)] : [],
+    accentWidth: Random.number(8, 24)
   };
 }
 
 export function getRandomSpireSegmentProperties(): SegmentProperties {
+  const height = Random.float(28, 64);
   return {
-    height: Random.float(28, 64),
+    height,
     color: Color(Random.arrayItem(PRIMARY_COLORS)),
     secondaryColor: Color(Random.arrayItem(ACCENT_COLORS)),
     stripeCount: Random.number(0, 16),
+    accentHeight: Random.float(8, 24)
   };
 }
 

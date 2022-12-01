@@ -19,8 +19,10 @@ export function makeVerticalStripedSection({
   stripeCount = 10,
   topWidth = BUILDING_WIDTH,
   bottomWidth = BUILDING_WIDTH,
-  stripePattern = []
+  stripePattern = [],
+  forceBox = false
 }: SegmentProperties): Segment {
+  const activeTopWidth = forceBox ? bottomWidth : topWidth;
   return {
     name: 'verticalStripedSection',
     segmentHeight: height,
@@ -30,26 +32,26 @@ export function makeVerticalStripedSection({
         {
           id: 'building-side-west',
           strokes: [
-            ['moveTo', ...getBuildingCornerByCardinality(Cardinality.WEST, topWidth)],
+            ['moveTo', ...getBuildingCornerByCardinality(Cardinality.WEST, activeTopWidth)],
             ['lineTo', ...getBuildingCornerByCardinality(Cardinality.WEST, bottomWidth, height)],
             [
               'lineTo',
               ...getBuildingCornerByCardinality(Cardinality.SOUTH, bottomWidth, height),
             ],
-            ['lineTo', ...getBuildingCornerByCardinality(Cardinality.SOUTH, topWidth)],
+            ['lineTo', ...getBuildingCornerByCardinality(Cardinality.SOUTH, activeTopWidth)],
           ],
           fillStyle: color.darken(WEST_SHADING).string(),
         },
         {
           id: 'building-side-east',
           strokes: [
-            ['moveTo', ...getBuildingCornerByCardinality(Cardinality.EAST, topWidth)],
+            ['moveTo', ...getBuildingCornerByCardinality(Cardinality.EAST, activeTopWidth)],
             ['lineTo', ...getBuildingCornerByCardinality(Cardinality.EAST, bottomWidth, height)],
             [
               'lineTo',
               ...getBuildingCornerByCardinality(Cardinality.SOUTH, bottomWidth, height),
             ],
-            ['lineTo', ...getBuildingCornerByCardinality(Cardinality.SOUTH, topWidth)],
+            ['lineTo', ...getBuildingCornerByCardinality(Cardinality.SOUTH, activeTopWidth)],
           ],
           fillStyle: color.darken(EAST_SHADING).string(),
         },
@@ -57,7 +59,7 @@ export function makeVerticalStripedSection({
           return {
             id: `bar-east-${i}`,
             strokes: [
-              ['moveTo', ...getPointAlongEdge(Cardinality.EAST, i / stripeCount, topWidth)],
+              ['moveTo', ...getPointAlongEdge(Cardinality.EAST, i / stripeCount, activeTopWidth)],
               ['lineTo', ...getPointAlongEdge(Cardinality.EAST, i / stripeCount, bottomWidth, height)],
             ],
             strokeStyle: secondaryColor.string(),
@@ -68,7 +70,7 @@ export function makeVerticalStripedSection({
           return {
             id: `bar-west-${i}`,
             strokes: [
-              ['moveTo', ...getPointAlongEdge(Cardinality.WEST, i / stripeCount, topWidth)],
+              ['moveTo', ...getPointAlongEdge(Cardinality.WEST, i / stripeCount, activeTopWidth)],
               ['lineTo', ...getPointAlongEdge(Cardinality.WEST, i / stripeCount, bottomWidth, height)],
             ],
             strokeStyle: secondaryColor.string(),
@@ -78,10 +80,10 @@ export function makeVerticalStripedSection({
         {
           id: 'building-top',
           strokes: [
-            ['moveTo', ...getBuildingCornerByCardinality(Cardinality.NORTH, topWidth)],
-            ['lineTo', ...getBuildingCornerByCardinality(Cardinality.WEST, topWidth)],
-            ['lineTo', ...getBuildingCornerByCardinality(Cardinality.SOUTH, topWidth)],
-            ['lineTo', ...getBuildingCornerByCardinality(Cardinality.EAST, topWidth)],
+            ['moveTo', ...getBuildingCornerByCardinality(Cardinality.NORTH, activeTopWidth)],
+            ['lineTo', ...getBuildingCornerByCardinality(Cardinality.WEST, activeTopWidth)],
+            ['lineTo', ...getBuildingCornerByCardinality(Cardinality.SOUTH, activeTopWidth)],
+            ['lineTo', ...getBuildingCornerByCardinality(Cardinality.EAST, activeTopWidth)],
           ],
           fillStyle: color.toString(),
         },
