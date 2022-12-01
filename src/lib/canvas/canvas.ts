@@ -55,6 +55,10 @@ function drawLayer(
 
   const fillStyle = modifiers?.fillStyle || layer.fillStyle;
   if (fillStyle) {
+    if (layer.shadowBlur && layer.shadowColor) {
+      ctx.shadowBlur = layer.shadowBlur;
+      ctx.shadowColor = layer.shadowColor;
+    }
     if (typeof fillStyle === 'string') {
       ctx.fillStyle = fillStyle;
     } else {

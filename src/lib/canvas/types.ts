@@ -47,6 +47,8 @@ type LayerProperties = {
   lineWidth?: number;
   rotation?: number;
   lineDash?: number[];
+  shadowBlur?: number;
+  shadowColor?: string;
 };
 
 export type LayerInstruction = LayerProperties & {
