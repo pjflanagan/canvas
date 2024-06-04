@@ -3,7 +3,7 @@ import { Random, type Point } from '$lib/util';
 import { Visual } from '$lib/visual';
 import { BASS_STRING, BassString } from './BassString';
 
-const BASS_STRING_COUNT = 4;
+const BASS_STRING_COUNT = 1; // 4
 const BASS_STRING_GAP = BASS_STRING.MAX_OFFSET_X + 6;
 const NECK_WIDTH = BASS_STRING_COUNT * (BASS_STRING.WIDTH + BASS_STRING_GAP);
 

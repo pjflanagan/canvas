@@ -1,6 +1,11 @@
 import { type Point, Geometry, ZERO_POINT } from './Geometry';
 
 export class Motion {
+
+  static isClose(source: number, target: number, threshold: number) {
+    return Math.abs(source - target) < threshold;
+  }
+
   static hasReachedPoint(sourcePoint: Point, targetPoint: Point, threshold: number): boolean {
     return Geometry.distance(sourcePoint, targetPoint) < threshold;
   }

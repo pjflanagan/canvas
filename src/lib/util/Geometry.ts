@@ -21,6 +21,13 @@ type CircleIntersectionPoint = Point & {
 };
 
 export class Geometry {
+  static difference(a: Point, b: Point): Point {
+    return {
+      x: a.x - b.x,
+      y: a.y - b.y
+    }
+  }
+
   static distance(a: Point, b: Point) {
     return Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
   }
