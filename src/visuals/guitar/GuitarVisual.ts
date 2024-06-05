@@ -39,12 +39,13 @@ export class GuitarVisual extends Visual {
 
   drawBackground() {
     // this.ctx.clearRect(0, 0, this.W, this.H);
+    // TODO: Jack White guitar: https://www.google.com/search?sca_esv=23c20ded85caa685&rlz=1C5GCEM_en&q=white+stripes+guitar&uds=ADvngMjGL2z_dD6sqKl5mZzQ0EevMtgGr9LXrm1bI25pTrrQRrxQM_gRarhaPrpA4zV2YB-zF-B0i5tdaqb26pzF0AVYJHgUFdoedSqVbCIs9_gbDQ2ItvEB6nCZSuKHrFiwJgSlrKm7lf9qMWtc6g_UXdWibxKJzzfC6578mwPMc1fkEAGH3UIfqV8_H4FechNTqRjF8DliKm5BCGzAfFrpR2jCEABtcU2TmJ_8478PYefZ4W7ZyMEZiGuRFmfp4GjD4EOqDG5uaKaBsy5gvLos9JB_cTrLNp3nDksbQFsvkQCZ4spTyx-NSKXA72n_xqFcQMwlpZ1zuWOTvlsZ-pKt_QKU5VrEWQ&udm=2&prmd=ivsnmbt&sa=X&ved=2ahUKEwiTr6iiiMWGAxV7D1kFHcexDOIQtKgLegQIFRAB&biw=1573&bih=814&dpr=2
     Canvas.draw(this.ctx, {
       layers: [
         {
           id: 'background',
           strokes: [['rect', 0, 0, this.W, this.H]],
-          fillStyle: '#1f0d02',
+          fillStyle: '#610706',
         },
         {
           id: 'neck',
@@ -53,7 +54,7 @@ export class GuitarVisual extends Visual {
             this.W / 2 - NECK_WIDTH / 2 - GUITAR_STRING_GAP / 2 - GUITAR_STRING.WIDTH, 0,
             NECK_WIDTH + GUITAR_STRING_GAP, this.H
           ]],
-          fillStyle: '#1c1c1c',
+          fillStyle: '#0a0a0a',
         },
       ],
     });
