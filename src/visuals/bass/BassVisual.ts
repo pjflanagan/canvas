@@ -1,10 +1,9 @@
 import { Canvas } from '$lib/canvas';
-import { Random, type Point } from '$lib/util';
 import { Visual } from '$lib/visual';
 import { BASS_STRING, BassString } from './BassString';
 
-const BASS_STRING_COUNT = 1; // 4
-const BASS_STRING_GAP = BASS_STRING.MAX_OFFSET_X + 6;
+const BASS_STRING_COUNT = 4;
+const BASS_STRING_GAP = BASS_STRING.MAX_OFFSET_X / 2 + 24;
 const NECK_WIDTH = BASS_STRING_COUNT * (BASS_STRING.WIDTH + BASS_STRING_GAP);
 
 export class BassVisual extends Visual {
@@ -31,7 +30,9 @@ export class BassVisual extends Visual {
   drawFrame() {
     this.drawBackground();
     this.strings.forEach((s) => {
-      s.move();
+      for(let i = 0; i < 6; ++i) {
+        s.move();
+      }
       s.draw();
     });
   }

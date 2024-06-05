@@ -5,7 +5,8 @@ import { Motion } from '../../lib/util/Motion';
 import { Geometry } from '../../lib/util/Geometry';
 
 export const BASS_STRING = {
-  MAX_OFFSET_X: 35,
+  OFFSCREEN: 120,
+  MAX_OFFSET_X: 42,
   WIDTH: 4,
 }
 
@@ -18,28 +19,67 @@ export class BassString {
 
   constructor(visual: BassVisual, x: number) {
     this.visual = visual;
-    this.position = { x, y: 0 };
+    this.position = { x, y: -BASS_STRING.OFFSCREEN };
 
-    const { H } = this.visual.getSize();
-    this.pullPoint = { x: 0, y: H / 2 };
+    this.pullPoint = this.getDefaultPullPoint();
     this.state = 'released';
     this.to = this.pullPoint;
+  }
+
+  getDefaultPullPoint() {
+    const { H } = this.visual.getSize();
+    return { x: 0, y: H / 2 + BASS_STRING.OFFSCREEN };
+  }
+
+  setNextToPoint() {
+    const defaultPoint = this.getDefaultPullPoint();
+    
+    // this.to will be set to (-1 * pullPoint.x, y - 1) once we get there we set a new this.to
+    const newX = -1 * Math.sign(this.pullPoint.x) * Math.abs(this.pullPoint.x) - 1;
+    const newY = this.pullPoint.y - 14 * Math.sign(this.pullPoint.y - defaultPoint.y);
+    this.to = { x: newX, y: newY };
+    
+    // if the to point is close to the default, then just use the default
+    if (Geometry.distance(this.to, defaultPoint) < 12) {
+      this.to = defaultPoint;
+    }
+  }
+
+  movePullPoint() {
+    this.pullPoint = Motion.moveTowardsPoint(this.pullPoint, this.to, 2);
+  }
+
+  shouldStop() {
+    const defaultPoint = this.getDefaultPullPoint();
+    return (
+      Geometry.distance(this.pullPoint, defaultPoint) < 3
+      && Geometry.isEqual(this.to, defaultPoint)
+    );
   }
 
   move() {
     const { mousePos } = this.visual.getUserPosition();
 
-    // if the pointer has reached the string we consider the string being held
-    if (Motion.isClose(mousePos.x, this.position.x, 4)) {
+    // if the pointer has reached the string
+    if (Motion.isClose(mousePos.x, this.position.x, 12)) {
+      // we consider the string being held
       this.state = 'held';
     } else if (!Motion.isClose(mousePos.x, this.position.x, BASS_STRING.MAX_OFFSET_X)) {
+      // if we pass the max offset, it has been released
       this.state = 'released';
     }
 
     if (this.state === 'held') {
+      // if it's held then the pull point is the mouse position and we should prep the next to point
       this.pullPoint = Geometry.difference(mousePos, this.position);
-    } else {
-      // this.to will be set to (-1 * pullPoint.x, y - 1) once we get there we set a new this.to
+      this.setNextToPoint();
+    } else if (!this.shouldStop()) {
+      // Otherwise we have released and we should move the pull point
+      this.movePullPoint();
+      // If we are close to the to point, set a new to point
+      if (Geometry.distance(this.pullPoint, this.to) < 3) {
+        this.setNextToPoint();
+      }
     }
   }
 
@@ -47,19 +87,29 @@ export class BassString {
     const { H } = this.visual.getSize();
     Canvas.draw(
       this.visual.getContext(), {
-        position: this.position,
-        layers: [
-          {
-            id: 'string',
-            strokes: [
-              ['moveTo', 0, 0],
-              ['quadraticCurveTo', this.pullPoint.x, this.pullPoint.y, 0, H],
-            ],
-            lineWidth: BASS_STRING.WIDTH,
-            strokeStyle: '#fff',
-          },
-        ]
-      }
+      position: this.position,
+      layers: [
+        {
+          id: 'string',
+          strokes: [
+            ['moveTo', 0, 0],
+            ['quadraticCurveTo', this.pullPoint.x, this.pullPoint.y, 0, H + BASS_STRING.OFFSCREEN * 2],
+          ],
+          lineWidth: BASS_STRING.WIDTH,
+          strokeStyle: '#fff',
+        },
+        // {
+        //   id: 'pull',
+        //   strokes: [['arc', this.pullPoint.x, this.pullPoint.y, 4, 0, 2 * Math.PI, false]],
+        //   fillStyle: '#f00'
+        // },
+        // {
+        //   id: 'to',
+        //   strokes: [['arc', this.to.x, this.to.y, 4, 0, 2 * Math.PI, false]],
+        //   fillStyle: '#0f0'
+        // }
+      ]
+    }
     );
   }
 }
