@@ -1,4 +1,4 @@
-import { Canvas } from '$lib/canvas';
+import { Canvas, type LayerInstruction } from '$lib/canvas';
 import type { Point } from '$lib/util';
 import type { GuitarVisual } from './GuitarVisual';
 import { Motion } from '../../lib/util/Motion';
@@ -13,13 +13,17 @@ export const GUITAR_STRING = {
 export class GuitarString {
   visual: GuitarVisual;
   position: Point;
+  isEndString: boolean;
   pullPoint: Point;
   state: 'held' | 'released';
   to: Point;
 
-  constructor(visual: GuitarVisual, x: number) {
+  constructor(visual: GuitarVisual, x: number, isEndString = false) {
     this.visual = visual;
     this.position = { x, y: -GUITAR_STRING.OFFSCREEN };
+
+    // used in the UI version to block background
+    this.isEndString = isEndString;
 
     this.pullPoint = this.getDefaultPullPoint();
     this.state = 'released';
@@ -33,12 +37,12 @@ export class GuitarString {
 
   setNextToPoint() {
     const defaultPoint = this.getDefaultPullPoint();
-    
+
     // this.to will be set to (-1 * pullPoint.x, y - 1) once we get there we set a new this.to
     const newX = -1 * Math.sign(this.pullPoint.x) * Math.abs(this.pullPoint.x) - 1;
     const newY = this.pullPoint.y - 14 * Math.sign(this.pullPoint.y - defaultPoint.y);
     this.to = { x: newX, y: newY };
-    
+
     // if the to point is close to the default, then just use the default
     if (Geometry.distance(this.to, defaultPoint) < 12) {
       this.to = defaultPoint;
@@ -85,19 +89,34 @@ export class GuitarString {
 
   draw() {
     const { H } = this.visual.getSize();
+    const maxH = H + GUITAR_STRING.OFFSCREEN * 2;
+    const endStringBlockerLayer: LayerInstruction[] = this.isEndString ? [{
+      id: 'endStringBlocker',
+      strokes: [
+        ['moveTo', 0, 0],
+        ['quadraticCurveTo', this.pullPoint.x, this.pullPoint.y, 0, maxH],
+        ['lineTo', 60, maxH],
+        ['lineTo', 60, 0],
+        ['lineTo', 0, 0],
+      ],
+      lineWidth: GUITAR_STRING.WIDTH,
+      fillStyle: '#00f',
+    }] : [];
     Canvas.draw(
       this.visual.getContext(), {
       position: this.position,
       layers: [
+        ...endStringBlockerLayer,
         {
           id: 'string',
           strokes: [
             ['moveTo', 0, 0],
-            ['quadraticCurveTo', this.pullPoint.x, this.pullPoint.y, 0, H + GUITAR_STRING.OFFSCREEN * 2],
+            ['quadraticCurveTo', this.pullPoint.x, this.pullPoint.y, 0, maxH],
           ],
           lineWidth: GUITAR_STRING.WIDTH,
-          strokeStyle: '#fff',
+          strokeStyle: '#deddd799',
         },
+        // DEBUG:
         // {
         //   id: 'pull',
         //   strokes: [['arc', this.pullPoint.x, this.pullPoint.y, 4, 0, 2 * Math.PI, false]],
