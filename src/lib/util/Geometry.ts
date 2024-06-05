@@ -21,6 +21,13 @@ type CircleIntersectionPoint = Point & {
 };
 
 export class Geometry {
+  static difference(a: Point, b: Point): Point {
+    return {
+      x: a.x - b.x,
+      y: a.y - b.y
+    }
+  }
+
   static distance(a: Point, b: Point) {
     return Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
   }
@@ -29,7 +36,7 @@ export class Geometry {
     return Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2) + Math.pow(a.z - b.z, 2));
   }
 
-  // Get's the 4 intersection points of a concentric ellipse and circle
+  // Gets the 4 intersection points of a concentric ellipse and circle
   // phi, idk what this represents anymore, but it's used to calculate theta
   // theta is the angle that x and y are at to the center
   static ellipseCircleIntersection({
@@ -68,5 +75,9 @@ export class Geometry {
 
   static degToRad(deg: number): number {
     return deg * (Math.PI / 180);
+  }
+
+  static isEqual(a: Point, b: Point): boolean {
+    return a.x === b.x && a.y === b.y;
   }
 }
