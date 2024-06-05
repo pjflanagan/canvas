@@ -1,25 +1,25 @@
 import { Canvas } from '$lib/canvas';
 import type { Point } from '$lib/util';
-import type { BassVisual } from './BassVisual';
+import type { GuitarVisual } from './GuitarVisual';
 import { Motion } from '../../lib/util/Motion';
 import { Geometry } from '../../lib/util/Geometry';
 
-export const BASS_STRING = {
+export const GUITAR_STRING = {
   OFFSCREEN: 120,
   MAX_OFFSET_X: 42,
   WIDTH: 4,
 }
 
-export class BassString {
-  visual: BassVisual;
+export class GuitarString {
+  visual: GuitarVisual;
   position: Point;
   pullPoint: Point;
   state: 'held' | 'released';
   to: Point;
 
-  constructor(visual: BassVisual, x: number) {
+  constructor(visual: GuitarVisual, x: number) {
     this.visual = visual;
-    this.position = { x, y: -BASS_STRING.OFFSCREEN };
+    this.position = { x, y: -GUITAR_STRING.OFFSCREEN };
 
     this.pullPoint = this.getDefaultPullPoint();
     this.state = 'released';
@@ -28,7 +28,7 @@ export class BassString {
 
   getDefaultPullPoint() {
     const { H } = this.visual.getSize();
-    return { x: 0, y: H / 2 + BASS_STRING.OFFSCREEN };
+    return { x: 0, y: H / 2 + GUITAR_STRING.OFFSCREEN };
   }
 
   setNextToPoint() {
@@ -64,7 +64,7 @@ export class BassString {
     if (Motion.isClose(mousePos.x, this.position.x, 12)) {
       // we consider the string being held
       this.state = 'held';
-    } else if (!Motion.isClose(mousePos.x, this.position.x, BASS_STRING.MAX_OFFSET_X)) {
+    } else if (!Motion.isClose(mousePos.x, this.position.x, GUITAR_STRING.MAX_OFFSET_X)) {
       // if we pass the max offset, it has been released
       this.state = 'released';
     }
@@ -93,9 +93,9 @@ export class BassString {
           id: 'string',
           strokes: [
             ['moveTo', 0, 0],
-            ['quadraticCurveTo', this.pullPoint.x, this.pullPoint.y, 0, H + BASS_STRING.OFFSCREEN * 2],
+            ['quadraticCurveTo', this.pullPoint.x, this.pullPoint.y, 0, H + GUITAR_STRING.OFFSCREEN * 2],
           ],
-          lineWidth: BASS_STRING.WIDTH,
+          lineWidth: GUITAR_STRING.WIDTH,
           strokeStyle: '#fff',
         },
         // {

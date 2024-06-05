@@ -1,15 +1,15 @@
 <script lang="ts">
-  import { BassVisual } from '../../visuals';
+  import { GuitarVisual } from '../../visuals';
   import { onMount } from 'svelte';
   import { createVisualOnMount } from '../../lib/visual';
   import CanvasComponent from '../../components/canvas/CanvasComponent.svelte';
   import HeaderComponent from '../../components/header/HeaderComponent.svelte';
 
   let canvasElement: HTMLCanvasElement;
-  let visual: BassVisual;
+  let visual: GuitarVisual;
 
   onMount(() => {
-    visual = createVisualOnMount(BassVisual, canvasElement) as BassVisual;
+    visual = createVisualOnMount(GuitarVisual, canvasElement) as GuitarVisual;
   });
 
   let isRunning = true;
@@ -19,5 +19,5 @@
   }
 </script>
 
-<HeaderComponent title={BassVisual.visualName} {toggleStopStart} {isRunning} />
+<HeaderComponent title={GuitarVisual.visualName} {toggleStopStart} {isRunning} />
 <CanvasComponent {visual} bind:canvasElement />
