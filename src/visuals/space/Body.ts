@@ -55,15 +55,15 @@ export class Body {
   }
 
   setup() {
-    throw 'Method needs to be implemented by child of Body.';
+    throw 'setup needs to be implemented by child of Body.';
   }
 
   move() {
-    throw 'Method needs to be implemented by child of Body.';
+    throw 'move needs to be implemented by child of Body.';
   }
 
   draw() {
-    throw 'Method needs to be implemented by child of Body.';
+    throw 'draw needs to be implemented by child of Body.';
   }
 
   drawLine() {

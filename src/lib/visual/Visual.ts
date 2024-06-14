@@ -49,11 +49,11 @@ export class Visual {
   }
 
   setup() {
-    throw 'Method needs to be implemented by child of Canvas.';
+    throw 'setup needs to be implemented by child of Visual.';
   }
 
   drawFrame() {
-    throw 'Method needs to be implemented by child of Canvas.';
+    throw 'drawFrame needs to be implemented by child of Visual.';
   }
 
   getContext(): CanvasRenderingContext2D {

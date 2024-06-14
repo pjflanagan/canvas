@@ -3,6 +3,7 @@
 
 import { Random, type Point } from "$lib/util";
 import { Visual } from "$lib/visual";
+import { noop } from "lodash";
 
 const WORLD = {
 	MAX_BAMBOO: 2000,
@@ -20,6 +21,8 @@ const BAMBOO = {
 // BambooVisual -------------------------------------------------------------------------------------------
 
 export class BambooVisual extends Visual {
+  static visualName = 'Bamboo';
+  static visualLink = 'bamboo';
   bamboo: Bamboo[];
   maxSegments: number;
 
@@ -43,6 +46,10 @@ export class BambooVisual extends Visual {
 			x += BAMBOO.WIDTH * 2 + Random.number(-4, 4);
 		}
 		this.bamboo.sort(() => Math.random() - 0.5);
+	}
+
+	drawFrame(): void {
+			noop();
 	}
 
 	drawBackground() {

@@ -8,6 +8,7 @@ import { FireflyVisual } from './fireflies';
 import { RandomWalkVisual } from './random-walk/RandomWalkVisual';
 import { CityVisual } from './city/CityVisual';
 import { GuitarVisual } from './guitar';
+import { BambooVisual } from './bamboo';
 
 export const VISUAL_LIST = [
   SpaceVisual,
@@ -16,7 +17,8 @@ export const VISUAL_LIST = [
   OrbitsVisual,
   FireflyVisual,
   CityVisual,
-  GuitarVisual
+  GuitarVisual,
+  BambooVisual
 ];
 
 export function getRandomVisual(): typeof Visual {
@@ -24,4 +26,4 @@ export function getRandomVisual(): typeof Visual {
   return Random.arrayItem(VISUAL_LIST)!;
 }
 
-export { OrbitsVisual, SpaceVisual, SwarmVisual, FireflyVisual, RandomWalkVisual, CityVisual, GuitarVisual };
+export { OrbitsVisual, SpaceVisual, SwarmVisual, FireflyVisual, RandomWalkVisual, CityVisual, GuitarVisual, BambooVisual };

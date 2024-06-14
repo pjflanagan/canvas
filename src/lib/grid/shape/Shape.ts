@@ -146,12 +146,12 @@ export class Shape<T> implements IShape<T> {
   }
 
   getNeighbors(): IShape<T>[] {
-    throw 'Method needs to be implemented by child of Shape.';
+    throw 'getNeighbors needs to be implemented by child of Shape.';
   }
   getEdgeNeighbors(): IShape<T>[] {
-    throw 'Method needs to be implemented by child of Shape.';
+    throw 'getEdgeNeighbors needs to be implemented by child of Shape.';
   }
   getPointNeighbors(): IShape<T>[] {
-    throw 'Method needs to be implemented by child of Shape.';
+    throw 'getPointNeighbors needs to be implemented by child of Shape.';
   }
 }
