@@ -36,6 +36,9 @@ export class BambooVisual extends Visual {
 	setup() {
 		this.drawBackground();
 		this.initBamboo();
+	}
+
+	start() {
 		this.drawBamboo(0);
 	}
 
