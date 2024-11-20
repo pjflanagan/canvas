@@ -18,7 +18,7 @@ export const VISUAL_LIST = [
   FireflyVisual,
   CityVisual,
   GuitarVisual,
-  BambooVisual
+  // BambooVisual // TODO: fix, when the page is loaded directly, the page is blank
 ];
 
 export function getRandomVisual(): typeof Visual {
