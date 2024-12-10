@@ -1,8 +1,8 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { getRandomVisual } from '../visuals';
+  import { getRandomTopTierVisual } from '../visuals';
 
   onMount(() => {
-    window.location.href = `/${getRandomVisual().visualLink}`;
+    window.location.href = `/${getRandomTopTierVisual().visualLink}`;
   });
 </script>

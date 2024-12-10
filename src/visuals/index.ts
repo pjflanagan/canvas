@@ -26,4 +26,9 @@ export function getRandomVisual(): typeof Visual {
   return Random.arrayItem(VISUAL_LIST)!;
 }
 
+export function getRandomTopTierVisual(): typeof Visual {
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  return Random.arrayItem([SpaceVisual, SwarmVisual, CityVisual])!;
+}
+
 export { OrbitsVisual, SpaceVisual, SwarmVisual, FireflyVisual, RandomWalkVisual, CityVisual, GuitarVisual, BambooVisual };
